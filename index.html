@@ -81,6 +81,11 @@
       color: #fff;
     }
 
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
     .verse {
       background: #f8fafc;
       border: 1px solid #e5e7eb;
@@ -298,7 +303,7 @@
     <div class="section">
       <h2>오늘의 암송</h2>
       <div class="muted">시작일과 하루 암송 절 수를 기준으로 오늘 외울 범위를 계산해.</div>
-      <div id="todayVerses"></div>
+      <div id="todayVerses" class="muted">성경 데이터를 불러오는 중...</div>
     </div>
 
     <div class="section">
@@ -312,8 +317,8 @@
       </div>
 
       <div class="btns">
-        <button onclick="pickDailyQuestion()">문제 뽑기</button>
-        <button class="retry" onclick="startRetryMode()">재시험</button>
+        <button id="pickBtn" onclick="pickDailyQuestion()">문제 뽑기</button>
+        <button id="retryBtn" class="retry" onclick="startRetryMode()">재시험</button>
         <button class="secondary" onclick="clearDailyTest()">입력 지우기</button>
       </div>
 
@@ -321,7 +326,7 @@
 
       <textarea id="dailyTestInput" placeholder="출제된 성구를 입력하세요"></textarea>
       <br />
-      <button onclick="gradeDailyTest()">채점하기</button>
+      <button id="gradeBtn" onclick="gradeDailyTest()">채점하기</button>
       <button class="secondary" onclick="pickDailyQuestion()">다음 문제</button>
 
       <div id="dailyResult"></div>
@@ -331,14 +336,8 @@
   <script>
     const SETTINGS_KEY = "rev-memory-html-prototype-settings-v1";
 
-    let VERSES = []
-
-    fetch("revelation.json")
-       .then(res => res.json())
-       .then(data => {
-        VERSES = data
-        renderAll()
-  })
+    let VERSES = [];
+    let isDataLoaded = false;
 
     let currentDailyQuestion = null;
     let examStatuses = {};
@@ -378,7 +377,18 @@
       document.getElementById("dailyCount").value = settings.dailyCount;
     }
 
+    function setButtonsEnabled(enabled) {
+      document.getElementById("pickBtn").disabled = !enabled;
+      document.getElementById("retryBtn").disabled = !enabled;
+      document.getElementById("gradeBtn").disabled = !enabled;
+    }
+
     function saveSettings() {
+      if (!isDataLoaded || !VERSES.length) {
+        alert("성경 데이터를 아직 불러오는 중입니다.");
+        return;
+      }
+
       const startDate = document.getElementById("startDate").value || todayString();
       const dailyCount = Math.max(1, parseInt(document.getElementById("dailyCount").value) || 1);
 
@@ -401,6 +411,11 @@
     }
 
     function resetExamStatuses() {
+      if (!isDataLoaded || !VERSES.length) {
+        alert("성경 데이터를 아직 불러오는 중입니다.");
+        return;
+      }
+
       examStatuses = {};
       retryMode = false;
       retryPoolRefs = [];
@@ -449,9 +464,15 @@
     }
 
     function renderToday() {
+      const area = document.getElementById("todayVerses");
+
+      if (!isDataLoaded || !VERSES.length) {
+        area.innerHTML = `<div class="muted">성경 데이터를 불러오는 중...</div>`;
+        return;
+      }
+
       const todayVerses = getTodayVerses();
       const learnedVerses = getLearnedVerses();
-      const area = document.getElementById("todayVerses");
 
       document.getElementById("todayRangePill").textContent = `오늘 범위: ${getTodayRangeText(todayVerses)}`;
       document.getElementById("progressPill").textContent = `진행률: ${learnedVerses.length}/${VERSES.length}절`;
@@ -470,13 +491,20 @@
     }
 
     function renderExamRange() {
-      const source = retryMode
-        ? getLearnedVerses().filter(v => retryPoolRefs.includes(v.ref))
-        : getLearnedVerses();
-
       const list = document.getElementById("examRangeList");
       const summary = document.getElementById("examRangeSummary");
       const badge = document.getElementById("examModeBadge");
+
+      if (!isDataLoaded || !VERSES.length) {
+        badge.innerHTML = "";
+        list.innerHTML = `<span class="muted">성경 데이터를 불러오는 중...</span>`;
+        summary.textContent = "";
+        return;
+      }
+
+      const source = retryMode
+        ? getLearnedVerses().filter(v => retryPoolRefs.includes(v.ref))
+        : getLearnedVerses();
 
       badge.innerHTML = retryMode
         ? `<span class="mode-badge">재시험 모드</span>`
@@ -680,6 +708,11 @@
     }
 
     function startRetryMode() {
+      if (!isDataLoaded || !VERSES.length) {
+        alert("성경 데이터를 아직 불러오는 중입니다.");
+        return;
+      }
+
       const retryVerses = getRetryVerses();
       if (!retryVerses.length) {
         alert("재시험 대상이 없습니다.");
@@ -699,6 +732,11 @@
     }
 
     function pickDailyQuestion() {
+      if (!isDataLoaded || !VERSES.length) {
+        alert("성경 데이터를 아직 불러오는 중입니다.");
+        return;
+      }
+
       const source = retryMode
         ? getLearnedVerses().filter(v => retryPoolRefs.includes(v.ref))
         : getLearnedVerses();
@@ -768,6 +806,11 @@
     }
 
     function gradeDailyTest() {
+      if (!isDataLoaded || !VERSES.length) {
+        alert("성경 데이터를 아직 불러오는 중입니다.");
+        return;
+      }
+
       if (!currentDailyQuestion) {
         alert("먼저 문제를 뽑아주세요.");
         return;
@@ -802,8 +845,19 @@
 
     function renderAll() {
       applySettingsToInputs();
+
+      if (!isDataLoaded || !VERSES.length) {
+        document.getElementById("todayVerses").innerHTML = `<div class="muted">성경 데이터를 불러오는 중...</div>`;
+        document.getElementById("examRangeList").innerHTML = `<span class="muted">성경 데이터를 불러오는 중...</span>`;
+        document.getElementById("examRangeSummary").textContent = "";
+        setButtonsEnabled(false);
+        return;
+      }
+
+      setButtonsEnabled(true);
       renderToday();
       renderExamRange();
+
       document.getElementById("dailyQuestionArea").style.display = "none";
       document.getElementById("dailyQuestionArea").innerHTML = "";
       document.getElementById("dailyTestInput").value = "";
@@ -815,7 +869,29 @@
     }
 
     applySettingsToInputs();
-    renderAll();
+    setButtonsEnabled(false);
+
+    fetch("revelation.json")
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("HTTP " + res.status);
+        }
+        return res.json();
+      })
+      .then(data => {
+        VERSES = data;
+        isDataLoaded = true;
+        renderAll();
+      })
+      .catch(err => {
+        console.error("JSON 로드 실패:", err);
+        document.getElementById("todayVerses").innerHTML =
+          `<div class="muted">성경 데이터를 불러오지 못했습니다. revelation.json 파일과 경로를 확인해주세요.</div>`;
+        document.getElementById("examRangeList").innerHTML =
+          `<span class="muted">성경 데이터를 불러오지 못했습니다.</span>`;
+        document.getElementById("examRangeSummary").textContent = "";
+        setButtonsEnabled(false);
+      });
   </script>
 </body>
 </html>
