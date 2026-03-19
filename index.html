@@ -245,7 +245,7 @@ function seqCurrentIndex() {
   for (var i = 0; i < VERSES.length; i++) {
     if (!seqMemorized[VERSES[i].ref]) return i;
   }
-  return VERSES.length; // 전체 완료
+  return VERSES.length;
 }
 
 function seqUpdateProgress() {
@@ -261,30 +261,21 @@ function makeSeqCard(v, i, isCurrent) {
   var card = document.createElement('div');
 
   if (isCurrent) {
-    card.style.cssText = 'border:2px solid #2563eb;border-radius:14px;padding:18px;background:#eff6ff;box-shadow:0 0 0 3px rgba(37,99,235,0.1);margin-bottom:14px;';
+    card.style.cssText = 'border:2px solid #2563eb;border-radius:14px;padding:18px;background:#eff6ff;box-shadow:0 0 0 3px rgba(37,99,235,0.1);margin-bottom:10px;';
   } else if (isM) {
-    card.style.cssText = 'border:2px solid #059669;border-radius:14px;padding:14px;background:#f0fdf4;margin-bottom:10px;opacity:0.85;';
+    card.style.cssText = 'border:2px solid #059669;border-radius:14px;padding:14px;background:#f0fdf4;margin-bottom:10px;';
   } else {
-    card.style.cssText = 'border:2px solid #e2e8f0;border-radius:14px;padding:14px;background:#fff;margin-bottom:10px;opacity:0.7;';
+    card.style.cssText = 'border:2px solid #e2e8f0;border-radius:14px;padding:14px;background:#fff;margin-bottom:10px;';
   }
   card.id = 'scard-' + i;
 
   var header = document.createElement('div');
   header.style.cssText = 'display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px;';
 
-  var refWrap = document.createElement('div');
   var refEl = document.createElement('span');
   refEl.className = 'ref';
   if (isM) refEl.style.background = '#d1fae5';
   refEl.textContent = (isM ? '✅ ' : isCurrent ? '📍 ' : '') + v.ref;
-  refWrap.appendChild(refEl);
-  if (isCurrent) {
-    var hint = document.createElement('div');
-    hint.className = 'muted';
-    hint.style.marginTop = '4px';
-    hint.textContent = '지금 외울 성구입니다';
-    refWrap.appendChild(hint);
-  }
 
   var btnWrap = document.createElement('div');
   btnWrap.style.cssText = 'display:flex;gap:8px;align-items:center;flex-wrap:wrap;';
@@ -293,22 +284,19 @@ function makeSeqCard(v, i, isCurrent) {
   toggleBtn.className = 'toggle-btn';
   toggleBtn.textContent = '👁 보이기/가리기';
   (function(idx) { toggleBtn.onclick = function() { seqToggleOne(idx); }; })(i);
-
   btnWrap.appendChild(toggleBtn);
 
-  // 현재 성구에만 체크 버튼 (이전 완료 성구는 취소 버튼)
-  if (isCurrent || isM) {
-    var checkBtn = document.createElement('button');
-    checkBtn.className = isM ? 'check-btn-done' : 'check-btn-todo';
-    checkBtn.textContent = isM ? '✓ 완료 취소' : '✓ 외웠어요!';
-    (function(ref) { checkBtn.onclick = function() { seqToggleMem(ref); }; })(v.ref);
-    btnWrap.appendChild(checkBtn);
-  }
+  var checkBtn = document.createElement('button');
+  checkBtn.className = isM ? 'check-btn-done' : 'check-btn-todo';
+  checkBtn.textContent = isM ? '✓ 완료 취소' : '✓ 외웠어요!';
+  (function(ref) { checkBtn.onclick = function() { seqToggleMem(ref); }; })(v.ref);
+  btnWrap.appendChild(checkBtn);
 
-  header.appendChild(refWrap);
+  header.appendChild(refEl);
   header.appendChild(btnWrap);
 
   var textEl = document.createElement('div');
+  // 현재 성구는 보이기, 나머지는 가리기
   textEl.className = 'verse-text-area' + (isCurrent ? '' : ' hidden-text');
   textEl.id = 'stext-' + i;
   textEl.textContent = v.text;
@@ -342,37 +330,13 @@ function renderSeqScreen() {
     return;
   }
 
+  // 현재 성구부터 5개 슬라이딩 윈도우
+  var windowStart = curIdx;
+  var windowEnd = Math.min(total, curIdx + 5);
   var frag = document.createDocumentFragment();
-
-  // 이전 성구 (최근 3개)
-  var prevStart = Math.max(0, curIdx - 3);
-  if (prevStart < curIdx) {
-    var prevLabel = document.createElement('div');
-    prevLabel.className = 'muted';
-    prevLabel.style.cssText = 'font-size:13px;margin-bottom:6px;';
-    prevLabel.textContent = '이전 성구';
-    frag.appendChild(prevLabel);
-    for (var i = prevStart; i < curIdx; i++) {
-      frag.appendChild(makeSeqCard(VERSES[i], i, false));
-    }
+  for (var i = windowStart; i < windowEnd; i++) {
+    frag.appendChild(makeSeqCard(VERSES[i], i, i === curIdx));
   }
-
-  // 현재 성구
-  frag.appendChild(makeSeqCard(VERSES[curIdx], curIdx, true));
-
-  // 다음 성구 (3개)
-  var nextEnd = Math.min(total, curIdx + 4);
-  if (curIdx + 1 < nextEnd) {
-    var nextLabel = document.createElement('div');
-    nextLabel.className = 'muted';
-    nextLabel.style.cssText = 'font-size:13px;margin-bottom:6px;margin-top:4px;';
-    nextLabel.textContent = '다음 성구';
-    frag.appendChild(nextLabel);
-    for (var j = curIdx + 1; j < nextEnd; j++) {
-      frag.appendChild(makeSeqCard(VERSES[j], j, false));
-    }
-  }
-
   list.appendChild(frag);
 }
 
@@ -385,27 +349,12 @@ function seqToggleMem(ref) {
   seqMemorized[ref] = !seqMemorized[ref];
   saveSeqState();
   renderSeqScreen();
-  // 체크 후 현재 성구 카드로 스크롤
-  setTimeout(function() {
-    var curIdx = seqCurrentIndex();
-    if (curIdx < VERSES.length) {
-      var el = document.getElementById('scard-' + curIdx);
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  }, 100);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function seqGoFirstUnmemorized() {
   renderSeqScreen();
-  setTimeout(function() {
-    var curIdx = seqCurrentIndex();
-    if (curIdx < VERSES.length) {
-      var el = document.getElementById('scard-' + curIdx);
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    } else {
-      alert('모든 성구를 완료했습니다!');
-    }
-  }, 100);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function seqResetAll() {
