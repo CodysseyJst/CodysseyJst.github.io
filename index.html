@@ -240,61 +240,139 @@ function enterMode(mode) {
 }
 
 // ── 모드1: 순서대로 암기 ──
-function renderSeqScreen() {
+// 현재 인덱스: 체크 안 된 첫 번째 성구
+function seqCurrentIndex() {
+  for (var i = 0; i < VERSES.length; i++) {
+    if (!seqMemorized[VERSES[i].ref]) return i;
+  }
+  return VERSES.length; // 전체 완료
+}
+
+function seqUpdateProgress() {
   var total = VERSES.length;
   var done = 0;
   for (var k in seqMemorized) { if (seqMemorized[k]) done++; }
   document.getElementById('seqProgressPill').textContent = '진행률: ' + done + ' / ' + total;
   document.getElementById('seqProgressBar').style.width = Math.round(done / total * 100) + '%';
+}
 
-  var frag = document.createDocumentFragment();
-  for (var i = 0; i < VERSES.length; i++) {
-    var v = VERSES[i];
-    var isM = !!seqMemorized[v.ref];
-    var card = document.createElement('div');
-    card.className = 'seq-verse-card' + (isM ? ' memorized' : '');
-    card.id = 'scard-' + i;
+function makeSeqCard(v, i, isCurrent) {
+  var isM = !!seqMemorized[v.ref];
+  var card = document.createElement('div');
 
-    var header = document.createElement('div');
-    header.className = 'verse-card-header';
+  if (isCurrent) {
+    card.style.cssText = 'border:2px solid #2563eb;border-radius:14px;padding:18px;background:#eff6ff;box-shadow:0 0 0 3px rgba(37,99,235,0.1);margin-bottom:14px;';
+  } else if (isM) {
+    card.style.cssText = 'border:2px solid #059669;border-radius:14px;padding:14px;background:#f0fdf4;margin-bottom:10px;opacity:0.85;';
+  } else {
+    card.style.cssText = 'border:2px solid #e2e8f0;border-radius:14px;padding:14px;background:#fff;margin-bottom:10px;opacity:0.7;';
+  }
+  card.id = 'scard-' + i;
 
-    var refEl = document.createElement('span');
-    refEl.className = 'ref';
-    refEl.textContent = v.ref;
+  var header = document.createElement('div');
+  header.style.cssText = 'display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px;';
 
-    var btnWrap = document.createElement('div');
-    btnWrap.style.cssText = 'display:flex;gap:8px;align-items:center;flex-wrap:wrap;';
+  var refWrap = document.createElement('div');
+  var refEl = document.createElement('span');
+  refEl.className = 'ref';
+  if (isM) refEl.style.background = '#d1fae5';
+  refEl.textContent = (isM ? '✅ ' : isCurrent ? '📍 ' : '') + v.ref;
+  refWrap.appendChild(refEl);
+  if (isCurrent) {
+    var hint = document.createElement('div');
+    hint.className = 'muted';
+    hint.style.marginTop = '4px';
+    hint.textContent = '지금 외울 성구입니다';
+    refWrap.appendChild(hint);
+  }
 
-    var toggleBtn = document.createElement('button');
-    toggleBtn.className = 'toggle-btn';
-    toggleBtn.textContent = '👁 보이기/가리기';
-    (function(idx) {
-      toggleBtn.onclick = function() { seqToggleOne(idx); };
-    })(i);
+  var btnWrap = document.createElement('div');
+  btnWrap.style.cssText = 'display:flex;gap:8px;align-items:center;flex-wrap:wrap;';
 
+  var toggleBtn = document.createElement('button');
+  toggleBtn.className = 'toggle-btn';
+  toggleBtn.textContent = '👁 보이기/가리기';
+  (function(idx) { toggleBtn.onclick = function() { seqToggleOne(idx); }; })(i);
+
+  btnWrap.appendChild(toggleBtn);
+
+  // 현재 성구에만 체크 버튼 (이전 완료 성구는 취소 버튼)
+  if (isCurrent || isM) {
     var checkBtn = document.createElement('button');
     checkBtn.className = isM ? 'check-btn-done' : 'check-btn-todo';
-    checkBtn.textContent = isM ? '✓ 완료 취소' : '✓ 외웠어요';
-    (function(ref, idx) {
-      checkBtn.onclick = function() { seqToggleMem(ref, idx); };
-    })(v.ref, i);
-
-    btnWrap.appendChild(toggleBtn);
+    checkBtn.textContent = isM ? '✓ 완료 취소' : '✓ 외웠어요!';
+    (function(ref) { checkBtn.onclick = function() { seqToggleMem(ref); }; })(v.ref);
     btnWrap.appendChild(checkBtn);
-    header.appendChild(refEl);
-    header.appendChild(btnWrap);
-
-    var textEl = document.createElement('div');
-    textEl.className = 'verse-text-area hidden-text';
-    textEl.id = 'stext-' + i;
-    textEl.textContent = v.text;
-
-    card.appendChild(header);
-    card.appendChild(textEl);
-    frag.appendChild(card);
   }
+
+  header.appendChild(refWrap);
+  header.appendChild(btnWrap);
+
+  var textEl = document.createElement('div');
+  textEl.className = 'verse-text-area' + (isCurrent ? '' : ' hidden-text');
+  textEl.id = 'stext-' + i;
+  textEl.textContent = v.text;
+
+  card.appendChild(header);
+  card.appendChild(textEl);
+  return card;
+}
+
+function renderSeqScreen() {
+  seqUpdateProgress();
+  var curIdx = seqCurrentIndex();
+  var total = VERSES.length;
   var list = document.getElementById('seqVerseList');
   list.innerHTML = '';
+
+  // 전체 완료
+  if (curIdx >= total) {
+    var box = document.createElement('div');
+    box.style.cssText = 'text-align:center;padding:32px 20px;background:#f0fdf4;border:2px solid #059669;border-radius:16px;';
+    box.innerHTML = '<div style="font-size:48px;">🎉</div>'
+      + '<h3 style="color:#065f46;margin:12px 0 6px;">요한계시록 전체 암기 완료!</h3>'
+      + '<p class="muted">총 ' + total + '절을 모두 외웠습니다.</p>';
+    var resetBtn = document.createElement('button');
+    resetBtn.className = 'ghost';
+    resetBtn.style.marginTop = '8px';
+    resetBtn.textContent = '처음부터 다시 시작';
+    resetBtn.onclick = seqResetAll;
+    box.appendChild(resetBtn);
+    list.appendChild(box);
+    return;
+  }
+
+  var frag = document.createDocumentFragment();
+
+  // 이전 성구 (최근 3개)
+  var prevStart = Math.max(0, curIdx - 3);
+  if (prevStart < curIdx) {
+    var prevLabel = document.createElement('div');
+    prevLabel.className = 'muted';
+    prevLabel.style.cssText = 'font-size:13px;margin-bottom:6px;';
+    prevLabel.textContent = '이전 성구';
+    frag.appendChild(prevLabel);
+    for (var i = prevStart; i < curIdx; i++) {
+      frag.appendChild(makeSeqCard(VERSES[i], i, false));
+    }
+  }
+
+  // 현재 성구
+  frag.appendChild(makeSeqCard(VERSES[curIdx], curIdx, true));
+
+  // 다음 성구 (3개)
+  var nextEnd = Math.min(total, curIdx + 4);
+  if (curIdx + 1 < nextEnd) {
+    var nextLabel = document.createElement('div');
+    nextLabel.className = 'muted';
+    nextLabel.style.cssText = 'font-size:13px;margin-bottom:6px;margin-top:4px;';
+    nextLabel.textContent = '다음 성구';
+    frag.appendChild(nextLabel);
+    for (var j = curIdx + 1; j < nextEnd; j++) {
+      frag.appendChild(makeSeqCard(VERSES[j], j, false));
+    }
+  }
+
   list.appendChild(frag);
 }
 
@@ -303,37 +381,31 @@ function seqToggleOne(idx) {
   if (el) el.classList.toggle('hidden-text');
 }
 
-function seqToggleMem(ref, idx) {
+function seqToggleMem(ref) {
   seqMemorized[ref] = !seqMemorized[ref];
   saveSeqState();
-  var isM = !!seqMemorized[ref];
-  var card = document.getElementById('scard-' + idx);
-  if (card) {
-    card.className = 'seq-verse-card' + (isM ? ' memorized' : '');
-    var btns = card.querySelectorAll('button');
-    for (var b = 0; b < btns.length; b++) {
-      if (btns[b].className === 'check-btn-done' || btns[b].className === 'check-btn-todo') {
-        btns[b].className = isM ? 'check-btn-done' : 'check-btn-todo';
-        btns[b].textContent = isM ? '✓ 완료 취소' : '✓ 외웠어요';
-      }
+  renderSeqScreen();
+  // 체크 후 현재 성구 카드로 스크롤
+  setTimeout(function() {
+    var curIdx = seqCurrentIndex();
+    if (curIdx < VERSES.length) {
+      var el = document.getElementById('scard-' + curIdx);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
-  }
-  var total = VERSES.length;
-  var done = 0;
-  for (var k in seqMemorized) { if (seqMemorized[k]) done++; }
-  document.getElementById('seqProgressPill').textContent = '진행률: ' + done + ' / ' + total;
-  document.getElementById('seqProgressBar').style.width = Math.round(done / total * 100) + '%';
+  }, 100);
 }
 
 function seqGoFirstUnmemorized() {
-  for (var i = 0; i < VERSES.length; i++) {
-    if (!seqMemorized[VERSES[i].ref]) {
-      var el = document.getElementById('scard-' + i);
+  renderSeqScreen();
+  setTimeout(function() {
+    var curIdx = seqCurrentIndex();
+    if (curIdx < VERSES.length) {
+      var el = document.getElementById('scard-' + curIdx);
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
+    } else {
+      alert('모든 성구를 완료했습니다!');
     }
-  }
-  alert('모든 성구를 완료했습니다!');
+  }, 100);
 }
 
 function seqResetAll() {
