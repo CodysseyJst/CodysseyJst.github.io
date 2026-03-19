@@ -524,7 +524,6 @@
         </div>`;
       return;
     }
-  }
     chQuizCurrentQ=available[Math.floor(Math.random()*available.length)];
     chQuizExamStatuses[chQuizCurrentQ.ref]={state:"active",score:chQuizExamStatuses[chQuizCurrentQ.ref]?.score??null};
     chQuizRenderRange();
