@@ -264,6 +264,66 @@
       border: 1px solid #fdba74;
     }
 
+    .chapter-selector {
+      margin-top: 14px;
+    }
+
+    .chapter-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .chapter-btn {
+      background: #f1f5f9;
+      color: #374151;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      margin: 0;
+      transition: all 0.15s;
+    }
+
+    .chapter-btn:hover {
+      background: #e0e7ff;
+      border-color: #818cf8;
+      color: #3730a3;
+    }
+
+    .chapter-btn.selected {
+      background: #2563eb;
+      border-color: #2563eb;
+      color: #fff;
+    }
+
+    .chapter-select-controls {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .chapter-select-controls button {
+      margin: 0;
+      font-size: 13px;
+      padding: 8px 14px;
+    }
+
+    .chapter-mode-info {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #4338ca;
+      font-weight: 700;
+      background: #eef2ff;
+      border-radius: 8px;
+      padding: 8px 12px;
+      display: none;
+    }
+
     @media (max-width: 720px) {
       body { padding: 12px; }
       .container { padding: 18px; }
@@ -310,7 +370,18 @@
       <h2>일일 시험</h2>
       <div class="muted">시작일부터 오늘까지 누적 학습한 성구 중에서 랜덤으로 한 절씩 출제합니다.</div>
 
-      <div class="range-box">
+      <div class="chapter-selector">
+        <label style="margin-top:12px;">📖 장 선택 (선택 안 하면 전체 출제)</label>
+        <div class="chapter-grid" id="chapterGrid"></div>
+        <div class="chapter-select-controls">
+          <button class="ghost" onclick="selectAllChapters()">전체 선택</button>
+          <button class="ghost" onclick="clearChapterSelection()">선택 해제</button>
+          <button onclick="applyChapterFilter()">이 장으로 출제</button>
+        </div>
+        <div class="chapter-mode-info" id="chapterModeInfo"></div>
+      </div>
+
+      <div class="range-box" style="margin-top:14px;">
         <strong>출제 범위</strong><span id="examModeBadge"></span>
         <div id="examRangeList" class="range-list" style="margin-top:10px;"></div>
         <div id="examRangeSummary" class="range-summary"></div>
@@ -347,6 +418,10 @@
     let speechRecognition = null;
     let isListening = false;
     let speechSupported = false;
+
+    // 장 선택 관련
+    let selectedChapters = new Set(); // 비어있으면 전체
+    let chapterFilterActive = false;
 
     function todayString() {
       const d = new Date();
@@ -594,13 +669,19 @@
         return;
       }
 
-      const source = retryMode
-        ? getLearnedVerses().filter(v => retryPoolRefs.includes(v.ref))
-        : getLearnedVerses();
+      const baseSource = getFilteredLearnedVerses();
 
-      badge.innerHTML = retryMode
-        ? `<span class="mode-badge">재시험 모드</span>`
-        : "";
+      const source = retryMode
+        ? baseSource.filter(v => retryPoolRefs.includes(v.ref))
+        : baseSource;
+
+      let badgeHtml = "";
+      if (retryMode) badgeHtml += `<span class="mode-badge">재시험 모드</span>`;
+      if (chapterFilterActive && selectedChapters.size > 0) {
+        const chList = [...selectedChapters].sort((a, b) => a - b).map(c => `${c}장`).join(", ");
+        badgeHtml += `<span class="mode-badge" style="background:#f0fdf4;color:#166534;border-color:#86efac;">📖 ${chList}</span>`;
+      }
+      badge.innerHTML = badgeHtml;
 
       if (!source.length) {
         list.innerHTML = `<span class="muted">${retryMode ? "재시험 대상 성구가 없습니다." : "누적 학습 성구가 없습니다."}</span>`;
@@ -636,7 +717,9 @@
 
       summary.textContent = retryMode
         ? `재시험 범위 ${source.length}절 · 초록 완료 ${completed}절 · 남은 문제 ${remaining}절`
-        : `누적 범위 ${source.length}절 · 출제 완료 ${completed}절 · 남은 문제 ${remaining}절`;
+        : chapterFilterActive && selectedChapters.size > 0
+          ? `선택 장 범위 ${source.length}절 · 출제 완료 ${completed}절 · 남은 문제 ${remaining}절`
+          : `누적 범위 ${source.length}절 · 출제 완료 ${completed}절 · 남은 문제 ${remaining}절`;
     }
 
     function getScoreColor(score) {
@@ -805,7 +888,11 @@
         return;
       }
 
-      const retryVerses = getRetryVerses();
+      const retryVerses = getFilteredLearnedVerses().filter(v => {
+        const status = examStatuses[v.ref];
+        return status && status.state === "done" && status.score < 100;
+      });
+
       if (!retryVerses.length) {
         alert("재시험 대상이 없습니다.");
         return;
@@ -833,12 +920,14 @@
         speechRecognition.stop();
       }
 
+      const baseSource = getFilteredLearnedVerses();
+
       const source = retryMode
-        ? getLearnedVerses().filter(v => retryPoolRefs.includes(v.ref))
-        : getLearnedVerses();
+        ? baseSource.filter(v => retryPoolRefs.includes(v.ref))
+        : baseSource;
 
       if (!source.length) {
-        alert(retryMode ? "재시험 대상이 없습니다." : "누적 학습 성구가 없습니다.");
+        alert(retryMode ? "재시험 대상이 없습니다." : (chapterFilterActive ? "선택한 장에 학습된 성구가 없습니다." : "누적 학습 성구가 없습니다."));
         return;
       }
 
@@ -943,6 +1032,103 @@
       }
     }
 
+    function getAvailableChapters() {
+      const learnedVerses = getLearnedVerses();
+      const chapters = [...new Set(learnedVerses.map(v => v.chapter))].sort((a, b) => a - b);
+      return chapters;
+    }
+
+    function renderChapterGrid() {
+      const grid = document.getElementById("chapterGrid");
+      if (!isDataLoaded || !VERSES.length) {
+        grid.innerHTML = `<span class="muted">성경 데이터를 불러오는 중...</span>`;
+        return;
+      }
+
+      const availableChapters = getAvailableChapters();
+      // 1~22장 모두 표시, 학습된 장만 활성화
+      const allChapters = Array.from({ length: 22 }, (_, i) => i + 1);
+
+      grid.innerHTML = allChapters.map(ch => {
+        const isAvailable = availableChapters.includes(ch);
+        const isSelected = selectedChapters.has(ch);
+        return `
+          <button
+            class="chapter-btn${isSelected ? " selected" : ""}"
+            onclick="toggleChapter(${ch})"
+            ${isAvailable ? "" : 'disabled style="opacity:0.35;cursor:not-allowed;"'}
+            title="${isAvailable ? `${ch}장 선택` : `${ch}장은 아직 학습 전입니다`}"
+          >${ch}장</button>
+        `;
+      }).join("");
+    }
+
+    function toggleChapter(ch) {
+      if (selectedChapters.has(ch)) {
+        selectedChapters.delete(ch);
+      } else {
+        selectedChapters.add(ch);
+      }
+      renderChapterGrid();
+    }
+
+    function selectAllChapters() {
+      const availableChapters = getAvailableChapters();
+      availableChapters.forEach(ch => selectedChapters.add(ch));
+      renderChapterGrid();
+    }
+
+    function clearChapterSelection() {
+      selectedChapters.clear();
+      renderChapterGrid();
+    }
+
+    function applyChapterFilter() {
+      if (!isDataLoaded || !VERSES.length) return;
+
+      // 재시험 모드 해제
+      retryMode = false;
+      retryPoolRefs = [];
+
+      // 현재 문제 초기화
+      currentDailyQuestion = null;
+      document.getElementById("dailyQuestionArea").style.display = "none";
+      document.getElementById("dailyQuestionArea").innerHTML = "";
+      document.getElementById("dailyTestInput").value = "";
+      document.getElementById("dailyResult").innerHTML = "";
+      examStatuses = {};
+
+      if (selectedChapters.size === 0) {
+        chapterFilterActive = false;
+        updateChapterModeInfo();
+        renderExamRange();
+        alert("전체 장으로 출제합니다.");
+      } else {
+        chapterFilterActive = true;
+        updateChapterModeInfo();
+        renderExamRange();
+        const chList = [...selectedChapters].sort((a, b) => a - b).join("장, ") + "장";
+        alert(`${chList} 범위로 출제합니다.`);
+      }
+    }
+
+    function updateChapterModeInfo() {
+      const info = document.getElementById("chapterModeInfo");
+      if (!chapterFilterActive || selectedChapters.size === 0) {
+        info.style.display = "none";
+        return;
+      }
+      const chList = [...selectedChapters].sort((a, b) => a - b).join("장, ") + "장";
+      info.style.display = "block";
+      info.textContent = `📌 현재 출제 범위: ${chList}`;
+    }
+
+    function getFilteredLearnedVerses() {
+      const learned = getLearnedVerses();
+      if (!chapterFilterActive || selectedChapters.size === 0) return learned;
+      return learned.filter(v => selectedChapters.has(v.chapter));
+    }
+
     function renderAll() {
       applySettingsToInputs();
 
@@ -950,12 +1136,14 @@
         document.getElementById("todayVerses").innerHTML = `<div class="muted">성경 데이터를 불러오는 중...</div>`;
         document.getElementById("examRangeList").innerHTML = `<span class="muted">성경 데이터를 불러오는 중...</span>`;
         document.getElementById("examRangeSummary").textContent = "";
+        document.getElementById("chapterGrid").innerHTML = `<span class="muted">성경 데이터를 불러오는 중...</span>`;
         setButtonsEnabled(false);
         return;
       }
 
       setButtonsEnabled(true);
       renderToday();
+      renderChapterGrid();
       renderExamRange();
 
       document.getElementById("dailyQuestionArea").style.display = "none";
@@ -965,6 +1153,9 @@
       currentDailyQuestion = null;
       retryMode = false;
       retryPoolRefs = [];
+      chapterFilterActive = false;
+      selectedChapters.clear();
+      updateChapterModeInfo();
       renderExamRange();
     }
 
