@@ -319,6 +319,7 @@
       <div class="btns">
         <button id="pickBtn" onclick="pickDailyQuestion()">문제 뽑기</button>
         <button id="retryBtn" class="retry" onclick="startRetryMode()">재시험</button>
+        <button id="speechBtn" class="secondary" onclick="toggleSpeechInput()" style="display:none;">🎤 음성 입력 시작</button>
         <button class="secondary" onclick="clearDailyTest()">입력 지우기</button>
       </div>
 
@@ -343,6 +344,9 @@
     let examStatuses = {};
     let retryMode = false;
     let retryPoolRefs = [];
+    let speechRecognition = null;
+    let isListening = false;
+    let speechSupported = false;
 
     function todayString() {
       const d = new Date();
@@ -381,9 +385,97 @@
       document.getElementById("pickBtn").disabled = !enabled;
       document.getElementById("retryBtn").disabled = !enabled;
       document.getElementById("gradeBtn").disabled = !enabled;
+
+      const speechBtn = document.getElementById("speechBtn");
+      if (speechBtn) {
+        speechBtn.disabled = !enabled;
+      }
     }
 
-    function saveSettings() {
+    function initSpeechRecognition() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+      if (!SpeechRecognition) {
+        speechSupported = false;
+        const btn = document.getElementById("speechBtn");
+        if (btn) btn.style.display = "none";
+        return;
+      }
+
+      speechSupported = true;
+      speechRecognition = new SpeechRecognition();
+      speechRecognition.lang = "ko-KR";
+      speechRecognition.interimResults = true;
+      speechRecognition.continuous = false;
+
+      speechRecognition.onstart = function () {
+        isListening = true;
+        updateSpeechButton();
+      };
+
+      speechRecognition.onend = function () {
+        isListening = false;
+        updateSpeechButton();
+      };
+
+      speechRecognition.onerror = function () {
+        isListening = false;
+        updateSpeechButton();
+      };
+
+      speechRecognition.onresult = function (event) {
+        let transcript = "";
+
+        for (let i = 0; i < event.results.length; i++) {
+          transcript += event.results[i][0].transcript;
+        }
+
+        const input = document.getElementById("dailyTestInput");
+        if (input) {
+          input.value = transcript;
+        }
+      };
+    
+      updateSpeechButton();
+    }
+
+    function updateSpeechButton() {
+      const btn = document.getElementById("speechBtn");
+      if (!btn) return;
+
+      if (!speechSupported) {
+        btn.style.display = "none";
+        return;
+      }
+
+      btn.style.display = "inline-block";
+      btn.textContent = isListening ? "🎤 음성 입력 중지" : "🎤 음성 입력 시작";
+    }
+
+    function toggleSpeechInput() {
+      if (!speechSupported || !speechRecognition) {
+        alert("이 기기에서는 음성 입력을 지원하지 않습니다.");
+        return;
+      }
+
+      if (!isDataLoaded || !VERSES.length) {
+        alert("성경 데이터를 아직 불러오는 중입니다.");
+        return;
+      }
+
+      if (!currentDailyQuestion) {
+        alert("먼저 문제를 뽑아주세요.");
+        return;
+      }
+
+      if (isListening) {
+        speechRecognition.stop();
+      } else {
+        speechRecognition.start();
+      }
+    }
+
+     function saveSettings() {
       if (!isDataLoaded || !VERSES.length) {
         alert("성경 데이터를 아직 불러오는 중입니다.");
         return;
@@ -737,6 +829,10 @@
         return;
       }
 
+      if (speechRecognition && isListening) {
+        speechRecognition.stop();
+      }
+
       const source = retryMode
         ? getLearnedVerses().filter(v => retryPoolRefs.includes(v.ref))
         : getLearnedVerses();
@@ -841,6 +937,10 @@
     function clearDailyTest() {
       document.getElementById("dailyTestInput").value = "";
       document.getElementById("dailyResult").innerHTML = "";
+
+      if (speechRecognition && isListening) {
+        speechRecognition.stop();
+      }
     }
 
     function renderAll() {
@@ -870,6 +970,7 @@
 
     applySettingsToInputs();
     setButtonsEnabled(false);
+    initSpeechRecognition();
 
     fetch("revelation.json")
       .then(res => {
