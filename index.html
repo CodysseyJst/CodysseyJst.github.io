@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Revelation Memory Prototype</title>
+  <title>Revelation Memory</title>
   <style>
     * { box-sizing: border-box; }
 
@@ -21,7 +21,7 @@
       background: #fff;
       border-radius: 16px;
       padding: 24px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
     }
 
     h1, h2, h3 { margin-top: 0; }
@@ -67,24 +67,11 @@
       margin-right: 8px;
     }
 
-    button.secondary {
-      background: #64748b;
-    }
+    button.secondary { background: #64748b; }
+    button.ghost { background: #e5e7eb; color: #374151; }
+    button.retry { background: #dc2626; color: #fff; }
 
-    button.ghost {
-      background: #e5e7eb;
-      color: #374151;
-    }
-
-    button.retry {
-      background: #dc2626;
-      color: #fff;
-    }
-
-    button:disabled {
-      opacity: 0.55;
-      cursor: not-allowed;
-    }
+    button:disabled { opacity: 0.55; cursor: not-allowed; }
 
     .verse {
       background: #f8fafc;
@@ -106,16 +93,8 @@
       margin-bottom: 8px;
     }
 
-    .score {
-      font-size: 24px;
-      font-weight: 800;
-      margin: 14px 0 10px;
-    }
-
-    .muted {
-      color: #6b7280;
-      font-size: 14px;
-    }
+    .score { font-size: 24px; font-weight: 800; margin: 14px 0 10px; }
+    .muted { color: #6b7280; font-size: 14px; }
 
     .answer-box {
       width: 100%;
@@ -125,49 +104,20 @@
       background: #f8fafc;
       margin-top: 10px;
       line-height: 1.8;
-      height: auto;
-      min-height: 0;
       white-space: normal;
       word-break: keep-all;
     }
 
-    .verse-line {
-      margin-bottom: 6px;
-      white-space: normal;
-      word-break: keep-all;
-    }
+    .verse-line { margin-bottom: 6px; white-space: normal; word-break: keep-all; }
+    .verse-line:last-child { margin-bottom: 0; }
+    .verse-label { display: block; font-weight: 700; color: #1d4ed8; margin-bottom: 6px; }
 
-    .verse-line:last-child {
-      margin-bottom: 0;
-    }
+    .char-correct { color: #111111; }
+    .char-wrong { color: #dc2626; font-weight: 700; }
+    .char-extra { color: #6b7280; text-decoration: line-through; text-decoration-thickness: 2px; }
 
-    .verse-label {
-      display: block;
-      font-weight: 700;
-      color: #1d4ed8;
-      margin-bottom: 6px;
-    }
-
-    .char-correct {
-      color: #111111;
-    }
-
-    .char-wrong {
-      color: #dc2626;
-      font-weight: 700;
-    }
-
-    .char-extra {
-      color: #6b7280;
-      text-decoration: line-through;
-      text-decoration-thickness: 2px;
-    }
-
-    .btns {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
+    .btns { display: flex; flex-wrap: wrap; gap: 8px; }
+    .btns button { margin: 0; }
 
     .daily-question-box {
       border: 1px solid #e5e7eb;
@@ -177,11 +127,7 @@
       margin-top: 14px;
     }
 
-    .settings-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
+    .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
     .pill {
       display: inline-block;
@@ -193,12 +139,7 @@
       font-weight: 700;
     }
 
-    .top-info {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 10px;
-    }
+    .top-info { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
 
     .range-box {
       width: 100%;
@@ -209,12 +150,7 @@
       margin-top: 12px;
     }
 
-    .range-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      line-height: 1.8;
-    }
+    .range-list { display: flex; flex-wrap: wrap; gap: 8px; line-height: 1.8; }
 
     .range-item {
       display: inline-block;
@@ -226,31 +162,10 @@
       font-size: 14px;
     }
 
-    .range-item.active {
-      font-weight: 800;
-      border-color: #111111;
-      color: #111111;
-    }
-
-    .range-item.done-perfect {
-      color: #059669;
-      border-color: #059669;
-      background: #ecfdf5;
-      font-weight: 700;
-    }
-
-    .range-item.done-imperfect {
-      color: #dc2626;
-      border-color: #dc2626;
-      background: #fef2f2;
-      font-weight: 700;
-    }
-
-    .range-summary {
-      margin-top: 10px;
-      font-size: 14px;
-      color: #6b7280;
-    }
+    .range-item.active { font-weight: 800; border-color: #111111; }
+    .range-item.done-perfect { color: #059669; border-color: #059669; background: #ecfdf5; font-weight: 700; }
+    .range-item.done-imperfect { color: #dc2626; border-color: #dc2626; background: #fef2f2; font-weight: 700; }
+    .range-summary { margin-top: 10px; font-size: 14px; color: #6b7280; }
 
     .mode-badge {
       display: inline-block;
@@ -264,10 +179,40 @@
       border: 1px solid #fdba74;
     }
 
-    .chapter-selector {
-      margin-top: 14px;
+    /* ── 홈 화면 ── */
+    .mode-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 24px;
     }
 
+    .mode-card {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 28px 16px 24px;
+      cursor: pointer;
+      transition: all 0.18s;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mode-card:hover {
+      border-color: #2563eb;
+      background: #eff6ff;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(37,99,235,0.12);
+    }
+
+    .mode-icon { font-size: 42px; line-height: 1; }
+    .mode-title { font-size: 16px; font-weight: 800; color: #1e293b; }
+    .mode-desc { font-size: 13px; color: #6b7280; line-height: 1.6; }
+
+    /* ── 장 선택 ── */
     .chapter-grid {
       display: flex;
       flex-wrap: wrap;
@@ -288,7 +233,7 @@
       transition: all 0.15s;
     }
 
-    .chapter-btn:hover {
+    .chapter-btn:hover:not(:disabled) {
       background: #e0e7ff;
       border-color: #818cf8;
       color: #3730a3;
@@ -300,41 +245,76 @@
       color: #fff;
     }
 
-    .chapter-select-controls {
-      display: flex;
-      gap: 8px;
-      margin-top: 10px;
-      flex-wrap: wrap;
-    }
+    /* ── 화면 전환 ── */
+    .screen { display: none; }
+    .screen.active { display: block; }
 
-    .chapter-select-controls button {
-      margin: 0;
+    .back-btn {
+      background: none;
+      color: #6b7280;
+      border: 1px solid #e5e7eb;
       font-size: 13px;
-      padding: 8px 14px;
+      padding: 7px 14px;
+      margin: 0 0 8px 0;
+      border-radius: 8px;
     }
 
-    .chapter-mode-info {
-      margin-top: 10px;
-      font-size: 14px;
-      color: #4338ca;
-      font-weight: 700;
-      background: #eef2ff;
-      border-radius: 8px;
-      padding: 8px 12px;
-      display: none;
-    }
+    .back-btn:hover { background: #f1f5f9; }
 
     @media (max-width: 720px) {
       body { padding: 12px; }
       .container { padding: 18px; }
       .settings-grid { grid-template-columns: 1fr; }
+      .mode-cards { grid-template-columns: 1fr; gap: 12px; }
+      .mode-card { flex-direction: row; text-align: left; padding: 18px 16px; gap: 14px; }
+      .mode-icon { font-size: 32px; flex-shrink: 0; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Revelation Memory</h1>
-    <div class="muted">요한계시록 암송 프로토타입</div>
+<div class="container">
+  <h1>Revelation Memory</h1>
+  <div class="muted">요한계시록 암송 프로토타입</div>
+
+  <!-- ══════════════════════════════
+       홈 화면
+  ══════════════════════════════ -->
+  <div id="screenHome" class="screen active">
+    <div class="section">
+      <h2 style="margin-bottom:6px;">암기 방식을 선택하세요</h2>
+      <div class="muted" id="loadingNotice">성경 데이터를 불러오는 중...</div>
+
+      <div class="mode-cards">
+        <div class="mode-card" onclick="enterMode('sequential')">
+          <div class="mode-icon">📖</div>
+          <div>
+            <div class="mode-title">순서대로 암기</div>
+            <div class="mode-desc">1:1절부터 순서대로<br>매일 정해진 절 수씩 학습</div>
+          </div>
+        </div>
+        <div class="mode-card" onclick="enterMode('chapterMemory')">
+          <div class="mode-icon">📝</div>
+          <div>
+            <div class="mode-title">장별 전체 암기</div>
+            <div class="mode-desc">원하는 장을 선택해<br>해당 장 전체 구절 보기</div>
+          </div>
+        </div>
+        <div class="mode-card" onclick="enterMode('chapterQuiz')">
+          <div class="mode-icon">🎯</div>
+          <div>
+            <div class="mode-title">장별 랜덤 시험</div>
+            <div class="mode-desc">원하는 장을 선택해<br>랜덤으로 한 절씩 출제</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       모드 1: 순서대로 암기
+  ══════════════════════════════ -->
+  <div id="screenSequential" class="screen">
+    <button class="back-btn" onclick="goHome()">← 처음으로</button>
 
     <div class="top-info">
       <div class="pill" id="todayRangePill">오늘 범위</div>
@@ -353,7 +333,7 @@
           <input id="dailyCount" type="number" min="1" max="20" value="3" />
         </div>
       </div>
-      <div class="btns">
+      <div class="btns" style="margin-top:12px;">
         <button onclick="saveSettings()">설정 저장</button>
         <button class="ghost" onclick="resetPrototype()">전체 초기화</button>
         <button class="secondary" onclick="resetExamStatuses()">출제 완료 초기화</button>
@@ -362,828 +342,693 @@
 
     <div class="section">
       <h2>오늘의 암송</h2>
-      <div class="muted">시작일과 하루 암송 절 수를 기준으로 오늘 외울 범위를 계산해.</div>
-      <div id="todayVerses" class="muted">성경 데이터를 불러오는 중...</div>
+      <div class="muted">시작일과 하루 암송 절 수를 기준으로 오늘 외울 범위를 계산합니다.</div>
+      <div id="todayVerses" class="muted" style="margin-top:12px;">로딩 중...</div>
     </div>
 
     <div class="section">
       <h2>일일 시험</h2>
       <div class="muted">시작일부터 오늘까지 누적 학습한 성구 중에서 랜덤으로 한 절씩 출제합니다.</div>
 
-      <div class="chapter-selector">
-        <label style="margin-top:12px;">📖 장 선택 (선택 안 하면 전체 출제)</label>
-        <div class="chapter-grid" id="chapterGrid"></div>
-        <div class="chapter-select-controls">
-          <button class="ghost" onclick="selectAllChapters()">전체 선택</button>
-          <button class="ghost" onclick="clearChapterSelection()">선택 해제</button>
-          <button onclick="applyChapterFilter()">이 장으로 출제</button>
-        </div>
-        <div class="chapter-mode-info" id="chapterModeInfo"></div>
+      <div class="range-box">
+        <strong>출제 범위</strong><span id="seqExamModeBadge"></span>
+        <div id="seqExamRangeList" class="range-list" style="margin-top:10px;"></div>
+        <div id="seqExamRangeSummary" class="range-summary"></div>
       </div>
 
-      <div class="range-box" style="margin-top:14px;">
-        <strong>출제 범위</strong><span id="examModeBadge"></span>
-        <div id="examRangeList" class="range-list" style="margin-top:10px;"></div>
-        <div id="examRangeSummary" class="range-summary"></div>
+      <div class="btns" style="margin-top:12px;">
+        <button id="seqPickBtn" onclick="seqPickQuestion()">문제 뽑기</button>
+        <button id="seqRetryBtn" class="retry" onclick="seqStartRetry()">재시험</button>
+        <button id="seqSpeechBtn" class="secondary" onclick="toggleSpeechInput('seq')" style="display:none;">🎤 음성 입력 시작</button>
+        <button class="secondary" onclick="clearTest('seq')">입력 지우기</button>
       </div>
 
-      <div class="btns">
-        <button id="pickBtn" onclick="pickDailyQuestion()">문제 뽑기</button>
-        <button id="retryBtn" class="retry" onclick="startRetryMode()">재시험</button>
-        <button id="speechBtn" class="secondary" onclick="toggleSpeechInput()" style="display:none;">🎤 음성 입력 시작</button>
-        <button class="secondary" onclick="clearDailyTest()">입력 지우기</button>
+      <div id="seqQuestionArea" class="daily-question-box" style="display:none;"></div>
+      <textarea id="seqTestInput" placeholder="출제된 성구를 입력하세요" style="margin-top:12px;"></textarea>
+      <div class="btns" style="margin-top:10px;">
+        <button id="seqGradeBtn" onclick="gradeTest('seq')">채점하기</button>
+        <button class="secondary" onclick="seqPickQuestion()">다음 문제</button>
       </div>
-
-      <div id="dailyQuestionArea" class="daily-question-box" style="display:none;"></div>
-
-      <textarea id="dailyTestInput" placeholder="출제된 성구를 입력하세요"></textarea>
-      <br />
-      <button id="gradeBtn" onclick="gradeDailyTest()">채점하기</button>
-      <button class="secondary" onclick="pickDailyQuestion()">다음 문제</button>
-
-      <div id="dailyResult"></div>
+      <div id="seqResult"></div>
     </div>
   </div>
 
-  <script>
-    const SETTINGS_KEY = "rev-memory-html-prototype-settings-v1";
+  <!-- ══════════════════════════════
+       모드 2: 장별 전체 암기
+  ══════════════════════════════ -->
+  <div id="screenChapterMemory" class="screen">
+    <button class="back-btn" onclick="goHome()">← 처음으로</button>
+    <h2 style="margin-top:12px;">📝 장별 전체 암기</h2>
+    <div class="muted">암기할 장을 선택하면 해당 장의 모든 구절을 순서대로 보여줍니다.</div>
 
-    let VERSES = [];
-    let isDataLoaded = false;
+    <div style="margin-top:16px;">
+      <label>장 선택</label>
+      <div class="chapter-grid" id="chMemGrid"></div>
+    </div>
 
-    let currentDailyQuestion = null;
-    let examStatuses = {};
-    let retryMode = false;
-    let retryPoolRefs = [];
-    let speechRecognition = null;
-    let isListening = false;
-    let speechSupported = false;
+    <div id="chMemVerses" style="margin-top:16px;"></div>
+  </div>
 
-    // 장 선택 관련
-    let selectedChapters = new Set(); // 비어있으면 전체
-    let chapterFilterActive = false;
+  <!-- ══════════════════════════════
+       모드 3: 장별 랜덤 시험
+  ══════════════════════════════ -->
+  <div id="screenChapterQuiz" class="screen">
+    <button class="back-btn" onclick="goHome()">← 처음으로</button>
+    <h2 style="margin-top:12px;">🎯 장별 랜덤 시험</h2>
+    <div class="muted">시험 볼 장을 선택하면 해당 장에서 랜덤으로 한 절씩 출제합니다.</div>
 
-    function todayString() {
-      const d = new Date();
-      const y = d.getFullYear();
-      const m = String(d.getMonth() + 1).padStart(2, "0");
-      const day = String(d.getDate()).padStart(2, "0");
-      return `${y}-${m}-${day}`;
+    <div style="margin-top:16px;">
+      <label>장 선택 <span class="muted">(복수 선택 가능)</span></label>
+      <div class="chapter-grid" id="chQuizGrid"></div>
+      <div class="btns" style="margin-top:10px;">
+        <button class="ghost" onclick="chQuizSelectAll()">전체 선택</button>
+        <button class="ghost" onclick="chQuizClearAll()">선택 해제</button>
+        <button onclick="chQuizStart()">시험 시작</button>
+      </div>
+    </div>
+
+    <div id="chQuizArea" style="display:none; margin-top:16px;">
+      <div class="range-box">
+        <strong>출제 범위</strong><span id="chQuizModeBadge"></span>
+        <div id="chQuizRangeList" class="range-list" style="margin-top:10px;"></div>
+        <div id="chQuizRangeSummary" class="range-summary"></div>
+      </div>
+
+      <div class="btns" style="margin-top:12px;">
+        <button id="chQuizPickBtn" onclick="chQuizPick()">문제 뽑기</button>
+        <button id="chQuizRetryBtn" class="retry" onclick="chQuizStartRetry()">재시험</button>
+        <button id="chQuizSpeechBtn" class="secondary" onclick="toggleSpeechInput('chQuiz')" style="display:none;">🎤 음성 입력 시작</button>
+        <button class="secondary" onclick="clearTest('chQuiz')">입력 지우기</button>
+      </div>
+
+      <div id="chQuizQuestionArea" class="daily-question-box" style="display:none;"></div>
+      <textarea id="chQuizTestInput" placeholder="출제된 성구를 입력하세요" style="margin-top:12px;"></textarea>
+      <div class="btns" style="margin-top:10px;">
+        <button id="chQuizGradeBtn" onclick="gradeTest('chQuiz')">채점하기</button>
+        <button class="secondary" onclick="chQuizPick()">다음 문제</button>
+      </div>
+      <div id="chQuizResult"></div>
+    </div>
+  </div>
+
+</div><!-- /.container -->
+
+<script>
+  const SETTINGS_KEY = "rev-memory-html-prototype-settings-v1";
+
+  let VERSES = [];
+  let isDataLoaded = false;
+
+  // 모드1 상태
+  let seqCurrentQ = null;
+  let seqExamStatuses = {};
+  let seqRetryMode = false;
+  let seqRetryRefs = [];
+
+  // 모드3 상태
+  let chQuizSelectedChapters = new Set();
+  let chQuizCurrentQ = null;
+  let chQuizExamStatuses = {};
+  let chQuizRetryMode = false;
+  let chQuizRetryRefs = [];
+
+  // 음성 인식
+  let speechRecognition = null;
+  let isListening = false;
+  let speechSupported = false;
+  let currentSpeechMode = null;
+
+  // ─────────────────────────────────
+  // 유틸
+  // ─────────────────────────────────
+  function todayString() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+  }
+
+  function escapeHtml(t) {
+    return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  }
+
+  function normalize(t) { return (t||"").replace(/\s+/g,""); }
+
+  function getScoreColor(s) {
+    if (s >= 90) return "#059669";
+    if (s >= 70) return "#d97706";
+    return "#dc2626";
+  }
+
+  function daysBetween(start, end) {
+    const s = new Date(start+"T00:00:00"), e = new Date(end+"T00:00:00");
+    return Math.max(0, Math.floor((e-s)/(1000*60*60*24)));
+  }
+
+  // ─────────────────────────────────
+  // 설정
+  // ─────────────────────────────────
+  function loadSettings() {
+    return JSON.parse(localStorage.getItem(SETTINGS_KEY)||"null") || { startDate: todayString(), dailyCount: 3 };
+  }
+
+  function applySettingsToInputs() {
+    const s = loadSettings();
+    document.getElementById("startDate").value = s.startDate;
+    document.getElementById("dailyCount").value = s.dailyCount;
+  }
+
+  function saveSettings() {
+    if (!isDataLoaded) return alert("데이터를 불러오는 중입니다.");
+    const startDate = document.getElementById("startDate").value || todayString();
+    const dailyCount = Math.max(1, parseInt(document.getElementById("dailyCount").value)||1);
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify({ startDate, dailyCount }));
+    seqExamStatuses = {}; seqRetryMode = false; seqRetryRefs = []; seqCurrentQ = null;
+    renderSequentialScreen();
+    alert("설정이 저장되었습니다.");
+  }
+
+  function resetPrototype() {
+    localStorage.removeItem(SETTINGS_KEY);
+    location.reload();
+  }
+
+  function resetExamStatuses() {
+    if (!isDataLoaded) return alert("데이터를 불러오는 중입니다.");
+    seqExamStatuses = {}; seqRetryMode = false; seqRetryRefs = []; seqCurrentQ = null;
+    document.getElementById("seqQuestionArea").style.display = "none";
+    document.getElementById("seqTestInput").value = "";
+    document.getElementById("seqResult").innerHTML = "";
+    seqRenderRange();
+    alert("출제 완료 상태가 초기화되었습니다.");
+  }
+
+  // ─────────────────────────────────
+  // 화면 전환
+  // ─────────────────────────────────
+  function showScreen(id) {
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function goHome() {
+    if (speechRecognition && isListening) speechRecognition.stop();
+    showScreen("screenHome");
+  }
+
+  function enterMode(mode) {
+    if (!isDataLoaded) return alert("성경 데이터를 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
+    if (mode === "sequential") {
+      renderSequentialScreen();
+      showScreen("screenSequential");
+    } else if (mode === "chapterMemory") {
+      renderChMemGrid();
+      document.getElementById("chMemVerses").innerHTML = "";
+      showScreen("screenChapterMemory");
+    } else if (mode === "chapterQuiz") {
+      chQuizSelectedChapters.clear();
+      chQuizCurrentQ = null;
+      chQuizExamStatuses = {};
+      chQuizRetryMode = false;
+      chQuizRetryRefs = [];
+      document.getElementById("chQuizArea").style.display = "none";
+      document.getElementById("chQuizQuestionArea").style.display = "none";
+      document.getElementById("chQuizTestInput").value = "";
+      document.getElementById("chQuizResult").innerHTML = "";
+      renderChQuizGrid();
+      showScreen("screenChapterQuiz");
+    }
+  }
+
+  // ─────────────────────────────────
+  // 모드1: 순서대로 암기
+  // ─────────────────────────────────
+  function getTodayVerses() {
+    const s = loadSettings();
+    const offset = daysBetween(s.startDate, todayString());
+    const start = offset * s.dailyCount;
+    return VERSES.slice(start, Math.min(start + s.dailyCount, VERSES.length));
+  }
+
+  function getLearnedVerses() {
+    const s = loadSettings();
+    const offset = daysBetween(s.startDate, todayString());
+    return VERSES.slice(0, Math.min((offset+1)*s.dailyCount, VERSES.length));
+  }
+
+  function renderSequentialScreen() {
+    applySettingsToInputs();
+    const todayV = getTodayVerses();
+    const learnedV = getLearnedVerses();
+
+    document.getElementById("todayRangePill").textContent = todayV.length
+      ? `오늘 범위: 계 ${todayV[0].chapter}:${todayV[0].verse}–${todayV[todayV.length-1].verse}`
+      : "오늘 범위 없음";
+    document.getElementById("progressPill").textContent = `진행률: ${learnedV.length}/${VERSES.length}절`;
+
+    document.getElementById("todayVerses").innerHTML = todayV.length
+      ? todayV.map(v => `<div class="verse"><div class="ref">${v.ref}</div><div>${escapeHtml(v.text)}</div></div>`).join("")
+      : `<div class="muted">오늘 배정된 절이 없습니다.</div>`;
+
+    seqRenderRange();
+  }
+
+  function seqRenderRange() {
+    const source = seqRetryMode
+      ? getLearnedVerses().filter(v => seqRetryRefs.includes(v.ref))
+      : getLearnedVerses();
+
+    document.getElementById("seqExamModeBadge").innerHTML = seqRetryMode
+      ? `<span class="mode-badge">재시험 모드</span>` : "";
+
+    if (!source.length) {
+      document.getElementById("seqExamRangeList").innerHTML = `<span class="muted">누적 학습 성구가 없습니다.</span>`;
+      document.getElementById("seqExamRangeSummary").textContent = "";
+      return;
     }
 
-    function escapeHtml(text) {
-      return String(text)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
+    document.getElementById("seqExamRangeList").innerHTML = source.map(v => {
+      const st = seqExamStatuses[v.ref] || { state:"idle" };
+      let cls = "range-item";
+      if (st.state === "active") cls += " active";
+      else if (st.state === "done") cls += st.score===100 ? " done-perfect" : " done-imperfect";
+      return `<span class="${cls}">${v.ref}</span>`;
+    }).join("");
+
+    const completed = source.filter(v => seqExamStatuses[v.ref]?.state === "done").length;
+    const remaining = source.filter(v => {
+      const st = seqExamStatuses[v.ref];
+      return seqRetryMode ? (!st||st.score<100) : (!st||st.state!=="done");
+    }).length;
+
+    document.getElementById("seqExamRangeSummary").textContent =
+      seqRetryMode
+        ? `재시험 범위 ${source.length}절 · 완료 ${completed}절 · 남은 문제 ${remaining}절`
+        : `누적 범위 ${source.length}절 · 출제 완료 ${completed}절 · 남은 문제 ${remaining}절`;
+  }
+
+  function seqPickQuestion() {
+    if (!isDataLoaded) return alert("데이터를 불러오는 중입니다.");
+    if (speechRecognition && isListening) speechRecognition.stop();
+
+    const pool = seqRetryMode
+      ? getLearnedVerses().filter(v => seqRetryRefs.includes(v.ref))
+      : getLearnedVerses();
+
+    if (!pool.length) return alert(seqRetryMode ? "재시험 대상이 없습니다." : "누적 학습 성구가 없습니다.");
+
+    Object.keys(seqExamStatuses).forEach(r => {
+      if (seqExamStatuses[r].state === "active") seqExamStatuses[r].state = "idle";
+    });
+
+    const available = pool.filter(v => {
+      const st = seqExamStatuses[v.ref];
+      return seqRetryMode ? (!st||st.score<100) : (!st||st.state!=="done");
+    });
+
+    if (!available.length) {
+      seqCurrentQ = null;
+      document.getElementById("seqQuestionArea").style.display = "none";
+      document.getElementById("seqTestInput").value = "";
+      document.getElementById("seqResult").innerHTML = "";
+      if (seqRetryMode) { seqRetryMode=false; seqRetryRefs=[]; }
+      seqRenderRange();
+      return alert("출제 가능한 성구를 모두 완료했습니다.");
     }
 
-    function normalize(text) {
-      return (text || "").replace(/\s+/g, "");
+    seqCurrentQ = available[Math.floor(Math.random()*available.length)];
+    seqExamStatuses[seqCurrentQ.ref] = { state:"active", score: seqExamStatuses[seqCurrentQ.ref]?.score??null };
+    seqRenderRange();
+
+    document.getElementById("seqQuestionArea").style.display = "block";
+    document.getElementById("seqQuestionArea").innerHTML = `
+      <div class="ref">${seqCurrentQ.ref}</div>
+      <div class="muted">${seqRetryMode ? "재시험 성구입니다. 다시 암송한 뒤 입력하세요." : "이 성구를 암송한 뒤 아래에 입력하세요."}</div>`;
+    document.getElementById("seqTestInput").value = "";
+    document.getElementById("seqResult").innerHTML = "";
+  }
+
+  function seqStartRetry() {
+    if (!isDataLoaded) return alert("데이터를 불러오는 중입니다.");
+    const retry = getLearnedVerses().filter(v => {
+      const st = seqExamStatuses[v.ref];
+      return st && st.state==="done" && st.score<100;
+    });
+    if (!retry.length) return alert("재시험 대상이 없습니다.");
+    seqRetryMode = true;
+    seqRetryRefs = retry.map(v=>v.ref);
+    seqCurrentQ = null;
+    document.getElementById("seqQuestionArea").style.display = "none";
+    document.getElementById("seqTestInput").value = "";
+    document.getElementById("seqResult").innerHTML = "";
+    seqRenderRange();
+    alert("재시험 모드가 시작되었습니다.");
+  }
+
+  // ─────────────────────────────────
+  // 모드2: 장별 전체 암기
+  // ─────────────────────────────────
+  function renderChMemGrid() {
+    document.getElementById("chMemGrid").innerHTML =
+      Array.from({length:22},(_,i)=>i+1).map(ch =>
+        `<button class="chapter-btn" onclick="chMemSelect(${ch})">${ch}장</button>`
+      ).join("");
+  }
+
+  function chMemSelect(ch) {
+    document.querySelectorAll("#chMemGrid .chapter-btn").forEach((btn, i) => {
+      btn.classList.toggle("selected", i+1===ch);
+    });
+
+    const verses = VERSES.filter(v => v.chapter === ch);
+    const area = document.getElementById("chMemVerses");
+
+    if (!verses.length) {
+      area.innerHTML = `<div class="muted">${ch}장 데이터가 없습니다.</div>`;
+      return;
     }
 
-    function loadSettings() {
-      const saved = JSON.parse(localStorage.getItem(SETTINGS_KEY) || "null");
-      return saved || {
-        startDate: todayString(),
-        dailyCount: 3
-      };
-    }
-
-    function applySettingsToInputs() {
-      const settings = loadSettings();
-      document.getElementById("startDate").value = settings.startDate;
-      document.getElementById("dailyCount").value = settings.dailyCount;
-    }
-
-    function setButtonsEnabled(enabled) {
-      document.getElementById("pickBtn").disabled = !enabled;
-      document.getElementById("retryBtn").disabled = !enabled;
-      document.getElementById("gradeBtn").disabled = !enabled;
-
-      const speechBtn = document.getElementById("speechBtn");
-      if (speechBtn) {
-        speechBtn.disabled = !enabled;
-      }
-    }
-
-    function initSpeechRecognition() {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-      if (!SpeechRecognition) {
-        speechSupported = false;
-        const btn = document.getElementById("speechBtn");
-        if (btn) btn.style.display = "none";
-        return;
-      }
-
-      speechSupported = true;
-      speechRecognition = new SpeechRecognition();
-      speechRecognition.lang = "ko-KR";
-      speechRecognition.interimResults = true;
-      speechRecognition.continuous = false;
-
-      speechRecognition.onstart = function () {
-        isListening = true;
-        updateSpeechButton();
-      };
-
-      speechRecognition.onend = function () {
-        isListening = false;
-        updateSpeechButton();
-      };
-
-      speechRecognition.onerror = function () {
-        isListening = false;
-        updateSpeechButton();
-      };
-
-      speechRecognition.onresult = function (event) {
-        let transcript = "";
-
-        for (let i = 0; i < event.results.length; i++) {
-          transcript += event.results[i][0].transcript;
-        }
-
-        const input = document.getElementById("dailyTestInput");
-        if (input) {
-          input.value = transcript;
-        }
-      };
-    
-      updateSpeechButton();
-    }
-
-    function updateSpeechButton() {
-      const btn = document.getElementById("speechBtn");
-      if (!btn) return;
-
-      if (!speechSupported) {
-        btn.style.display = "none";
-        return;
-      }
-
-      btn.style.display = "inline-block";
-      btn.textContent = isListening ? "🎤 음성 입력 중지" : "🎤 음성 입력 시작";
-    }
-
-    function toggleSpeechInput() {
-      if (!speechSupported || !speechRecognition) {
-        alert("이 기기에서는 음성 입력을 지원하지 않습니다.");
-        return;
-      }
-
-      if (!isDataLoaded || !VERSES.length) {
-        alert("성경 데이터를 아직 불러오는 중입니다.");
-        return;
-      }
-
-      if (!currentDailyQuestion) {
-        alert("먼저 문제를 뽑아주세요.");
-        return;
-      }
-
-      if (isListening) {
-        speechRecognition.stop();
-      } else {
-        speechRecognition.start();
-      }
-    }
-
-     function saveSettings() {
-      if (!isDataLoaded || !VERSES.length) {
-        alert("성경 데이터를 아직 불러오는 중입니다.");
-        return;
-      }
-
-      const startDate = document.getElementById("startDate").value || todayString();
-      const dailyCount = Math.max(1, parseInt(document.getElementById("dailyCount").value) || 1);
-
-      localStorage.setItem(SETTINGS_KEY, JSON.stringify({
-        startDate,
-        dailyCount
-      }));
-
-      examStatuses = {};
-      retryMode = false;
-      retryPoolRefs = [];
-      currentDailyQuestion = null;
-      renderAll();
-      alert("설정이 저장되었습니다.");
-    }
-
-    function resetPrototype() {
-      localStorage.removeItem(SETTINGS_KEY);
-      location.reload();
-    }
-
-    function resetExamStatuses() {
-      if (!isDataLoaded || !VERSES.length) {
-        alert("성경 데이터를 아직 불러오는 중입니다.");
-        return;
-      }
-
-      examStatuses = {};
-      retryMode = false;
-      retryPoolRefs = [];
-      currentDailyQuestion = null;
-      document.getElementById("dailyQuestionArea").style.display = "none";
-      document.getElementById("dailyQuestionArea").innerHTML = "";
-      document.getElementById("dailyTestInput").value = "";
-      document.getElementById("dailyResult").innerHTML = "";
-      renderExamRange();
-      alert("출제 완료 상태가 초기화되었습니다.");
-    }
-
-    function daysBetween(start, end) {
-      const s = new Date(start + "T00:00:00");
-      const e = new Date(end + "T00:00:00");
-      return Math.max(0, Math.floor((e - s) / (1000 * 60 * 60 * 24)));
-    }
-
-    function getTodayVerses() {
-      const settings = loadSettings();
-      const offset = daysBetween(settings.startDate, todayString());
-      const startIndex = offset * settings.dailyCount;
-      const endIndex = Math.min(startIndex + settings.dailyCount, VERSES.length);
-      return VERSES.slice(startIndex, endIndex);
-    }
-
-    function getLearnedVerses() {
-      const settings = loadSettings();
-      const offset = daysBetween(settings.startDate, todayString());
-      const endIndex = Math.min((offset + 1) * settings.dailyCount, VERSES.length);
-      return VERSES.slice(0, endIndex);
-    }
-
-    function getRetryVerses() {
-      return getLearnedVerses().filter(v => {
-        const status = examStatuses[v.ref];
-        return status && status.state === "done" && status.score < 100;
-      });
-    }
-
-    function getTodayRangeText(selected) {
-      if (!selected.length) return "오늘 범위 없음";
-      const first = selected[0];
-      const last = selected[selected.length - 1];
-      return `계 ${first.chapter}:${first.verse}-${last.verse}`;
-    }
-
-    function renderToday() {
-      const area = document.getElementById("todayVerses");
-
-      if (!isDataLoaded || !VERSES.length) {
-        area.innerHTML = `<div class="muted">성경 데이터를 불러오는 중...</div>`;
-        return;
-      }
-
-      const todayVerses = getTodayVerses();
-      const learnedVerses = getLearnedVerses();
-
-      document.getElementById("todayRangePill").textContent = `오늘 범위: ${getTodayRangeText(todayVerses)}`;
-      document.getElementById("progressPill").textContent = `진행률: ${learnedVerses.length}/${VERSES.length}절`;
-
-      if (!todayVerses.length) {
-        area.innerHTML = `<div class="muted">오늘 배정된 절이 없습니다.</div>`;
-        return;
-      }
-
-      area.innerHTML = todayVerses.map(v => `
+    area.innerHTML = `
+      <div style="margin-bottom:10px; margin-top:4px;">
+        <strong style="font-size:16px;">요한계시록 ${ch}장</strong>
+        <span class="muted" style="margin-left:8px;">${verses.length}절</span>
+      </div>
+      ${verses.map(v => `
         <div class="verse">
           <div class="ref">${v.ref}</div>
           <div>${escapeHtml(v.text)}</div>
-        </div>
-      `).join("");
-    }
+        </div>`).join("")}`;
+    area.scrollIntoView({ behavior:"smooth", block:"start" });
+  }
 
-    function renderExamRange() {
-      const list = document.getElementById("examRangeList");
-      const summary = document.getElementById("examRangeSummary");
-      const badge = document.getElementById("examModeBadge");
-
-      if (!isDataLoaded || !VERSES.length) {
-        badge.innerHTML = "";
-        list.innerHTML = `<span class="muted">성경 데이터를 불러오는 중...</span>`;
-        summary.textContent = "";
-        return;
-      }
-
-      const baseSource = getFilteredLearnedVerses();
-
-      const source = retryMode
-        ? baseSource.filter(v => retryPoolRefs.includes(v.ref))
-        : baseSource;
-
-      let badgeHtml = "";
-      if (retryMode) badgeHtml += `<span class="mode-badge">재시험 모드</span>`;
-      if (chapterFilterActive && selectedChapters.size > 0) {
-        const chList = [...selectedChapters].sort((a, b) => a - b).map(c => `${c}장`).join(", ");
-        badgeHtml += `<span class="mode-badge" style="background:#f0fdf4;color:#166534;border-color:#86efac;">📖 ${chList}</span>`;
-      }
-      badge.innerHTML = badgeHtml;
-
-      if (!source.length) {
-        list.innerHTML = `<span class="muted">${retryMode ? "재시험 대상 성구가 없습니다." : "누적 학습 성구가 없습니다."}</span>`;
-        summary.textContent = "";
-        return;
-      }
-
-      list.innerHTML = source.map(v => {
-        const status = examStatuses[v.ref] || { state: "idle", score: null };
-        let cls = "range-item";
-
-        if (status.state === "active") {
-          cls += " active";
-        } else if (status.state === "done") {
-          cls += status.score === 100 ? " done-perfect" : " done-imperfect";
-        }
-
-        return `<span class="${cls}">${v.ref}</span>`;
+  // ─────────────────────────────────
+  // 모드3: 장별 랜덤 시험
+  // ─────────────────────────────────
+  function renderChQuizGrid() {
+    document.getElementById("chQuizGrid").innerHTML =
+      Array.from({length:22},(_,i)=>i+1).map(ch => {
+        const sel = chQuizSelectedChapters.has(ch);
+        return `<button class="chapter-btn${sel?" selected":""}" onclick="chQuizToggle(${ch})">${ch}장</button>`;
       }).join("");
+  }
 
-      const completed = source.filter(v => {
-        const status = examStatuses[v.ref];
-        if (!status) return false;
-        if (retryMode) return status.state === "done" && status.score === 100;
-        return status.state === "done";
-      }).length;
+  function chQuizToggle(ch) {
+    if (chQuizSelectedChapters.has(ch)) chQuizSelectedChapters.delete(ch);
+    else chQuizSelectedChapters.add(ch);
+    renderChQuizGrid();
+  }
 
-      const remaining = source.filter(v => {
-        const status = examStatuses[v.ref];
-        if (retryMode) return !status || status.score < 100;
-        return !status || status.state !== "done";
-      }).length;
+  function chQuizSelectAll() {
+    Array.from({length:22},(_,i)=>i+1).forEach(ch=>chQuizSelectedChapters.add(ch));
+    renderChQuizGrid();
+  }
 
-      summary.textContent = retryMode
-        ? `재시험 범위 ${source.length}절 · 초록 완료 ${completed}절 · 남은 문제 ${remaining}절`
-        : chapterFilterActive && selectedChapters.size > 0
-          ? `선택 장 범위 ${source.length}절 · 출제 완료 ${completed}절 · 남은 문제 ${remaining}절`
-          : `누적 범위 ${source.length}절 · 출제 완료 ${completed}절 · 남은 문제 ${remaining}절`;
+  function chQuizClearAll() {
+    chQuizSelectedChapters.clear();
+    renderChQuizGrid();
+  }
+
+  function chQuizStart() {
+    if (chQuizSelectedChapters.size === 0) return alert("장을 1개 이상 선택해주세요.");
+    const pool = VERSES.filter(v => chQuizSelectedChapters.has(v.chapter));
+    if (!pool.length) return alert("선택한 장에 데이터가 없습니다.");
+
+    chQuizCurrentQ = null;
+    chQuizExamStatuses = {};
+    chQuizRetryMode = false;
+    chQuizRetryRefs = [];
+
+    document.getElementById("chQuizQuestionArea").style.display = "none";
+    document.getElementById("chQuizTestInput").value = "";
+    document.getElementById("chQuizResult").innerHTML = "";
+    document.getElementById("chQuizArea").style.display = "block";
+
+    chQuizRenderRange();
+    document.getElementById("chQuizArea").scrollIntoView({ behavior:"smooth", block:"start" });
+  }
+
+  function chQuizGetPool() {
+    return VERSES.filter(v => chQuizSelectedChapters.has(v.chapter));
+  }
+
+  function chQuizRenderRange() {
+    const base = chQuizGetPool();
+    const source = chQuizRetryMode ? base.filter(v=>chQuizRetryRefs.includes(v.ref)) : base;
+
+    const chList = [...chQuizSelectedChapters].sort((a,b)=>a-b).map(c=>`${c}장`).join(", ");
+    let badgeHtml = `<span class="mode-badge" style="background:#f0fdf4;color:#166534;border-color:#86efac;">📖 ${chList}</span>`;
+    if (chQuizRetryMode) badgeHtml += `<span class="mode-badge">재시험 모드</span>`;
+    document.getElementById("chQuizModeBadge").innerHTML = badgeHtml;
+
+    if (!source.length) {
+      document.getElementById("chQuizRangeList").innerHTML = `<span class="muted">성구가 없습니다.</span>`;
+      document.getElementById("chQuizRangeSummary").textContent = "";
+      return;
     }
 
-    function getScoreColor(score) {
-      if (score >= 90) return "#059669";
-      if (score >= 70) return "#d97706";
-      return "#dc2626";
+    document.getElementById("chQuizRangeList").innerHTML = source.map(v => {
+      const st = chQuizExamStatuses[v.ref] || { state:"idle" };
+      let cls = "range-item";
+      if (st.state === "active") cls += " active";
+      else if (st.state === "done") cls += st.score===100 ? " done-perfect" : " done-imperfect";
+      return `<span class="${cls}">${v.ref}</span>`;
+    }).join("");
+
+    const completed = source.filter(v => chQuizExamStatuses[v.ref]?.state==="done").length;
+    const remaining = source.filter(v => {
+      const st = chQuizExamStatuses[v.ref];
+      return chQuizRetryMode ? (!st||st.score<100) : (!st||st.state!=="done");
+    }).length;
+
+    document.getElementById("chQuizRangeSummary").textContent =
+      chQuizRetryMode
+        ? `재시험 범위 ${source.length}절 · 완료 ${completed}절 · 남은 문제 ${remaining}절`
+        : `선택 범위 ${source.length}절 · 출제 완료 ${completed}절 · 남은 문제 ${remaining}절`;
+  }
+
+  function chQuizPick() {
+    if (!isDataLoaded) return alert("데이터를 불러오는 중입니다.");
+    if (speechRecognition && isListening) speechRecognition.stop();
+
+    const base = chQuizGetPool();
+    const pool = chQuizRetryMode ? base.filter(v=>chQuizRetryRefs.includes(v.ref)) : base;
+    if (!pool.length) return alert("선택한 장에 성구가 없습니다.");
+
+    Object.keys(chQuizExamStatuses).forEach(r => {
+      if (chQuizExamStatuses[r].state === "active") chQuizExamStatuses[r].state = "idle";
+    });
+
+    const available = pool.filter(v => {
+      const st = chQuizExamStatuses[v.ref];
+      return chQuizRetryMode ? (!st||st.score<100) : (!st||st.state!=="done");
+    });
+
+    if (!available.length) {
+      chQuizCurrentQ = null;
+      document.getElementById("chQuizQuestionArea").style.display = "none";
+      document.getElementById("chQuizTestInput").value = "";
+      document.getElementById("chQuizResult").innerHTML = "";
+      if (chQuizRetryMode) { chQuizRetryMode=false; chQuizRetryRefs=[]; }
+      chQuizRenderRange();
+      return alert("출제 가능한 성구를 모두 완료했습니다.");
     }
 
-    function buildSpacedUnits(text) {
-      const units = [];
-      let spacesBefore = "";
+    chQuizCurrentQ = available[Math.floor(Math.random()*available.length)];
+    chQuizExamStatuses[chQuizCurrentQ.ref] = { state:"active", score: chQuizExamStatuses[chQuizCurrentQ.ref]?.score??null };
+    chQuizRenderRange();
 
-      for (const ch of text || "") {
-        if (/\s/.test(ch)) {
-          spacesBefore += ch;
-        } else {
-          units.push({
-            spacesBefore,
-            char: ch
-          });
-          spacesBefore = "";
-        }
-      }
+    document.getElementById("chQuizQuestionArea").style.display = "block";
+    document.getElementById("chQuizQuestionArea").innerHTML = `
+      <div class="ref">${chQuizCurrentQ.ref}</div>
+      <div class="muted">${chQuizRetryMode ? "재시험 성구입니다." : "이 성구를 암송한 뒤 아래에 입력하세요."}</div>`;
+    document.getElementById("chQuizTestInput").value = "";
+    document.getElementById("chQuizResult").innerHTML = "";
+  }
 
-      return {
-        units,
-        trailingSpaces: spacesBefore
-      };
-    }
+  function chQuizStartRetry() {
+    if (!isDataLoaded) return alert("데이터를 불러오는 중입니다.");
+    const retry = chQuizGetPool().filter(v => {
+      const st = chQuizExamStatuses[v.ref];
+      return st && st.state==="done" && st.score<100;
+    });
+    if (!retry.length) return alert("재시험 대상이 없습니다.");
+    chQuizRetryMode = true;
+    chQuizRetryRefs = retry.map(v=>v.ref);
+    chQuizCurrentQ = null;
+    document.getElementById("chQuizQuestionArea").style.display = "none";
+    document.getElementById("chQuizTestInput").value = "";
+    document.getElementById("chQuizResult").innerHTML = "";
+    chQuizRenderRange();
+    alert("재시험 모드가 시작되었습니다.");
+  }
 
-    function compareAligned(userText, correctText) {
-      const user = normalize(userText);
-      const correct = normalize(correctText);
+  // ─────────────────────────────────
+  // 공통: 채점 / 입력 지우기
+  // ─────────────────────────────────
+  function clearTest(mode) {
+    const inputId = mode==="seq" ? "seqTestInput" : "chQuizTestInput";
+    const resultId = mode==="seq" ? "seqResult" : "chQuizResult";
+    document.getElementById(inputId).value = "";
+    document.getElementById(resultId).innerHTML = "";
+    if (speechRecognition && isListening) speechRecognition.stop();
+  }
 
-      const m = user.length;
-      const n = correct.length;
-      const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
-      const back = Array.from({ length: m + 1 }, () => Array(n + 1).fill(null));
+  function gradeTest(mode) {
+    if (!isDataLoaded) return alert("데이터를 불러오는 중입니다.");
+    const isSeq = mode === "seq";
+    const currentQ = isSeq ? seqCurrentQ : chQuizCurrentQ;
+    if (!currentQ) return alert("먼저 문제를 뽑아주세요.");
 
-      for (let i = 1; i <= m; i++) {
-        dp[i][0] = i;
-        back[i][0] = "delete";
-      }
+    const statuses = isSeq ? seqExamStatuses : chQuizExamStatuses;
+    const inputId  = isSeq ? "seqTestInput"  : "chQuizTestInput";
+    const resultId = isSeq ? "seqResult"     : "chQuizResult";
+    const renderRangeFn = isSeq ? seqRenderRange : chQuizRenderRange;
 
-      for (let j = 1; j <= n; j++) {
-        dp[0][j] = j;
-        back[0][j] = "insert";
-      }
+    const user = document.getElementById(inputId).value;
+    const comp = compareAligned(user, currentQ.text);
 
-      for (let i = 1; i <= m; i++) {
-        for (let j = 1; j <= n; j++) {
-          const same = user[i - 1] === correct[j - 1];
-          const diag = dp[i - 1][j - 1] + (same ? 0 : 1);
-          const del = dp[i - 1][j] + 1;
-          const ins = dp[i][j - 1] + 1;
-          const min = Math.min(diag, del, ins);
-          dp[i][j] = min;
+    statuses[currentQ.ref] = { state:"done", score: comp.score };
+    renderRangeFn();
 
-          if (min === diag) back[i][j] = same ? "match" : "replace";
-          else if (min === del) back[i][j] = "delete";
-          else back[i][j] = "insert";
-        }
-      }
-
-      let i = m;
-      let j = n;
-      const result = [];
-
-      while (i > 0 || j > 0) {
-        const action = back[i][j];
-
-        if (action === "match") {
-          result.push({ type: "correct", u: user[i - 1], c: correct[j - 1] });
-          i--;
-          j--;
-        } else if (action === "replace") {
-          result.push({ type: "wrong", u: user[i - 1], c: correct[j - 1] });
-          i--;
-          j--;
-        } else if (action === "delete") {
-          result.push({ type: "extra", u: user[i - 1], c: "" });
-          i--;
-        } else {
-          result.push({ type: "wrong", u: "", c: correct[j - 1] });
-          j--;
-        }
-      }
-
-      result.reverse();
-
-      const errorCount = result.filter(item => item.type !== "correct").length;
-      const score = correct.length === 0
-        ? 0
-        : Math.max(0, Math.round(((correct.length - errorCount) / correct.length) * 100));
-
-      return { score, result };
-    }
-
-    function renderMarkedVerse(correctText, userText, comp) {
-      const { units: correctUnits, trailingSpaces } = buildSpacedUnits(correctText);
-      const { units: userUnits } = buildSpacedUnits(userText);
-
-      let html = "";
-      let correctIndex = 0;
-      let userIndex = 0;
-
-      for (const item of comp.result) {
-        if (item.type === "extra") {
-          const userUnit = userUnits[userIndex];
-          if (userUnit) {
-            html += userUnit.spacesBefore;
-            html += `<span class="char-extra">${escapeHtml(userUnit.char)}</span>`;
-          } else {
-            html += `<span class="char-extra">${escapeHtml(item.u)}</span>`;
-          }
-          userIndex++;
-          continue;
-        }
-
-        const correctUnit = correctUnits[correctIndex];
-        if (!correctUnit) continue;
-
-        html += correctUnit.spacesBefore;
-
-        if (item.type === "correct") {
-          html += `<span class="char-correct">${escapeHtml(correctUnit.char)}</span>`;
-          userIndex++;
-        } else {
-          html += `<span class="char-wrong">${escapeHtml(correctUnit.char)}</span>`;
-          if (item.u) userIndex++;
-        }
-
-        correctIndex++;
-      }
-
-      while (correctIndex < correctUnits.length) {
-        const correctUnit = correctUnits[correctIndex];
-        html += correctUnit.spacesBefore;
-        html += `<span class="char-correct">${escapeHtml(correctUnit.char)}</span>`;
-        correctIndex++;
-      }
-
-      html += trailingSpaces;
-
-      while (userIndex < userUnits.length) {
-        const userUnit = userUnits[userIndex];
-        html += userUnit.spacesBefore;
-        html += `<span class="char-extra">${escapeHtml(userUnit.char)}</span>`;
-        userIndex++;
-      }
-
-      return html;
-    }
-
-    function clearPreviousActiveStatus() {
-      Object.keys(examStatuses).forEach(ref => {
-        if (examStatuses[ref].state === "active") {
-          examStatuses[ref].state = "idle";
-        }
-      });
-    }
-
-    function startRetryMode() {
-      if (!isDataLoaded || !VERSES.length) {
-        alert("성경 데이터를 아직 불러오는 중입니다.");
-        return;
-      }
-
-      const retryVerses = getFilteredLearnedVerses().filter(v => {
-        const status = examStatuses[v.ref];
-        return status && status.state === "done" && status.score < 100;
-      });
-
-      if (!retryVerses.length) {
-        alert("재시험 대상이 없습니다.");
-        return;
-      }
-
-      retryMode = true;
-      retryPoolRefs = retryVerses.map(v => v.ref);
-
-      currentDailyQuestion = null;
-      document.getElementById("dailyQuestionArea").style.display = "none";
-      document.getElementById("dailyQuestionArea").innerHTML = "";
-      document.getElementById("dailyTestInput").value = "";
-      document.getElementById("dailyResult").innerHTML = "";
-      renderExamRange();
-      alert("재시험 모드가 시작되었습니다.");
-    }
-
-    function pickDailyQuestion() {
-      if (!isDataLoaded || !VERSES.length) {
-        alert("성경 데이터를 아직 불러오는 중입니다.");
-        return;
-      }
-
-      if (speechRecognition && isListening) {
-        speechRecognition.stop();
-      }
-
-      const baseSource = getFilteredLearnedVerses();
-
-      const source = retryMode
-        ? baseSource.filter(v => retryPoolRefs.includes(v.ref))
-        : baseSource;
-
-      if (!source.length) {
-        alert(retryMode ? "재시험 대상이 없습니다." : (chapterFilterActive ? "선택한 장에 학습된 성구가 없습니다." : "누적 학습 성구가 없습니다."));
-        return;
-      }
-
-      Object.keys(examStatuses).forEach(ref => {
-        if (examStatuses[ref].state === "active") {
-          examStatuses[ref].state = "idle";
-        }
-      });
-
-      let available;
-
-      if (retryMode) {
-        available = source.filter(v => {
-          const status = examStatuses[v.ref];
-          return !status || status.score < 100;
-        });
-      } else {
-        available = source.filter(v => {
-          const status = examStatuses[v.ref];
-          return !status || status.state !== "done";
-        });
-      }
-
-      if (!available.length) {
-        currentDailyQuestion = null;
-        document.getElementById("dailyQuestionArea").style.display = "none";
-        document.getElementById("dailyQuestionArea").innerHTML = "";
-        document.getElementById("dailyTestInput").value = "";
-        document.getElementById("dailyResult").innerHTML = "";
-
-        if (retryMode) {
-          retryMode = false;
-          retryPoolRefs = [];
-          renderExamRange();
-          alert("재시험이 모두 완료되었습니다.");
-        } else {
-          renderExamRange();
-          alert("출제 가능한 성구를 모두 완료했습니다.");
-        }
-        return;
-      }
-
-      const i = Math.floor(Math.random() * available.length);
-      currentDailyQuestion = available[i];
-
-      examStatuses[currentDailyQuestion.ref] = {
-        state: "active",
-        score: examStatuses[currentDailyQuestion.ref]?.score ?? null
-      };
-
-      renderExamRange();
-
-      document.getElementById("dailyQuestionArea").style.display = "block";
-      document.getElementById("dailyQuestionArea").innerHTML = `
-        <div class="ref">${currentDailyQuestion.ref}</div>
-        <div class="muted">${retryMode ? "재시험 성구입니다. 다시 암송한 뒤 입력하세요." : "이 성구를 암송한 뒤 아래에 입력하세요."}</div>
-      `;
-
-      document.getElementById("dailyTestInput").value = "";
-      document.getElementById("dailyResult").innerHTML = "";
-    }
-
-    function gradeDailyTest() {
-      if (!isDataLoaded || !VERSES.length) {
-        alert("성경 데이터를 아직 불러오는 중입니다.");
-        return;
-      }
-
-      if (!currentDailyQuestion) {
-        alert("먼저 문제를 뽑아주세요.");
-        return;
-      }
-
-      const user = document.getElementById("dailyTestInput").value;
-      const comp = compareAligned(user, currentDailyQuestion.text);
-
-      examStatuses[currentDailyQuestion.ref] = {
-        state: "done",
-        score: comp.score
-      };
-
-      renderExamRange();
-
-      document.getElementById("dailyResult").innerHTML = `
-        <div class="score" style="color:${getScoreColor(comp.score)};">정확도: ${comp.score}%</div>
-        <div><strong style="display:block; margin-top:12px;">정답</strong></div>
-        <div class="answer-box">
-          <div class="verse-line">
-            <div class="verse-label">${currentDailyQuestion.ref}</div>
-            <div>${renderMarkedVerse(currentDailyQuestion.text, user, comp)}</div>
-          </div>
+    document.getElementById(resultId).innerHTML = `
+      <div class="score" style="color:${getScoreColor(comp.score)};">정확도: ${comp.score}%</div>
+      <strong style="display:block;margin-top:12px;">정답</strong>
+      <div class="answer-box">
+        <div class="verse-line">
+          <div class="verse-label">${currentQ.ref}</div>
+          <div>${renderMarkedVerse(currentQ.text, user, comp)}</div>
         </div>
-      `;
+      </div>`;
+  }
+
+  // ─────────────────────────────────
+  // 채점 알고리즘 (Levenshtein)
+  // ─────────────────────────────────
+  function buildSpacedUnits(text) {
+    const units = []; let spacesBefore = "";
+    for (const ch of text||"") {
+      if (/\s/.test(ch)) spacesBefore += ch;
+      else { units.push({ spacesBefore, char: ch }); spacesBefore = ""; }
+    }
+    return { units, trailingSpaces: spacesBefore };
+  }
+
+  function compareAligned(userText, correctText) {
+    const user = normalize(userText), correct = normalize(correctText);
+    const m = user.length, n = correct.length;
+    const dp   = Array.from({length:m+1},()=>Array(n+1).fill(0));
+    const back = Array.from({length:m+1},()=>Array(n+1).fill(null));
+
+    for (let i=1;i<=m;i++) { dp[i][0]=i; back[i][0]="delete"; }
+    for (let j=1;j<=n;j++) { dp[0][j]=j; back[0][j]="insert"; }
+
+    for (let i=1;i<=m;i++) for (let j=1;j<=n;j++) {
+      const same = user[i-1]===correct[j-1];
+      const diag=dp[i-1][j-1]+(same?0:1), del=dp[i-1][j]+1, ins=dp[i][j-1]+1;
+      const min=Math.min(diag,del,ins);
+      dp[i][j]=min;
+      if (min===diag) back[i][j]=same?"match":"replace";
+      else if (min===del) back[i][j]="delete";
+      else back[i][j]="insert";
     }
 
-    function clearDailyTest() {
-      document.getElementById("dailyTestInput").value = "";
-      document.getElementById("dailyResult").innerHTML = "";
+    let i=m, j=n; const result=[];
+    while (i>0||j>0) {
+      const a=back[i][j];
+      if (a==="match")   { result.push({type:"correct",u:user[i-1],c:correct[j-1]}); i--;j--; }
+      else if (a==="replace") { result.push({type:"wrong",u:user[i-1],c:correct[j-1]}); i--;j--; }
+      else if (a==="delete")  { result.push({type:"extra",u:user[i-1],c:""}); i--; }
+      else                    { result.push({type:"wrong",u:"",c:correct[j-1]}); j--; }
+    }
+    result.reverse();
 
-      if (speechRecognition && isListening) {
-        speechRecognition.stop();
+    const errorCount = result.filter(x=>x.type!=="correct").length;
+    const score = correct.length===0 ? 0 : Math.max(0,Math.round(((correct.length-errorCount)/correct.length)*100));
+    return { score, result };
+  }
+
+  function renderMarkedVerse(correctText, userText, comp) {
+    const {units:cU,trailingSpaces}=buildSpacedUnits(correctText);
+    const {units:uU}=buildSpacedUnits(userText);
+    let html="", ci=0, ui=0;
+
+    for (const item of comp.result) {
+      if (item.type==="extra") {
+        const u=uU[ui];
+        html += u ? u.spacesBefore+`<span class="char-extra">${escapeHtml(u.char)}</span>`
+                  : `<span class="char-extra">${escapeHtml(item.u)}</span>`;
+        ui++; continue;
       }
+      const cu=cU[ci]; if (!cu) continue;
+      html += cu.spacesBefore;
+      if (item.type==="correct") { html+=`<span class="char-correct">${escapeHtml(cu.char)}</span>`; ui++; }
+      else { html+=`<span class="char-wrong">${escapeHtml(cu.char)}</span>`; if (item.u) ui++; }
+      ci++;
     }
+    while (ci<cU.length) { html+=cU[ci].spacesBefore+`<span class="char-correct">${escapeHtml(cU[ci].char)}</span>`; ci++; }
+    html+=trailingSpaces;
+    while (ui<uU.length) { html+=uU[ui].spacesBefore+`<span class="char-extra">${escapeHtml(uU[ui].char)}</span>`; ui++; }
+    return html;
+  }
 
-    function getAvailableChapters() {
-      const learnedVerses = getLearnedVerses();
-      const chapters = [...new Set(learnedVerses.map(v => v.chapter))].sort((a, b) => a - b);
-      return chapters;
-    }
+  // ─────────────────────────────────
+  // 음성 인식
+  // ─────────────────────────────────
+  function initSpeechRecognition() {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) { speechSupported=false; return; }
+    speechSupported = true;
+    speechRecognition = new SR();
+    speechRecognition.lang = "ko-KR";
+    speechRecognition.interimResults = true;
+    speechRecognition.continuous = false;
 
-    function renderChapterGrid() {
-      const grid = document.getElementById("chapterGrid");
-      if (!isDataLoaded || !VERSES.length) {
-        grid.innerHTML = `<span class="muted">성경 데이터를 불러오는 중...</span>`;
-        return;
-      }
+    speechRecognition.onstart  = () => { isListening=true;  updateSpeechBtns(); };
+    speechRecognition.onend    = () => { isListening=false; updateSpeechBtns(); };
+    speechRecognition.onerror  = () => { isListening=false; updateSpeechBtns(); };
+    speechRecognition.onresult = (e) => {
+      let t="";
+      for (let i=0;i<e.results.length;i++) t+=e.results[i][0].transcript;
+      const id = currentSpeechMode==="seq" ? "seqTestInput" : "chQuizTestInput";
+      const el = document.getElementById(id);
+      if (el) el.value = t;
+    };
+    updateSpeechBtns();
+  }
 
-      const availableChapters = getAvailableChapters();
-      // 1~22장 모두 표시, 학습된 장만 활성화
-      const allChapters = Array.from({ length: 22 }, (_, i) => i + 1);
+  function updateSpeechBtns() {
+    ["seqSpeechBtn","chQuizSpeechBtn"].forEach(id => {
+      const btn = document.getElementById(id);
+      if (!btn) return;
+      btn.style.display = speechSupported ? "inline-block" : "none";
+      btn.textContent = isListening ? "🎤 음성 입력 중지" : "🎤 음성 입력 시작";
+    });
+  }
 
-      grid.innerHTML = allChapters.map(ch => {
-        const isAvailable = availableChapters.includes(ch);
-        const isSelected = selectedChapters.has(ch);
-        return `
-          <button
-            class="chapter-btn${isSelected ? " selected" : ""}"
-            onclick="toggleChapter(${ch})"
-            ${isAvailable ? "" : 'disabled style="opacity:0.35;cursor:not-allowed;"'}
-            title="${isAvailable ? `${ch}장 선택` : `${ch}장은 아직 학습 전입니다`}"
-          >${ch}장</button>
-        `;
-      }).join("");
-    }
+  function toggleSpeechInput(mode) {
+    if (!speechSupported||!speechRecognition) return alert("이 기기에서는 음성 입력을 지원하지 않습니다.");
+    const currentQ = mode==="seq" ? seqCurrentQ : chQuizCurrentQ;
+    if (!currentQ) return alert("먼저 문제를 뽑아주세요.");
+    currentSpeechMode = mode;
+    if (isListening) speechRecognition.stop(); else speechRecognition.start();
+  }
 
-    function toggleChapter(ch) {
-      if (selectedChapters.has(ch)) {
-        selectedChapters.delete(ch);
-      } else {
-        selectedChapters.add(ch);
-      }
-      renderChapterGrid();
-    }
+  // ─────────────────────────────────
+  // 초기화
+  // ─────────────────────────────────
+  initSpeechRecognition();
 
-    function selectAllChapters() {
-      const availableChapters = getAvailableChapters();
-      availableChapters.forEach(ch => selectedChapters.add(ch));
-      renderChapterGrid();
-    }
-
-    function clearChapterSelection() {
-      selectedChapters.clear();
-      renderChapterGrid();
-    }
-
-    function applyChapterFilter() {
-      if (!isDataLoaded || !VERSES.length) return;
-
-      // 재시험 모드 해제
-      retryMode = false;
-      retryPoolRefs = [];
-
-      // 현재 문제 초기화
-      currentDailyQuestion = null;
-      document.getElementById("dailyQuestionArea").style.display = "none";
-      document.getElementById("dailyQuestionArea").innerHTML = "";
-      document.getElementById("dailyTestInput").value = "";
-      document.getElementById("dailyResult").innerHTML = "";
-      examStatuses = {};
-
-      if (selectedChapters.size === 0) {
-        chapterFilterActive = false;
-        updateChapterModeInfo();
-        renderExamRange();
-        alert("전체 장으로 출제합니다.");
-      } else {
-        chapterFilterActive = true;
-        updateChapterModeInfo();
-        renderExamRange();
-        const chList = [...selectedChapters].sort((a, b) => a - b).join("장, ") + "장";
-        alert(`${chList} 범위로 출제합니다.`);
-      }
-    }
-
-    function updateChapterModeInfo() {
-      const info = document.getElementById("chapterModeInfo");
-      if (!chapterFilterActive || selectedChapters.size === 0) {
-        info.style.display = "none";
-        return;
-      }
-      const chList = [...selectedChapters].sort((a, b) => a - b).join("장, ") + "장";
-      info.style.display = "block";
-      info.textContent = `📌 현재 출제 범위: ${chList}`;
-    }
-
-    function getFilteredLearnedVerses() {
-      const learned = getLearnedVerses();
-      if (!chapterFilterActive || selectedChapters.size === 0) return learned;
-      return learned.filter(v => selectedChapters.has(v.chapter));
-    }
-
-    function renderAll() {
-      applySettingsToInputs();
-
-      if (!isDataLoaded || !VERSES.length) {
-        document.getElementById("todayVerses").innerHTML = `<div class="muted">성경 데이터를 불러오는 중...</div>`;
-        document.getElementById("examRangeList").innerHTML = `<span class="muted">성경 데이터를 불러오는 중...</span>`;
-        document.getElementById("examRangeSummary").textContent = "";
-        document.getElementById("chapterGrid").innerHTML = `<span class="muted">성경 데이터를 불러오는 중...</span>`;
-        setButtonsEnabled(false);
-        return;
-      }
-
-      setButtonsEnabled(true);
-      renderToday();
-      renderChapterGrid();
-      renderExamRange();
-
-      document.getElementById("dailyQuestionArea").style.display = "none";
-      document.getElementById("dailyQuestionArea").innerHTML = "";
-      document.getElementById("dailyTestInput").value = "";
-      document.getElementById("dailyResult").innerHTML = "";
-      currentDailyQuestion = null;
-      retryMode = false;
-      retryPoolRefs = [];
-      chapterFilterActive = false;
-      selectedChapters.clear();
-      updateChapterModeInfo();
-      renderExamRange();
-    }
-
-    applySettingsToInputs();
-    setButtonsEnabled(false);
-    initSpeechRecognition();
-
-    fetch("revelation.json")
-      .then(res => {
-        if (!res.ok) {
-          throw new Error("HTTP " + res.status);
-        }
-        return res.json();
-      })
-      .then(data => {
-        VERSES = data;
-        isDataLoaded = true;
-        renderAll();
-      })
-      .catch(err => {
-        console.error("JSON 로드 실패:", err);
-        document.getElementById("todayVerses").innerHTML =
-          `<div class="muted">성경 데이터를 불러오지 못했습니다. revelation.json 파일과 경로를 확인해주세요.</div>`;
-        document.getElementById("examRangeList").innerHTML =
-          `<span class="muted">성경 데이터를 불러오지 못했습니다.</span>`;
-        document.getElementById("examRangeSummary").textContent = "";
-        setButtonsEnabled(false);
-      });
-  </script>
+  fetch("revelation.json")
+    .then(res => { if (!res.ok) throw new Error("HTTP "+res.status); return res.json(); })
+    .then(data => {
+      VERSES = data;
+      isDataLoaded = true;
+      document.getElementById("loadingNotice").textContent = "암기 방식을 선택하세요.";
+    })
+    .catch(err => {
+      console.error("JSON 로드 실패:", err);
+      document.getElementById("loadingNotice").textContent =
+        "⚠️ 성경 데이터를 불러오지 못했습니다. revelation.json 파일 경로를 확인해주세요.";
+    });
+</script>
 </body>
 </html>
