@@ -330,9 +330,9 @@ function renderSeqScreen() {
     return;
   }
 
-  // 현재 성구부터 5개 슬라이딩 윈도우
-  var windowStart = curIdx;
-  var windowEnd = Math.min(total, curIdx + 5);
+  // 이전 2개 + 현재 1개 + 다음 2개 = 5개
+  var windowStart = Math.max(0, curIdx - 2);
+  var windowEnd = Math.min(total, curIdx + 3);
   var frag = document.createDocumentFragment();
   for (var i = windowStart; i < windowEnd; i++) {
     frag.appendChild(makeSeqCard(VERSES[i], i, i === curIdx));
