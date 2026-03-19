@@ -9,14 +9,14 @@
 body{margin:0;font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif;background:#f4f6fb;color:#222;padding:20px;}
 .container{max-width:980px;margin:0 auto;background:#fff;border-radius:16px;padding:24px;box-shadow:0 8px 24px rgba(0,0,0,0.08);}
 h1,h2,h3{margin-top:0;}
-.section{margin-top:28px;padding-top:20px;border-top:1px solid #e5e7eb;}
 textarea{width:100%;border:1px solid #cfd6e4;border-radius:10px;padding:12px;font-size:15px;background:#fff;min-height:120px;resize:vertical;line-height:1.7;}
-button{border:none;background:#2563eb;color:white;padding:11px 16px;border-radius:10px;cursor:pointer;font-weight:700;margin-top:10px;margin-right:8px;}
+button{border:none;background:#2563eb;color:white;padding:11px 20px;border-radius:10px;cursor:pointer;font-weight:700;margin-top:10px;margin-right:8px;font-size:15px;}
 button.secondary{background:#64748b;}
 button.ghost{background:#e5e7eb;color:#374151;}
 button.retry{background:#dc2626;color:#fff;}
 button.success{background:#059669;color:#fff;}
 button.warn{background:#d97706;color:#fff;}
+button.sm{padding:8px 14px;font-size:13px;}
 button:disabled{opacity:0.55;cursor:not-allowed;}
 .muted{color:#6b7280;font-size:14px;}
 .ref{display:inline-block;background:#e8eefc;color:#1d4ed8;font-weight:700;font-size:13px;padding:5px 10px;border-radius:999px;margin-bottom:8px;}
@@ -31,8 +31,8 @@ button:disabled{opacity:0.55;cursor:not-allowed;}
 .btns{display:flex;flex-wrap:wrap;gap:8px;}
 .btns button{margin:0;}
 .daily-question-box{border:1px solid #e5e7eb;border-radius:14px;padding:16px;background:#fff;margin-top:14px;}
-.pill{display:inline-block;padding:6px 10px;border-radius:999px;background:#eef2ff;color:#4338ca;font-size:13px;font-weight:700;}
-.top-info{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;}
+.pill{display:inline-block;padding:6px 12px;border-radius:999px;background:#eef2ff;color:#4338ca;font-size:13px;font-weight:700;}
+.top-info{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
 .range-box{width:100%;border:1px solid #e5e7eb;border-radius:12px;background:#f8fafc;padding:14px;margin-top:12px;}
 .range-list{display:flex;flex-wrap:wrap;gap:8px;line-height:1.8;}
 .range-item{display:inline-block;padding:4px 10px;border-radius:999px;background:#fff;border:1px solid #dbe2ea;color:#111;font-size:14px;}
@@ -48,32 +48,67 @@ button:disabled{opacity:0.55;cursor:not-allowed;}
 .mode-title{font-size:16px;font-weight:800;color:#1e293b;}
 .mode-desc{font-size:13px;color:#6b7280;line-height:1.6;}
 .chapter-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
-.chapter-btn{background:#f1f5f9;color:#374151;border:1.5px solid #e2e8f0;border-radius:10px;padding:8px 14px;font-size:14px;font-weight:700;cursor:pointer;margin:0;transition:all .15s;}
+.chapter-btn{background:#f1f5f9;color:#374151;border:1.5px solid #e2e8f0;border-radius:10px;padding:9px 16px;font-size:14px;font-weight:700;cursor:pointer;margin:0;transition:all .15s;}
 .chapter-btn:hover:not(:disabled){background:#e0e7ff;border-color:#818cf8;color:#3730a3;}
 .chapter-btn.selected{background:#2563eb;border-color:#2563eb;color:#fff;}
 .screen{display:none;}
 .screen.active{display:block;}
-.back-btn{background:none;color:#6b7280;border:1px solid #e5e7eb;font-size:13px;padding:7px 14px;margin:0 0 8px 0;border-radius:8px;cursor:pointer;}
+.back-btn{background:none;color:#6b7280;border:1px solid #e5e7eb;font-size:13px;padding:8px 16px;margin:0 0 8px 0;border-radius:8px;cursor:pointer;}
 .back-btn:hover{background:#f1f5f9;}
-.seq-progress-bar-wrap{background:#e5e7eb;border-radius:999px;height:8px;margin-top:12px;}
-.seq-progress-bar{background:#2563eb;border-radius:999px;height:8px;transition:width .3s;}
-.seq-verse-card{border:2px solid #e2e8f0;border-radius:14px;padding:16px;margin-top:14px;background:#fff;transition:border-color .2s,background .2s;}
-.seq-verse-card.memorized{border-color:#059669;background:#f0fdf4;}
-.verse-card-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
-.verse-text-area{line-height:1.8;word-break:keep-all;margin-top:8px;}
+
+/* ── 모드1 ── */
+.seq-progress-bar-wrap{background:#e5e7eb;border-radius:999px;height:8px;margin-top:10px;}
+.seq-progress-bar{background:#2563eb;border-radius:999px;height:8px;transition:width .4s;}
+.seq-chapter-badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.seq-ch-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:999px;font-size:12px;font-weight:700;border:1.5px solid #e2e8f0;background:#f8fafc;color:#64748b;}
+.seq-ch-badge.done{background:#ecfdf5;border-color:#059669;color:#065f46;}
+.seq-ch-badge.partial{background:#eff6ff;border-color:#2563eb;color:#1d4ed8;}
+.seq-verse-wrap{position:relative;margin-top:16px;}
+.seq-card{border-radius:14px;padding:16px;margin-bottom:10px;transition:all .25s;}
+.seq-card.current{border:2px solid #2563eb;background:#eff6ff;box-shadow:0 4px 16px rgba(37,99,235,0.13);}
+.seq-card.prev{border:2px solid #059669;background:#f0fdf4;opacity:0.82;}
+.seq-card.next{border:2px solid #e2e8f0;background:#fff;opacity:0.72;}
+.seq-card-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+.verse-text-area{line-height:1.85;word-break:keep-all;margin-top:6px;}
 .verse-text-area.hidden-text{filter:blur(6px);user-select:none;pointer-events:none;}
-.toggle-btn{background:#f1f5f9;color:#374151;border:1px solid #e2e8f0;border-radius:8px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;margin:0;}
+.toggle-btn{background:#f1f5f9;color:#374151;border:1px solid #e2e8f0;border-radius:8px;padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer;margin:0;}
 .toggle-btn:hover{background:#e0e7ff;border-color:#818cf8;color:#3730a3;}
-.check-btn-done{background:#e5e7eb;color:#374151;border:none;border-radius:8px;padding:6px 12px;font-size:13px;font-weight:700;cursor:pointer;margin:0;}
-.check-btn-todo{background:#059669;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:13px;font-weight:700;cursor:pointer;margin:0;}
+.check-btn-done{background:#e5e7eb;color:#374151;border:none;border-radius:8px;padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer;margin:0;}
+.check-btn-todo{background:#059669;color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer;margin:0;}
+
+/* ── 모드2 ── */
 .ch-verse-card{border:1px solid #e5e7eb;border-radius:12px;padding:14px;margin:10px 0;background:#f8fafc;}
 .ch-verse-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
+
+/* ── 모드3 시험 기록 ── */
+.quiz-history-box{margin-top:16px;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;}
+.quiz-history-head{background:#f1f5f9;padding:10px 14px;font-weight:700;font-size:14px;display:flex;justify-content:space-between;align-items:center;}
+.quiz-history-table{width:100%;border-collapse:collapse;font-size:13px;}
+.quiz-history-table th{background:#f8fafc;padding:8px 12px;text-align:left;border-bottom:1px solid #e5e7eb;font-weight:700;color:#374151;}
+.quiz-history-table td{padding:8px 12px;border-bottom:1px solid #f1f5f9;color:#374151;}
+.quiz-history-table tr:last-child td{border-bottom:none;}
+.hist-score-high{color:#059669;font-weight:700;}
+.hist-score-mid{color:#d97706;font-weight:700;}
+.hist-score-low{color:#dc2626;font-weight:700;}
+
+/* ── 검색 ── */
+.search-wrap{position:relative;margin-top:12px;}
+.search-input{width:100%;border:1.5px solid #cfd6e4;border-radius:10px;padding:11px 16px;font-size:15px;background:#fff;outline:none;}
+.search-input:focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,0.1);}
+.search-results{margin-top:10px;}
+.search-result-item{border:1px solid #e5e7eb;border-radius:10px;padding:12px 14px;margin-bottom:8px;background:#f8fafc;cursor:pointer;transition:background .15s;}
+.search-result-item:hover{background:#eff6ff;border-color:#93c5fd;}
+.search-highlight{background:#fef08a;border-radius:3px;padding:0 2px;}
+
 @media(max-width:720px){
-  body{padding:12px;}
-  .container{padding:18px;}
+  body{padding:10px;}
+  .container{padding:16px;}
   .mode-cards{grid-template-columns:1fr;gap:12px;}
-  .mode-card{flex-direction:row;text-align:left;padding:18px 16px;gap:14px;}
-  .mode-icon{font-size:32px;flex-shrink:0;}
+  .mode-card{flex-direction:row;text-align:left;padding:16px;gap:14px;}
+  .mode-icon{font-size:30px;flex-shrink:0;}
+  button{padding:12px 16px;font-size:14px;}
+  .toggle-btn,.check-btn-done,.check-btn-todo{padding:9px 14px;font-size:13px;}
+  .chapter-btn{padding:10px 16px;font-size:14px;}
 }
 </style>
 </head>
@@ -84,7 +119,7 @@ button:disabled{opacity:0.55;cursor:not-allowed;}
 
   <!-- 홈 -->
   <div id="screenHome" class="screen active">
-    <div class="section">
+    <div style="margin-top:20px;">
       <h2 style="margin-bottom:6px;">암기 방식을 선택하세요</h2>
       <div class="muted" id="loadingNotice">성경 데이터를 불러오는 중...</div>
       <div class="mode-cards">
@@ -101,6 +136,15 @@ button:disabled{opacity:0.55;cursor:not-allowed;}
           <div><div class="mode-title">장별 랜덤 시험</div><div class="mode-desc">원하는 장을 선택해<br>랜덤으로 한 절씩 출제</div></div>
         </div>
       </div>
+      <!-- 검색 -->
+      <div style="margin-top:24px;border-top:1px solid #e5e7eb;padding-top:20px;">
+        <h3 style="margin-bottom:4px;">🔍 성구 검색</h3>
+        <div class="muted" style="margin-bottom:8px;">키워드 또는 절 번호로 검색하세요 (예: 일곱, 1:3)</div>
+        <div class="search-wrap">
+          <input class="search-input" id="searchInput" type="text" placeholder="검색어를 입력하세요..." oninput="doSearch()"/>
+        </div>
+        <div class="search-results" id="searchResults"></div>
+      </div>
     </div>
   </div>
 
@@ -109,14 +153,15 @@ button:disabled{opacity:0.55;cursor:not-allowed;}
     <button class="back-btn" onclick="goHome()">← 처음으로</button>
     <h2 style="margin-top:8px;">📖 순서대로 암기</h2>
     <div class="muted">한 절씩 암기하고 외웠으면 체크하세요. 진행 상황은 자동 저장됩니다.</div>
-    <div class="top-info" style="margin-top:10px;">
+    <div class="top-info">
       <div class="pill" id="seqProgressPill">진행률: 0 / 0</div>
     </div>
     <div class="seq-progress-bar-wrap"><div class="seq-progress-bar" id="seqProgressBar" style="width:0%;"></div></div>
-    <div style="margin-top:16px;" id="seqVerseList"></div>
-    <div class="btns" style="margin-top:8px;padding-bottom:20px;">
-      <button class="warn" onclick="seqGoFirstUnmemorized()">⚡ 미완료로 이동</button>
-      <button class="ghost" onclick="seqResetAll()">전체 초기화</button>
+    <div class="seq-chapter-badges" id="seqChapterBadges"></div>
+    <div id="seqVerseList" class="seq-verse-wrap"></div>
+    <div class="btns" style="margin-top:12px;padding-bottom:20px;">
+      <button class="warn sm" onclick="seqGoFirstUnmemorized()">⚡ 미완료로 이동</button>
+      <button class="ghost sm" onclick="seqResetAll()">전체 초기화</button>
     </div>
   </div>
 
@@ -124,14 +169,14 @@ button:disabled{opacity:0.55;cursor:not-allowed;}
   <div id="screenChapterMemory" class="screen">
     <button class="back-btn" onclick="goHome()">← 처음으로</button>
     <h2 style="margin-top:12px;">📝 장별 전체 암기</h2>
-    <div class="muted">장을 선택하면 해당 장의 모든 구절을 보여줍니다. 각 구절마다 가리기/보이기가 가능합니다.</div>
+    <div class="muted">장을 선택하면 해당 장의 모든 구절을 보여줍니다.</div>
     <div style="margin-top:16px;">
-      <label>장 선택</label>
+      <label style="font-weight:700;margin-bottom:8px;display:block;">장 선택</label>
       <div class="chapter-grid" id="chMemGrid"></div>
     </div>
     <div class="btns" style="margin-top:10px;">
-      <button class="ghost" onclick="chMemToggleAll(true)">전체 보이기</button>
-      <button class="ghost" onclick="chMemToggleAll(false)">전체 가리기</button>
+      <button class="ghost sm" onclick="chMemToggleAll(true)">전체 보이기</button>
+      <button class="ghost sm" onclick="chMemToggleAll(false)">전체 가리기</button>
     </div>
     <div id="chMemVerses" style="margin-top:16px;"></div>
   </div>
@@ -142,14 +187,16 @@ button:disabled{opacity:0.55;cursor:not-allowed;}
     <h2 style="margin-top:12px;">🎯 장별 랜덤 시험</h2>
     <div class="muted">시험 볼 장을 선택하면 해당 장에서 랜덤으로 한 절씩 출제합니다.</div>
     <div style="margin-top:16px;">
-      <label>장 선택 <span class="muted">(복수 선택 가능)</span></label>
+      <label style="font-weight:700;margin-bottom:8px;display:block;">장 선택 <span class="muted">(복수 선택 가능)</span></label>
       <div class="chapter-grid" id="chQuizGrid"></div>
       <div class="btns" style="margin-top:10px;">
-        <button class="ghost" onclick="chQuizSelectAll()">전체 선택</button>
-        <button class="ghost" onclick="chQuizClearAll()">선택 해제</button>
+        <button class="ghost sm" onclick="chQuizSelectAll()">전체 선택</button>
+        <button class="ghost sm" onclick="chQuizClearAll()">선택 해제</button>
         <button onclick="chQuizStart()">시험 시작</button>
       </div>
     </div>
+    <!-- 시험 기록 -->
+    <div id="chQuizHistoryArea"></div>
     <div id="chQuizArea" style="display:none;margin-top:16px;">
       <div class="range-box">
         <strong>출제 범위</strong><span id="chQuizModeBadge"></span>
@@ -173,7 +220,8 @@ button:disabled{opacity:0.55;cursor:not-allowed;}
 </div>
 
 <script>
-var SEQ_STATE_KEY = "rev-seq-state-v1";
+var SEQ_STATE_KEY  = 'rev-seq-state-v1';
+var QUIZ_HIST_KEY  = 'rev-quiz-history-v1';
 var VERSES = [];
 var isDataLoaded = false;
 var seqMemorized = {};
@@ -183,6 +231,7 @@ var chQuizCurrentQ = null;
 var chQuizExamStatuses = {};
 var chQuizRetryMode = false;
 var chQuizRetryRefs = [];
+var quizHistory = {};   // { ch: [ {date, score, ref} ] }
 var speechRecognition = null;
 var isListening = false;
 var speechSupported = false;
@@ -194,7 +243,12 @@ function esc(t) {
 }
 function normalize(t) { return (t || '').replace(/\s+/g, ''); }
 function getScoreColor(s) { return s >= 90 ? '#059669' : s >= 70 ? '#d97706' : '#dc2626'; }
+function todayStr() {
+  var d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
 
+// ── 저장/불러오기 ──
 function saveSeqState() {
   localStorage.setItem(SEQ_STATE_KEY, JSON.stringify({ seqMemorized: seqMemorized }));
 }
@@ -202,7 +256,14 @@ function loadSeqState() {
   var s = JSON.parse(localStorage.getItem(SEQ_STATE_KEY) || 'null');
   if (s) seqMemorized = s.seqMemorized || {};
 }
+function saveQuizHistory() {
+  localStorage.setItem(QUIZ_HIST_KEY, JSON.stringify(quizHistory));
+}
+function loadQuizHistory() {
+  quizHistory = JSON.parse(localStorage.getItem(QUIZ_HIST_KEY) || '{}');
+}
 
+// ── 화면 전환 ──
 function showScreen(id) {
   var all = document.querySelectorAll('.screen');
   for (var i = 0; i < all.length; i++) all[i].classList.remove('active');
@@ -225,6 +286,7 @@ function enterMode(mode) {
     chMemCurrentCh = 0;
     showScreen('screenChapterMemory');
   } else if (mode === 'chapterQuiz') {
+    loadQuizHistory();
     chQuizSelectedChapters = [];
     chQuizCurrentQ = null;
     chQuizExamStatuses = {};
@@ -235,12 +297,50 @@ function enterMode(mode) {
     document.getElementById('chQuizTestInput').value = '';
     document.getElementById('chQuizResult').innerHTML = '';
     renderChQuizGrid();
+    renderQuizHistory();
     showScreen('screenChapterQuiz');
   }
 }
 
+// ── 검색 ──
+function doSearch() {
+  var q = document.getElementById('searchInput').value.trim();
+  var area = document.getElementById('searchResults');
+  if (!q || !isDataLoaded) { area.innerHTML = ''; return; }
+  var ql = q.toLowerCase();
+  var results = VERSES.filter(function(v) {
+    return v.text.indexOf(q) !== -1 || v.ref.indexOf(q) !== -1 || v.text.toLowerCase().indexOf(ql) !== -1;
+  }).slice(0, 20);
+  if (!results.length) {
+    area.innerHTML = '<div class="muted" style="padding:10px 0;">검색 결과가 없습니다.</div>';
+    return;
+  }
+  area.innerHTML = '';
+  var frag = document.createDocumentFragment();
+  for (var i = 0; i < results.length; i++) {
+    (function(v) {
+      var item = document.createElement('div');
+      item.className = 'search-result-item';
+      var refEl = document.createElement('div');
+      refEl.className = 'ref';
+      refEl.style.marginBottom = '6px';
+      refEl.textContent = v.ref;
+      var textEl = document.createElement('div');
+      textEl.style.cssText = 'font-size:14px;line-height:1.7;color:#374151;';
+      // 하이라이트
+      var escaped = esc(v.text);
+      var escapedQ = esc(q);
+      var re = new RegExp('(' + escapedQ.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
+      textEl.innerHTML = escaped.replace(re, '<span class="search-highlight">$1</span>');
+      item.appendChild(refEl);
+      item.appendChild(textEl);
+      frag.appendChild(item);
+    })(results[i]);
+  }
+  area.appendChild(frag);
+}
+
 // ── 모드1: 순서대로 암기 ──
-// 현재 인덱스: 체크 안 된 첫 번째 성구
 function seqCurrentIndex() {
   for (var i = 0; i < VERSES.length; i++) {
     if (!seqMemorized[VERSES[i].ref]) return i;
@@ -254,28 +354,47 @@ function seqUpdateProgress() {
   for (var k in seqMemorized) { if (seqMemorized[k]) done++; }
   document.getElementById('seqProgressPill').textContent = '진행률: ' + done + ' / ' + total;
   document.getElementById('seqProgressBar').style.width = Math.round(done / total * 100) + '%';
+  renderSeqChapterBadges(done);
 }
 
-function makeSeqCard(v, i, isCurrent) {
+function renderSeqChapterBadges() {
+  var wrap = document.getElementById('seqChapterBadges');
+  wrap.innerHTML = '';
+  // 장별 진행률 계산
+  var chMap = {};
+  for (var i = 0; i < VERSES.length; i++) {
+    var v = VERSES[i];
+    if (!chMap[v.chapter]) chMap[v.chapter] = { total: 0, done: 0 };
+    chMap[v.chapter].total++;
+    if (seqMemorized[v.ref]) chMap[v.chapter].done++;
+  }
+  var chapters = Object.keys(chMap).map(Number).sort(function(a,b){return a-b;});
+  for (var c = 0; c < chapters.length; c++) {
+    var ch = chapters[c];
+    var info = chMap[ch];
+    var badge = document.createElement('span');
+    var isDone = info.done === info.total;
+    var isPartial = info.done > 0 && !isDone;
+    badge.className = 'seq-ch-badge' + (isDone ? ' done' : isPartial ? ' partial' : '');
+    badge.textContent = ch + '장 ' + info.done + '/' + info.total;
+    wrap.appendChild(badge);
+  }
+}
+
+function makeSeqCard(v, i, type) {
+  // type: 'current' | 'prev' | 'next'
   var isM = !!seqMemorized[v.ref];
   var card = document.createElement('div');
-
-  if (isCurrent) {
-    card.style.cssText = 'border:2px solid #2563eb;border-radius:14px;padding:18px;background:#eff6ff;box-shadow:0 0 0 3px rgba(37,99,235,0.1);margin-bottom:10px;';
-  } else if (isM) {
-    card.style.cssText = 'border:2px solid #059669;border-radius:14px;padding:14px;background:#f0fdf4;margin-bottom:10px;';
-  } else {
-    card.style.cssText = 'border:2px solid #e2e8f0;border-radius:14px;padding:14px;background:#fff;margin-bottom:10px;';
-  }
+  card.className = 'seq-card ' + type;
   card.id = 'scard-' + i;
 
   var header = document.createElement('div');
-  header.style.cssText = 'display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px;';
+  header.className = 'seq-card-header';
 
   var refEl = document.createElement('span');
   refEl.className = 'ref';
   if (isM) refEl.style.background = '#d1fae5';
-  refEl.textContent = (isM ? '✅ ' : isCurrent ? '📍 ' : '') + v.ref;
+  refEl.textContent = (isM ? '✅ ' : type === 'current' ? '📍 ' : '') + v.ref;
 
   var btnWrap = document.createElement('div');
   btnWrap.style.cssText = 'display:flex;gap:8px;align-items:center;flex-wrap:wrap;';
@@ -296,8 +415,7 @@ function makeSeqCard(v, i, isCurrent) {
   header.appendChild(btnWrap);
 
   var textEl = document.createElement('div');
-  // 현재 성구는 보이기, 나머지는 가리기
-  textEl.className = 'verse-text-area' + (isCurrent ? '' : ' hidden-text');
+  textEl.className = 'verse-text-area' + (type === 'current' ? '' : ' hidden-text');
   textEl.id = 'stext-' + i;
   textEl.textContent = v.text;
 
@@ -313,7 +431,6 @@ function renderSeqScreen() {
   var list = document.getElementById('seqVerseList');
   list.innerHTML = '';
 
-  // 전체 완료
   if (curIdx >= total) {
     var box = document.createElement('div');
     box.style.cssText = 'text-align:center;padding:32px 20px;background:#f0fdf4;border:2px solid #059669;border-radius:16px;';
@@ -330,12 +447,14 @@ function renderSeqScreen() {
     return;
   }
 
-  // 이전 1개 + 현재 1개 + 다음 3개 = 5개
-  var windowStart = Math.max(0, curIdx - 1);
-  var windowEnd = Math.min(total, curIdx + 4);
   var frag = document.createDocumentFragment();
-  for (var i = windowStart; i < windowEnd; i++) {
-    frag.appendChild(makeSeqCard(VERSES[i], i, i === curIdx));
+  // 이전 1개
+  if (curIdx - 1 >= 0) frag.appendChild(makeSeqCard(VERSES[curIdx-1], curIdx-1, 'prev'));
+  // 현재 1개
+  frag.appendChild(makeSeqCard(VERSES[curIdx], curIdx, 'current'));
+  // 다음 3개
+  for (var j = curIdx+1; j < Math.min(total, curIdx+4); j++) {
+    frag.appendChild(makeSeqCard(VERSES[j], j, 'next'));
   }
   list.appendChild(frag);
 }
@@ -376,43 +495,33 @@ function renderChMemGrid() {
 function chMemSelect(ch) {
   chMemCurrentCh = ch;
   var btns = document.querySelectorAll('#chMemGrid .chapter-btn');
-  for (var i = 0; i < btns.length; i++) btns[i].classList.toggle('selected', i + 1 === ch);
-
+  for (var i = 0; i < btns.length; i++) btns[i].classList.toggle('selected', i+1 === ch);
   var verses = VERSES.filter(function(v) { return v.chapter === ch; });
   var area = document.getElementById('chMemVerses');
   if (!verses.length) { area.innerHTML = '<div class="muted">' + ch + '장 데이터가 없습니다.</div>'; return; }
-
   var frag = document.createDocumentFragment();
   var title = document.createElement('div');
   title.style.marginBottom = '12px';
   title.innerHTML = '<strong style="font-size:16px;">요한계시록 ' + ch + '장</strong>'
     + '<span class="muted" style="margin-left:8px;">' + verses.length + '절</span>';
   frag.appendChild(title);
-
   for (var j = 0; j < verses.length; j++) {
     var v = verses[j];
     var card = document.createElement('div');
     card.className = 'ch-verse-card';
-
     var header = document.createElement('div');
     header.className = 'ch-verse-header';
-
     var refEl = document.createElement('span');
     refEl.className = 'ref';
     refEl.textContent = v.ref;
-
     var btn = document.createElement('button');
     btn.className = 'toggle-btn';
     btn.textContent = '👁 보이기/가리기';
-    (function(idx) {
-      btn.onclick = function() { chMemToggleOne(idx); };
-    })(j);
-
+    (function(idx) { btn.onclick = function() { chMemToggleOne(idx); }; })(j);
     var textEl = document.createElement('div');
     textEl.className = 'verse-text-area hidden-text';
     textEl.id = 'chv-' + j;
     textEl.textContent = v.text;
-
     header.appendChild(refEl);
     header.appendChild(btn);
     card.appendChild(header);
@@ -435,8 +544,7 @@ function chMemToggleAll(show) {
   for (var i = 0; i < verses.length; i++) {
     var el = document.getElementById('chv-' + i);
     if (!el) continue;
-    if (show) el.classList.remove('hidden-text');
-    else el.classList.add('hidden-text');
+    if (show) el.classList.remove('hidden-text'); else el.classList.add('hidden-text');
   }
 }
 
@@ -464,6 +572,59 @@ function chQuizClearAll() { chQuizSelectedChapters = []; renderChQuizGrid(); }
 function chQuizGetPool() {
   return VERSES.filter(function(v) { return chQuizSelectedChapters.indexOf(v.chapter) !== -1; });
 }
+
+// 시험 기록 렌더링
+function renderQuizHistory() {
+  var area = document.getElementById('chQuizHistoryArea');
+  var chapters = Object.keys(quizHistory).map(Number).sort(function(a,b){return a-b;});
+  if (!chapters.length) { area.innerHTML = ''; return; }
+  var box = document.createElement('div');
+  box.className = 'quiz-history-box';
+  box.style.marginTop = '20px';
+  var head = document.createElement('div');
+  head.className = 'quiz-history-head';
+  head.innerHTML = '<span>📊 장별 시험 기록</span>';
+  var clearBtn = document.createElement('button');
+  clearBtn.className = 'ghost sm';
+  clearBtn.style.margin = '0';
+  clearBtn.textContent = '기록 초기화';
+  clearBtn.onclick = function() {
+    if (!confirm('시험 기록을 초기화하시겠습니까?')) return;
+    quizHistory = {};
+    saveQuizHistory();
+    renderQuizHistory();
+  };
+  head.appendChild(clearBtn);
+  box.appendChild(head);
+  var table = document.createElement('table');
+  table.className = 'quiz-history-table';
+  var thead = document.createElement('thead');
+  thead.innerHTML = '<tr><th>장</th><th>시도</th><th>평균 점수</th><th>최고 점수</th><th>최근 점수</th></tr>';
+  table.appendChild(thead);
+  var tbody = document.createElement('tbody');
+  for (var c = 0; c < chapters.length; c++) {
+    var ch = chapters[c];
+    var records = quizHistory[ch] || [];
+    if (!records.length) continue;
+    var scores = records.map(function(r){return r.score;});
+    var avg = Math.round(scores.reduce(function(a,b){return a+b;},0) / scores.length);
+    var best = Math.max.apply(null, scores);
+    var last = scores[scores.length - 1];
+    var tr = document.createElement('tr');
+    function scoreClass(s) { return s >= 90 ? 'hist-score-high' : s >= 70 ? 'hist-score-mid' : 'hist-score-low'; }
+    tr.innerHTML = '<td><strong>' + ch + '장</strong></td>'
+      + '<td>' + records.length + '회</td>'
+      + '<td class="' + scoreClass(avg) + '">' + avg + '%</td>'
+      + '<td class="' + scoreClass(best) + '">' + best + '%</td>'
+      + '<td class="' + scoreClass(last) + '">' + last + '%</td>';
+    tbody.appendChild(tr);
+  }
+  table.appendChild(tbody);
+  box.appendChild(table);
+  area.innerHTML = '';
+  area.appendChild(box);
+}
+
 function chQuizStart() {
   if (!chQuizSelectedChapters.length) { alert('장을 1개 이상 선택해주세요.'); return; }
   if (!chQuizGetPool().length) { alert('선택한 장에 데이터가 없습니다.'); return; }
@@ -477,7 +638,7 @@ function chQuizStart() {
 }
 function chQuizRenderRange() {
   var base = chQuizGetPool();
-  var source = chQuizRetryMode ? base.filter(function(v) { return chQuizRetryRefs.indexOf(v.ref) !== -1; }) : base;
+  var source = chQuizRetryMode ? base.filter(function(v){return chQuizRetryRefs.indexOf(v.ref)!==-1;}) : base;
   var chList = chQuizSelectedChapters.slice().sort(function(a,b){return a-b;}).map(function(c){return c+'장';}).join(', ');
   var badge = '<span class="mode-badge" style="background:#f0fdf4;color:#166534;border-color:#86efac;">📖 ' + chList + '</span>';
   if (chQuizRetryMode) badge += '<span class="mode-badge">재시험 모드</span>';
@@ -496,29 +657,29 @@ function chQuizRenderRange() {
     listHtml += '<span class="' + cls + '">' + source[i].ref + '</span>';
   }
   document.getElementById('chQuizRangeList').innerHTML = listHtml;
-  var completed = source.filter(function(v) { return chQuizExamStatuses[v.ref] && chQuizExamStatuses[v.ref].state === 'done'; }).length;
-  var remaining = source.filter(function(v) {
-    var st = chQuizExamStatuses[v.ref];
-    return chQuizRetryMode ? (!st || st.score < 100) : (!st || st.state !== 'done');
+  var completed = source.filter(function(v){return chQuizExamStatuses[v.ref]&&chQuizExamStatuses[v.ref].state==='done';}).length;
+  var remaining = source.filter(function(v){
+    var st=chQuizExamStatuses[v.ref];
+    return chQuizRetryMode?(!st||st.score<100):(!st||st.state!=='done');
   }).length;
   document.getElementById('chQuizRangeSummary').textContent =
     chQuizRetryMode
-      ? '재시험 범위 ' + source.length + '절 · 완료 ' + completed + '절 · 남은 문제 ' + remaining + '절'
-      : '선택 범위 ' + source.length + '절 · 출제 완료 ' + completed + '절 · 남은 문제 ' + remaining + '절';
+      ? '재시험 범위 '+source.length+'절 · 완료 '+completed+'절 · 남은 문제 '+remaining+'절'
+      : '선택 범위 '+source.length+'절 · 출제 완료 '+completed+'절 · 남은 문제 '+remaining+'절';
 }
 function chQuizPick() {
   if (!isDataLoaded) { alert('데이터를 불러오는 중입니다.'); return; }
   if (speechRecognition && isListening) speechRecognition.stop();
   var base = chQuizGetPool();
-  var pool = chQuizRetryMode ? base.filter(function(v) { return chQuizRetryRefs.indexOf(v.ref) !== -1; }) : base;
+  var pool = chQuizRetryMode ? base.filter(function(v){return chQuizRetryRefs.indexOf(v.ref)!==-1;}) : base;
   if (!pool.length) { alert('선택한 장에 성구가 없습니다.'); return; }
   var refs = Object.keys(chQuizExamStatuses);
   for (var r = 0; r < refs.length; r++) {
     if (chQuizExamStatuses[refs[r]].state === 'active') chQuizExamStatuses[refs[r]].state = 'idle';
   }
-  var available = pool.filter(function(v) {
-    var st = chQuizExamStatuses[v.ref];
-    return chQuizRetryMode ? (!st || st.score < 100) : (!st || st.state !== 'done');
+  var available = pool.filter(function(v){
+    var st=chQuizExamStatuses[v.ref];
+    return chQuizRetryMode?(!st||st.score<100):(!st||st.state!=='done');
   });
   if (!available.length) {
     chQuizCurrentQ = null;
@@ -526,19 +687,15 @@ function chQuizPick() {
     document.getElementById('chQuizTestInput').value = '';
     if (chQuizRetryMode) { chQuizRetryMode = false; chQuizRetryRefs = []; }
     chQuizRenderRange();
-    var hasRetry = chQuizGetPool().some(function(v) {
-      var st = chQuizExamStatuses[v.ref];
-      return st && st.state === 'done' && st.score < 100;
+    var hasRetry = chQuizGetPool().some(function(v){
+      var st=chQuizExamStatuses[v.ref];
+      return st&&st.state==='done'&&st.score<100;
     });
     var resultEl = document.getElementById('chQuizResult');
     var box = document.createElement('div');
     box.style.cssText = 'margin-top:16px;padding:20px;background:#f0fdf4;border:2px solid #059669;border-radius:14px;text-align:center;';
-    var icon = document.createElement('div');
-    icon.style.fontSize = '32px'; icon.textContent = '🎉';
-    var msg = document.createElement('div');
-    msg.style.cssText = 'font-weight:800;font-size:16px;color:#065f46;margin:8px 0 4px;';
-    msg.textContent = '모든 성구 출제 완료!';
-    box.appendChild(icon); box.appendChild(msg);
+    box.innerHTML = '<div style="font-size:32px;">🎉</div>'
+      + '<div style="font-weight:800;font-size:16px;color:#065f46;margin:8px 0 4px;">모든 성구 출제 완료!</div>';
     if (hasRetry) {
       var sub = document.createElement('div');
       sub.className = 'muted'; sub.style.marginBottom = '12px';
@@ -549,19 +706,18 @@ function chQuizPick() {
       retryBtn.onclick = chQuizStartRetry;
       box.appendChild(sub); box.appendChild(retryBtn);
     } else {
-      var sub2 = document.createElement('div');
-      sub2.className = 'muted'; sub2.textContent = '모든 성구를 완벽하게 암송했습니다!';
-      box.appendChild(sub2);
+      var s2 = document.createElement('div');
+      s2.className = 'muted'; s2.textContent = '모든 성구를 완벽하게 암송했습니다!';
+      box.appendChild(s2);
     }
     resultEl.innerHTML = ''; resultEl.appendChild(box);
     return;
   }
-  chQuizCurrentQ = available[Math.floor(Math.random() * available.length)];
-  chQuizExamStatuses[chQuizCurrentQ.ref] = { state: 'active', score: chQuizExamStatuses[chQuizCurrentQ.ref] ? chQuizExamStatuses[chQuizCurrentQ.ref].score : null };
+  chQuizCurrentQ = available[Math.floor(Math.random()*available.length)];
+  chQuizExamStatuses[chQuizCurrentQ.ref] = { state:'active', score: chQuizExamStatuses[chQuizCurrentQ.ref] ? chQuizExamStatuses[chQuizCurrentQ.ref].score : null };
   chQuizRenderRange();
   var qa = document.getElementById('chQuizQuestionArea');
-  qa.style.display = 'block';
-  qa.innerHTML = '';
+  qa.style.display = 'block'; qa.innerHTML = '';
   var refEl = document.createElement('div'); refEl.className = 'ref'; refEl.textContent = chQuizCurrentQ.ref;
   var hint = document.createElement('div'); hint.className = 'muted';
   hint.textContent = chQuizRetryMode ? '재시험 성구입니다.' : '이 성구를 암송한 뒤 아래에 입력하세요.';
@@ -571,13 +727,13 @@ function chQuizPick() {
 }
 function chQuizStartRetry() {
   if (!isDataLoaded) { alert('데이터를 불러오는 중입니다.'); return; }
-  var retry = chQuizGetPool().filter(function(v) {
-    var st = chQuizExamStatuses[v.ref];
-    return st && st.state === 'done' && st.score < 100;
+  var retry = chQuizGetPool().filter(function(v){
+    var st=chQuizExamStatuses[v.ref];
+    return st&&st.state==='done'&&st.score<100;
   });
   if (!retry.length) { alert('재시험 대상이 없습니다.'); return; }
   chQuizRetryMode = true;
-  chQuizRetryRefs = retry.map(function(v) { return v.ref; });
+  chQuizRetryRefs = retry.map(function(v){return v.ref;});
   chQuizCurrentQ = null;
   document.getElementById('chQuizQuestionArea').style.display = 'none';
   document.getElementById('chQuizTestInput').value = '';
@@ -595,7 +751,12 @@ function chQuizGrade() {
   if (!chQuizCurrentQ) { alert('먼저 문제를 뽑아주세요.'); return; }
   var user = document.getElementById('chQuizTestInput').value;
   var comp = compareAligned(user, chQuizCurrentQ.text);
-  chQuizExamStatuses[chQuizCurrentQ.ref] = { state: 'done', score: comp.score };
+  chQuizExamStatuses[chQuizCurrentQ.ref] = { state:'done', score:comp.score };
+  // 시험 기록 저장
+  var ch = chQuizCurrentQ.chapter;
+  if (!quizHistory[ch]) quizHistory[ch] = [];
+  quizHistory[ch].push({ date: todayStr(), ref: chQuizCurrentQ.ref, score: comp.score });
+  saveQuizHistory();
   chQuizRenderRange();
   var resultEl = document.getElementById('chQuizResult');
   resultEl.innerHTML = '';
@@ -606,8 +767,7 @@ function chQuizGrade() {
   var label = document.createElement('strong');
   label.style.cssText = 'display:block;margin-top:12px;';
   label.textContent = '정답';
-  var box = document.createElement('div');
-  box.className = 'answer-box';
+  var box = document.createElement('div'); box.className = 'answer-box';
   var line = document.createElement('div'); line.className = 'verse-line';
   var vLabel = document.createElement('div'); vLabel.className = 'verse-label'; vLabel.textContent = chQuizCurrentQ.ref;
   var vText = document.createElement('div'); vText.innerHTML = renderMarkedVerse(chQuizCurrentQ.text, user, comp);
@@ -635,48 +795,46 @@ function compareAligned(userText, correctText) {
   for (var i = 1; i <= m; i++) {
     for (var j = 1; j <= n; j++) {
       var same = user[i-1] === correct[j-1];
-      var diag = dp[i-1][j-1] + (same ? 0 : 1), del = dp[i-1][j] + 1, ins = dp[i][j-1] + 1;
-      var min = Math.min(diag, del, ins);
+      var diag = dp[i-1][j-1]+(same?0:1), del = dp[i-1][j]+1, ins = dp[i][j-1]+1;
+      var min = Math.min(diag,del,ins);
       dp[i][j] = min;
-      if (min === diag) back[i][j] = same ? 'match' : 'replace';
-      else if (min === del) back[i][j] = 'delete';
+      if (min===diag) back[i][j] = same?'match':'replace';
+      else if (min===del) back[i][j] = 'delete';
       else back[i][j] = 'insert';
     }
   }
   var i = m, j = n, result = [];
   while (i > 0 || j > 0) {
     var a = back[i][j];
-    if (a === 'match')        { result.push({ type: 'correct', u: user[i-1], c: correct[j-1] }); i--; j--; }
-    else if (a === 'replace') { result.push({ type: 'wrong',   u: user[i-1], c: correct[j-1] }); i--; j--; }
-    else if (a === 'delete')  { result.push({ type: 'extra',   u: user[i-1], c: '' }); i--; }
-    else                      { result.push({ type: 'wrong',   u: '',        c: correct[j-1] }); j--; }
+    if (a==='match')        { result.push({type:'correct',u:user[i-1],c:correct[j-1]}); i--;j--; }
+    else if (a==='replace') { result.push({type:'wrong',  u:user[i-1],c:correct[j-1]}); i--;j--; }
+    else if (a==='delete')  { result.push({type:'extra',  u:user[i-1],c:''}); i--; }
+    else                    { result.push({type:'wrong',  u:'',       c:correct[j-1]}); j--; }
   }
   result.reverse();
-  var errorCount = result.filter(function(x) { return x.type !== 'correct'; }).length;
-  var score = correct.length === 0 ? 0 : Math.max(0, Math.round((correct.length - errorCount) / correct.length * 100));
-  return { score: score, result: result };
+  var errorCount = result.filter(function(x){return x.type!=='correct';}).length;
+  var score = correct.length===0?0:Math.max(0,Math.round((correct.length-errorCount)/correct.length*100));
+  return { score:score, result:result };
 }
 function renderMarkedVerse(correctText, userText, comp) {
   var cu = buildSpacedUnits(correctText), uu = buildSpacedUnits(userText);
   var cU = cu.units, uU = uu.units, html = '', ci = 0, ui = 0;
   for (var k = 0; k < comp.result.length; k++) {
     var item = comp.result[k];
-    if (item.type === 'extra') {
-      var u = uU[ui];
-      var uChar = u ? esc(u.char) : esc(item.u);
-      var uSp = u ? u.spacesBefore : '';
-      html += uSp + '<span class="char-extra">' + uChar + '</span>';
+    if (item.type==='extra') {
+      var u=uU[ui];
+      html += (u?u.spacesBefore:'')+'<span class="char-extra">'+(u?esc(u.char):esc(item.u))+'</span>';
       ui++; continue;
     }
-    var c = cU[ci]; if (!c) continue;
+    var c=cU[ci]; if (!c) continue;
     html += c.spacesBefore;
-    if (item.type === 'correct') { html += '<span class="char-correct">' + esc(c.char) + '</span>'; ui++; }
-    else { html += '<span class="char-wrong">' + esc(c.char) + '</span>'; if (item.u) ui++; }
+    if (item.type==='correct') { html+='<span class="char-correct">'+esc(c.char)+'</span>'; ui++; }
+    else { html+='<span class="char-wrong">'+esc(c.char)+'</span>'; if(item.u)ui++; }
     ci++;
   }
-  while (ci < cU.length) { html += cU[ci].spacesBefore + '<span class="char-correct">' + esc(cU[ci].char) + '</span>'; ci++; }
-  html += cu.trailingSpaces;
-  while (ui < uU.length) { html += uU[ui].spacesBefore + '<span class="char-extra">' + esc(uU[ui].char) + '</span>'; ui++; }
+  while (ci<cU.length) { html+=cU[ci].spacesBefore+'<span class="char-correct">'+esc(cU[ci].char)+'</span>'; ci++; }
+  html+=cu.trailingSpaces;
+  while (ui<uU.length) { html+=uU[ui].spacesBefore+'<span class="char-extra">'+esc(uU[ui].char)+'</span>'; ui++; }
   return html;
 }
 
@@ -689,40 +847,40 @@ function initSpeechRecognition() {
   speechRecognition.lang = 'ko-KR';
   speechRecognition.interimResults = true;
   speechRecognition.continuous = false;
-  speechRecognition.onstart = function() { isListening = true; updateSpeechBtn(); };
-  speechRecognition.onend   = function() { isListening = false; updateSpeechBtn(); };
-  speechRecognition.onerror = function() { isListening = false; updateSpeechBtn(); };
+  speechRecognition.onstart = function() { isListening=true; updateSpeechBtn(); };
+  speechRecognition.onend   = function() { isListening=false; updateSpeechBtn(); };
+  speechRecognition.onerror = function() { isListening=false; updateSpeechBtn(); };
   speechRecognition.onresult = function(e) {
-    var t = '';
-    for (var i = 0; i < e.results.length; i++) t += e.results[i][0].transcript;
-    var el = document.getElementById('chQuizTestInput');
-    if (el) el.value = t;
+    var t='';
+    for (var i=0;i<e.results.length;i++) t+=e.results[i][0].transcript;
+    var el=document.getElementById('chQuizTestInput');
+    if (el) el.value=t;
   };
   updateSpeechBtn();
 }
 function updateSpeechBtn() {
-  var btn = document.getElementById('chQuizSpeechBtn');
+  var btn=document.getElementById('chQuizSpeechBtn');
   if (!btn) return;
-  btn.style.display = speechSupported ? 'inline-block' : 'none';
-  btn.textContent = isListening ? '🎤 음성 입력 중지' : '🎤 음성 입력 시작';
+  btn.style.display=speechSupported?'inline-block':'none';
+  btn.textContent=isListening?'🎤 음성 입력 중지':'🎤 음성 입력 시작';
 }
 function toggleSpeechInput() {
-  if (!speechSupported || !speechRecognition) { alert('이 기기에서는 음성 입력을 지원하지 않습니다.'); return; }
-  if (!chQuizCurrentQ) { alert('먼저 문제를 뽑아주세요.'); return; }
+  if (!speechSupported||!speechRecognition){alert('이 기기에서는 음성 입력을 지원하지 않습니다.');return;}
+  if (!chQuizCurrentQ){alert('먼저 문제를 뽑아주세요.');return;}
   if (isListening) speechRecognition.stop(); else speechRecognition.start();
 }
 
 initSpeechRecognition();
 fetch('revelation.json')
-  .then(function(res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
-  .then(function(data) {
-    VERSES = data;
-    isDataLoaded = true;
-    document.getElementById('loadingNotice').textContent = '암기 방식을 선택하세요.';
+  .then(function(res){if(!res.ok)throw new Error('HTTP '+res.status);return res.json();})
+  .then(function(data){
+    VERSES=data;
+    isDataLoaded=true;
+    document.getElementById('loadingNotice').textContent='암기 방식을 선택하세요.';
   })
-  .catch(function(err) {
-    console.error('JSON 로드 실패:', err);
-    document.getElementById('loadingNotice').textContent = '⚠️ 성경 데이터를 불러오지 못했습니다. revelation.json 파일 경로를 확인해주세요.';
+  .catch(function(err){
+    console.error('JSON 로드 실패:',err);
+    document.getElementById('loadingNotice').textContent='⚠️ 성경 데이터를 불러오지 못했습니다. revelation.json 파일 경로를 확인해주세요.';
   });
 </script>
 </body>
