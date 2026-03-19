@@ -1,96 +1,92 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Revelation Memory</title>
-  <style>
-    * { box-sizing: border-box; }
-    body { margin:0; font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif; background:#f4f6fb; color:#222; padding:20px; }
-    .container { max-width:980px; margin:0 auto; background:#fff; border-radius:16px; padding:24px; box-shadow:0 8px 24px rgba(0,0,0,0.08); }
-    h1,h2,h3{margin-top:0;}
-    .section{margin-top:28px;padding-top:20px;border-top:1px solid #e5e7eb;}
-    label{display:block;font-weight:700;margin-bottom:8px;}
-    textarea{width:100%;border:1px solid #cfd6e4;border-radius:10px;padding:12px;font-size:15px;background:#fff;min-height:120px;resize:vertical;line-height:1.7;}
-    button{border:none;background:#2563eb;color:white;padding:11px 16px;border-radius:10px;cursor:pointer;font-weight:700;margin-top:10px;margin-right:8px;}
-    button.secondary{background:#64748b;}
-    button.ghost{background:#e5e7eb;color:#374151;}
-    button.retry{background:#dc2626;color:#fff;}
-    button.success{background:#059669;color:#fff;}
-    button.warn{background:#d97706;color:#fff;}
-    button:disabled{opacity:0.55;cursor:not-allowed;}
-    .muted{color:#6b7280;font-size:14px;}
-    .ref{display:inline-block;background:#e8eefc;color:#1d4ed8;font-weight:700;font-size:13px;padding:5px 10px;border-radius:999px;margin-bottom:8px;}
-    .score{font-size:24px;font-weight:800;margin:14px 0 10px;}
-    .answer-box{width:100%;border:1px solid #e5e7eb;border-radius:12px;padding:14px;background:#f8fafc;margin-top:10px;line-height:1.8;white-space:normal;word-break:keep-all;}
-    .verse-line{margin-bottom:6px;white-space:normal;word-break:keep-all;}
-    .verse-line:last-child{margin-bottom:0;}
-    .verse-label{display:block;font-weight:700;color:#1d4ed8;margin-bottom:6px;}
-    .char-correct{color:#111;}
-    .char-wrong{color:#dc2626;font-weight:700;}
-    .char-extra{color:#6b7280;text-decoration:line-through;text-decoration-thickness:2px;}
-    .btns{display:flex;flex-wrap:wrap;gap:8px;}
-    .btns button{margin:0;}
-    .daily-question-box{border:1px solid #e5e7eb;border-radius:14px;padding:16px;background:#fff;margin-top:14px;}
-    .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:#eef2ff;color:#4338ca;font-size:13px;font-weight:700;}
-    .range-box{width:100%;border:1px solid #e5e7eb;border-radius:12px;background:#f8fafc;padding:14px;margin-top:12px;}
-    .range-list{display:flex;flex-wrap:wrap;gap:8px;line-height:1.8;}
-    .range-item{display:inline-block;padding:4px 10px;border-radius:999px;background:#fff;border:1px solid #dbe2ea;color:#111;font-size:14px;}
-    .range-item.active{font-weight:800;border-color:#111;}
-    .range-item.done-perfect{color:#059669;border-color:#059669;background:#ecfdf5;font-weight:700;}
-    .range-item.done-imperfect{color:#dc2626;border-color:#dc2626;background:#fef2f2;font-weight:700;}
-    .range-summary{margin-top:10px;font-size:14px;color:#6b7280;}
-    .mode-badge{display:inline-block;margin-left:8px;padding:4px 8px;border-radius:999px;font-size:12px;font-weight:700;background:#fff7ed;color:#c2410c;border:1px solid #fdba74;}
-    /* 홈 */
-    .mode-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px;}
-    .mode-card{background:#f8fafc;border:2px solid #e2e8f0;border-radius:16px;padding:28px 16px 24px;cursor:pointer;transition:all .18s;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;}
-    .mode-card:hover{border-color:#2563eb;background:#eff6ff;transform:translateY(-3px);box-shadow:0 8px 20px rgba(37,99,235,.12);}
-    .mode-icon{font-size:42px;line-height:1;}
-    .mode-title{font-size:16px;font-weight:800;color:#1e293b;}
-    .mode-desc{font-size:13px;color:#6b7280;line-height:1.6;}
-    /* 장 선택 */
-    .chapter-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
-    .chapter-btn{background:#f1f5f9;color:#374151;border:1.5px solid #e2e8f0;border-radius:10px;padding:8px 14px;font-size:14px;font-weight:700;cursor:pointer;margin:0;transition:all .15s;}
-    .chapter-btn:hover:not(:disabled){background:#e0e7ff;border-color:#818cf8;color:#3730a3;}
-    .chapter-btn.selected{background:#2563eb;border-color:#2563eb;color:#fff;}
-    /* 화면 전환 */
-    .screen{display:none;}
-    .screen.active{display:block;}
-    .back-btn{background:none;color:#6b7280;border:1px solid #e5e7eb;font-size:13px;padding:7px 14px;margin:0 0 8px 0;border-radius:8px;}
-    .back-btn:hover{background:#f1f5f9;}
-    /* 모드1 */
-    .seq-verse-card{border:2px solid #e2e8f0;border-radius:16px;padding:20px;margin-top:16px;background:#fff;}
-    .seq-verse-card .card-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
-    .seq-verse-card .card-meta{font-size:13px;color:#6b7280;}
-    .seq-progress-bar-wrap{background:#e5e7eb;border-radius:999px;height:8px;margin-top:12px;}
-    .seq-progress-bar{background:#2563eb;border-radius:999px;height:8px;transition:width .3s;}
-    /* 가리기/보이기 공통 */
-    .verse-block{border:1px solid #e5e7eb;border-radius:12px;padding:14px;margin:10px 0;background:#f8fafc;line-height:1.8;}
-    .verse-block-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;}
-    .verse-text-area{margin-top:10px;word-break:keep-all;line-height:1.8;}
-    .verse-text-area.hidden-text{filter:blur(6px);user-select:none;pointer-events:none;}
-    .toggle-btn{background:#f1f5f9;color:#374151;border:1px solid #e2e8f0;border-radius:8px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;margin:0;transition:all .15s;}
-    .toggle-btn:hover{background:#e0e7ff;border-color:#818cf8;color:#3730a3;}
-    .toggle-btn.showing{background:#ecfdf5;border-color:#059669;color:#059669;}
-    /* 모드1 완료 체크 */
-    .seq-check-row{display:flex;align-items:center;gap:10px;margin-top:16px;flex-wrap:wrap;}
-    .seq-check-label{font-size:14px;color:#374151;font-weight:600;}
-    .seq-nav-btns{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
-    .seq-nav-btns button{margin:0;}
-    .memorized-badge{display:inline-block;background:#ecfdf5;color:#059669;border:1px solid #059669;border-radius:999px;font-size:12px;font-weight:700;padding:4px 12px;}
-    .not-memorized-badge{display:inline-block;background:#f8fafc;color:#6b7280;border:1px solid #e5e7eb;border-radius:999px;font-size:12px;font-weight:700;padding:4px 12px;}
-    .seq-list-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
-    .seq-list-item{padding:4px 10px;border-radius:999px;border:1px solid #dbe2ea;font-size:13px;cursor:pointer;background:#fff;color:#111;transition:all .12s;}
-    .seq-list-item:hover{border-color:#2563eb;color:#2563eb;}
-    .seq-list-item.current{border-color:#2563eb;background:#2563eb;color:#fff;font-weight:700;}
-    .seq-list-item.memorized{border-color:#059669;background:#ecfdf5;color:#059669;font-weight:700;}
-    @media(max-width:720px){
-      body{padding:12px;}.container{padding:18px;}
-      .mode-cards{grid-template-columns:1fr;gap:12px;}
-      .mode-card{flex-direction:row;text-align:left;padding:18px 16px;gap:14px;}
-      .mode-icon{font-size:32px;flex-shrink:0;}
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Revelation Memory</title>
+<style>
+*{box-sizing:border-box;}
+body{margin:0;font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif;background:#f4f6fb;color:#222;padding:20px;}
+.container{max-width:980px;margin:0 auto;background:#fff;border-radius:16px;padding:24px;box-shadow:0 8px 24px rgba(0,0,0,0.08);}
+h1,h2,h3{margin-top:0;}
+.section{margin-top:28px;padding-top:20px;border-top:1px solid #e5e7eb;}
+label{display:block;font-weight:700;margin-bottom:8px;}
+textarea{width:100%;border:1px solid #cfd6e4;border-radius:10px;padding:12px;font-size:15px;background:#fff;min-height:120px;resize:vertical;line-height:1.7;}
+button{border:none;background:#2563eb;color:white;padding:11px 16px;border-radius:10px;cursor:pointer;font-weight:700;margin-top:10px;margin-right:8px;}
+button.secondary{background:#64748b;}
+button.ghost{background:#e5e7eb;color:#374151;}
+button.retry{background:#dc2626;color:#fff;}
+button.success{background:#059669;color:#fff;}
+button.warn{background:#d97706;color:#fff;}
+button:disabled{opacity:0.55;cursor:not-allowed;}
+.muted{color:#6b7280;font-size:14px;}
+.ref{display:inline-block;background:#e8eefc;color:#1d4ed8;font-weight:700;font-size:13px;padding:5px 10px;border-radius:999px;margin-bottom:8px;}
+.score{font-size:24px;font-weight:800;margin:14px 0 10px;}
+.answer-box{width:100%;border:1px solid #e5e7eb;border-radius:12px;padding:14px;background:#f8fafc;margin-top:10px;line-height:1.8;white-space:normal;word-break:keep-all;}
+.verse-line{margin-bottom:6px;white-space:normal;word-break:keep-all;}
+.verse-line:last-child{margin-bottom:0;}
+.verse-label{display:block;font-weight:700;color:#1d4ed8;margin-bottom:6px;}
+.char-correct{color:#111;}
+.char-wrong{color:#dc2626;font-weight:700;}
+.char-extra{color:#6b7280;text-decoration:line-through;text-decoration-thickness:2px;}
+.btns{display:flex;flex-wrap:wrap;gap:8px;}
+.btns button{margin:0;}
+.daily-question-box{border:1px solid #e5e7eb;border-radius:14px;padding:16px;background:#fff;margin-top:14px;}
+.pill{display:inline-block;padding:6px 10px;border-radius:999px;background:#eef2ff;color:#4338ca;font-size:13px;font-weight:700;}
+.top-info{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;}
+.range-box{width:100%;border:1px solid #e5e7eb;border-radius:12px;background:#f8fafc;padding:14px;margin-top:12px;}
+.range-list{display:flex;flex-wrap:wrap;gap:8px;line-height:1.8;}
+.range-item{display:inline-block;padding:4px 10px;border-radius:999px;background:#fff;border:1px solid #dbe2ea;color:#111;font-size:14px;}
+.range-item.active{font-weight:800;border-color:#111;}
+.range-item.done-perfect{color:#059669;border-color:#059669;background:#ecfdf5;font-weight:700;}
+.range-item.done-imperfect{color:#dc2626;border-color:#dc2626;background:#fef2f2;font-weight:700;}
+.range-summary{margin-top:10px;font-size:14px;color:#6b7280;}
+.mode-badge{display:inline-block;margin-left:8px;padding:4px 8px;border-radius:999px;font-size:12px;font-weight:700;background:#fff7ed;color:#c2410c;border:1px solid #fdba74;}
+.mode-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px;}
+.mode-card{background:#f8fafc;border:2px solid #e2e8f0;border-radius:16px;padding:28px 16px 24px;cursor:pointer;transition:all .18s;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;}
+.mode-card:hover{border-color:#2563eb;background:#eff6ff;transform:translateY(-3px);box-shadow:0 8px 20px rgba(37,99,235,.12);}
+.mode-icon{font-size:42px;line-height:1;}
+.mode-title{font-size:16px;font-weight:800;color:#1e293b;}
+.mode-desc{font-size:13px;color:#6b7280;line-height:1.6;}
+.chapter-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.chapter-btn{background:#f1f5f9;color:#374151;border:1.5px solid #e2e8f0;border-radius:10px;padding:8px 14px;font-size:14px;font-weight:700;cursor:pointer;margin:0;transition:all .15s;}
+.chapter-btn:hover:not(:disabled){background:#e0e7ff;border-color:#818cf8;color:#3730a3;}
+.chapter-btn.selected{background:#2563eb;border-color:#2563eb;color:#fff;}
+.screen{display:none;}
+.screen.active{display:block;}
+.back-btn{background:none;color:#6b7280;border:1px solid #e5e7eb;font-size:13px;padding:7px 14px;margin:0 0 8px 0;border-radius:8px;cursor:pointer;}
+.back-btn:hover{background:#f1f5f9;}
+.seq-verse-card{border:2px solid #e2e8f0;border-radius:16px;padding:20px;margin-top:16px;background:#fff;}
+.seq-verse-card .card-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+.seq-verse-card .card-meta{font-size:13px;color:#6b7280;}
+.seq-progress-bar-wrap{background:#e5e7eb;border-radius:999px;height:8px;margin-top:12px;}
+.seq-progress-bar{background:#2563eb;border-radius:999px;height:8px;transition:width .3s;}
+.verse-block{border:1px solid #e5e7eb;border-radius:12px;padding:14px;margin:10px 0;background:#f8fafc;line-height:1.8;}
+.verse-block-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;}
+.verse-text-area{margin-top:10px;word-break:keep-all;line-height:1.8;}
+.verse-text-area.hidden-text{filter:blur(6px);user-select:none;pointer-events:none;}
+.toggle-btn{background:#f1f5f9;color:#374151;border:1px solid #e2e8f0;border-radius:8px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;margin:0;transition:all .15s;}
+.toggle-btn:hover{background:#e0e7ff;border-color:#818cf8;color:#3730a3;}
+.seq-check-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid #e5e7eb;}
+.seq-check-label{font-weight:700;font-size:14px;}
+.memorized-badge{display:inline-block;background:#ecfdf5;color:#059669;border:1px solid #059669;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;}
+.not-memorized-badge{display:inline-block;background:#fef2f2;color:#dc2626;border:1px solid #dc2626;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;}
+.seq-nav-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.seq-nav-btns button{margin:0;}
+.seq-list-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.seq-dot{display:inline-block;width:28px;height:28px;border-radius:50%;background:#e5e7eb;border:2px solid #e2e8f0;font-size:11px;font-weight:700;text-align:center;line-height:24px;color:#6b7280;cursor:pointer;}
+.seq-dot.memorized{background:#059669;border-color:#059669;color:#fff;}
+.seq-dot.current{background:#2563eb;border-color:#2563eb;color:#fff;}
+.ch-verse-card{border:1px solid #e5e7eb;border-radius:12px;padding:14px;margin:10px 0;background:#f8fafc;}
+.ch-verse-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
+@media(max-width:720px){
+  body{padding:12px;}
+  .container{padding:18px;}
+  .mode-cards{grid-template-columns:1fr;gap:12px;}
+  .mode-card{flex-direction:row;text-align:left;padding:18px 16px;gap:14px;}
+  .mode-icon{font-size:32px;flex-shrink:0;}
+}
+</style>
 </head>
 <body>
 <div class="container">
@@ -105,40 +101,30 @@
       <div class="mode-cards">
         <div class="mode-card" onclick="enterMode('sequential')">
           <div class="mode-icon">📖</div>
-          <div>
-            <div class="mode-title">순서대로 암기</div>
-            <div class="mode-desc">1:1절부터 한 성구씩<br>외우면 체크하고 다음으로</div>
-          </div>
+          <div><div class="mode-title">순서대로 암기</div><div class="mode-desc">1:1절부터 한 절씩<br>외우면 체크하고 다음으로</div></div>
         </div>
         <div class="mode-card" onclick="enterMode('chapterMemory')">
           <div class="mode-icon">📝</div>
-          <div>
-            <div class="mode-title">장별 전체 암기</div>
-            <div class="mode-desc">원하는 장을 선택해<br>해당 장 전체 구절 보기</div>
-          </div>
+          <div><div class="mode-title">장별 전체 암기</div><div class="mode-desc">원하는 장을 선택해<br>해당 장 전체 구절 보기</div></div>
         </div>
         <div class="mode-card" onclick="enterMode('chapterQuiz')">
           <div class="mode-icon">🎯</div>
-          <div>
-            <div class="mode-title">장별 랜덤 시험</div>
-            <div class="mode-desc">원하는 장을 선택해<br>랜덤으로 한 절씩 출제</div>
-          </div>
+          <div><div class="mode-title">장별 랜덤 시험</div><div class="mode-desc">원하는 장을 선택해<br>랜덤으로 한 절씩 출제</div></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 모드1 -->
+  <!-- 모드1: 순서대로 암기 -->
   <div id="screenSequential" class="screen">
     <button class="back-btn" onclick="goHome()">← 처음으로</button>
     <h2 style="margin-top:8px;">📖 순서대로 암기</h2>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;">
-      <div class="pill" id="seqProgressPill">진행률</div>
-      <div class="pill" id="seqMemorizedPill">암기 완료</div>
+    <div class="muted">한 절씩 암기하고 외웠으면 체크하세요. 진행 상황은 자동 저장됩니다.</div>
+    <div class="top-info" style="margin-top:10px;">
+      <div class="pill" id="seqProgressPill">진행률: 0 / 0</div>
+      <div class="pill" id="seqChapterPill">현재 장: -</div>
     </div>
-    <div class="seq-progress-bar-wrap" style="margin-top:12px;">
-      <div class="seq-progress-bar" id="seqProgressBar" style="width:0%;"></div>
-    </div>
+    <div class="seq-progress-bar-wrap"><div class="seq-progress-bar" id="seqProgressBar" style="width:0%;"></div></div>
     <div class="range-box" style="margin-top:16px;">
       <strong>전체 성구</strong>
       <div class="seq-list-row" id="seqListRow"></div>
@@ -169,7 +155,7 @@
     </div>
   </div>
 
-  <!-- 모드2 -->
+  <!-- 모드2: 장별 전체 암기 -->
   <div id="screenChapterMemory" class="screen">
     <button class="back-btn" onclick="goHome()">← 처음으로</button>
     <h2 style="margin-top:12px;">📝 장별 전체 암기</h2>
@@ -185,7 +171,7 @@
     <div id="chMemVerses" style="margin-top:16px;"></div>
   </div>
 
-  <!-- 모드3 -->
+  <!-- 모드3: 장별 랜덤 시험 -->
   <div id="screenChapterQuiz" class="screen">
     <button class="back-btn" onclick="goHome()">← 처음으로</button>
     <h2 style="margin-top:12px;">🎯 장별 랜덤 시험</h2>
@@ -208,12 +194,12 @@
       <div class="btns" style="margin-top:12px;">
         <button id="chQuizPickBtn" onclick="chQuizPick()">문제 뽑기</button>
         <button id="chQuizSpeechBtn" class="secondary" onclick="toggleSpeechInput()" style="display:none;">🎤 음성 입력 시작</button>
-        <button class="secondary" onclick="clearTest()">입력 지우기</button>
+        <button class="secondary" onclick="clearQuizTest()">입력 지우기</button>
       </div>
       <div id="chQuizQuestionArea" class="daily-question-box" style="display:none;"></div>
       <textarea id="chQuizTestInput" placeholder="출제된 성구를 입력하세요" style="margin-top:12px;"></textarea>
       <div class="btns" style="margin-top:10px;">
-        <button id="chQuizGradeBtn" onclick="gradeTest()">채점하기</button>
+        <button id="chQuizGradeBtn" onclick="chQuizGrade()">채점하기</button>
         <button class="secondary" onclick="chQuizPick()">다음 문제</button>
       </div>
       <div id="chQuizResult"></div>
@@ -222,443 +208,505 @@
 </div>
 
 <script>
-  const SEQ_STATE_KEY = "rev-seq-state-v1";
-  let VERSES = [];
-  let isDataLoaded = false;
+var SEQ_STATE_KEY = "rev-seq-state-v1";
+var VERSES = [];
+var isDataLoaded = false;
 
-  // 모드1
-  let seqIndex = 0;
-  let seqTextVisible = false;
-  let seqMemorized = {};
+// 모드1
+var seqIndex = 0;
+var seqTextVisible = false;
+var seqMemorized = {};
 
-  // 모드2
-  let chMemVisibility = {};
+// 모드2
+var chMemCurrentCh = 0;
 
-  // 모드3
-  let chQuizSelectedChapters = new Set();
-  let chQuizCurrentQ = null;
-  let chQuizExamStatuses = {};
-  let chQuizRetryMode = false;
-  let chQuizRetryRefs = [];
+// 모드3
+var chQuizSelectedChapters = [];
+var chQuizCurrentQ = null;
+var chQuizExamStatuses = {};
+var chQuizRetryMode = false;
+var chQuizRetryRefs = [];
 
-  // 음성
-  let speechRecognition = null;
-  let isListening = false;
-  let speechSupported = false;
+// 음성
+var speechRecognition = null;
+var isListening = false;
+var speechSupported = false;
 
-  // ── 유틸 ──
-  function escapeHtml(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
-  function normalize(t){return(t||"").replace(/\s+/g,"");}
-  function getScoreColor(s){return s>=90?"#059669":s>=70?"#d97706":"#dc2626";}
+function escapeHtml(t) {
+  return String(t)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+function normalize(t) { return (t || "").replace(/\s+/g, ""); }
+function getScoreColor(s) { return s >= 90 ? "#059669" : s >= 70 ? "#d97706" : "#dc2626"; }
 
-  // ── 저장/불러오기 ──
-  function saveSeqState(){localStorage.setItem(SEQ_STATE_KEY,JSON.stringify({seqIndex,seqMemorized}));}
-  function loadSeqState(){
-    const s=JSON.parse(localStorage.getItem(SEQ_STATE_KEY)||"null");
-    if(s){seqIndex=s.seqIndex||0;seqMemorized=s.seqMemorized||{};}
-  }
+function saveSeqState() {
+  localStorage.setItem(SEQ_STATE_KEY, JSON.stringify({ seqIndex: seqIndex, seqMemorized: seqMemorized }));
+}
+function loadSeqState() {
+  var s = JSON.parse(localStorage.getItem(SEQ_STATE_KEY) || "null");
+  if (s) { seqIndex = s.seqIndex || 0; seqMemorized = s.seqMemorized || {}; }
+}
 
-  // ── 화면 전환 ──
-  function showScreen(id){
-    document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-    document.getElementById(id).classList.add("active");
-    window.scrollTo({top:0,behavior:"smooth"});
-  }
-  function goHome(){
-    if(speechRecognition&&isListening)speechRecognition.stop();
-    showScreen("screenHome");
-  }
-  function enterMode(mode){
-    if(!isDataLoaded)return alert("성경 데이터를 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
-    if(mode==="sequential"){
-      loadSeqState();
-      seqIndex=Math.min(seqIndex,VERSES.length-1);
-      seqTextVisible=false;
-      renderSeqScreen();
-      showScreen("screenSequential");
-    }else if(mode==="chapterMemory"){
-      chMemVisibility={};
-      renderChMemGrid();
-      document.getElementById("chMemVerses").innerHTML="";
-      showScreen("screenChapterMemory");
-    }else if(mode==="chapterQuiz"){
-      chQuizSelectedChapters.clear();
-      chQuizCurrentQ=null;chQuizExamStatuses={};chQuizRetryMode=false;chQuizRetryRefs=[];
-      document.getElementById("chQuizArea").style.display="none";
-      document.getElementById("chQuizQuestionArea").style.display="none";
-      document.getElementById("chQuizTestInput").value="";
-      document.getElementById("chQuizResult").innerHTML="";
-      renderChQuizGrid();
-      showScreen("screenChapterQuiz");
-    }
-  }
+function showScreen(id) {
+  var screens = document.querySelectorAll(".screen");
+  for (var i = 0; i < screens.length; i++) screens[i].classList.remove("active");
+  document.getElementById(id).classList.add("active");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
 
-  // ── 모드1 ──
-  function renderSeqScreen(){
-    if(!VERSES.length)return;
-    const total=VERSES.length;
-    const memCount=Object.values(seqMemorized).filter(v=>v).length;
-    const pct=Math.round((memCount/total)*100);
-    document.getElementById("seqProgressPill").textContent=`${seqIndex+1} / ${total}절`;
-    document.getElementById("seqMemorizedPill").textContent=`암기 완료: ${memCount}절 (${pct}%)`;
-    document.getElementById("seqProgressBar").style.width=pct+"%";
+function goHome() {
+  if (speechRecognition && isListening) speechRecognition.stop();
+  showScreen("screenHome");
+}
 
-    const listRow=document.getElementById("seqListRow");
-    listRow.innerHTML=VERSES.map((v,i)=>{
-      let cls="seq-list-item";
-      if(i===seqIndex)cls+=" current";
-      else if(seqMemorized[v.ref])cls+=" memorized";
-      return`<span class="${cls}" onclick="seqJumpTo(${i})">${v.ref}</span>`;
-    }).join("");
-
-    const v=VERSES[seqIndex];
-    document.getElementById("seqCurrentRef").textContent=v.ref;
-    document.getElementById("seqCurrentIndex").textContent=`${seqIndex+1} / ${total}`;
-    document.getElementById("seqVerseText").textContent=v.text;
-
-    seqTextVisible=false;
-    updateSeqToggleBtn();
-
-    const isMem=!!seqMemorized[v.ref];
-    const badge=document.getElementById("seqMemBadge");
-    const checkBtn=document.getElementById("seqCheckBtn");
-    if(isMem){
-      badge.className="memorized-badge";badge.textContent="✓ 암기 완료";
-      checkBtn.textContent="✓ 완료 해제";checkBtn.className="secondary";
-    }else{
-      badge.className="not-memorized-badge";badge.textContent="미완료";
-      checkBtn.textContent="✓ 암기 완료 체크";checkBtn.className="success";
-    }
-    checkBtn.style.margin="0";
-    document.getElementById("seqPrevBtn").disabled=seqIndex===0;
-    document.getElementById("seqNextBtn").disabled=seqIndex===VERSES.length-1;
-
-    const cur=listRow.querySelector(".current");
-    if(cur)cur.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});
-  }
-
-  function updateSeqToggleBtn(){
-    const btn=document.getElementById("seqToggleBtn");
-    const el=document.getElementById("seqVerseText");
-    if(seqTextVisible){
-      btn.textContent="🙈 가리기";btn.className="toggle-btn showing";
-      el.classList.remove("hidden-text");
-    }else{
-      btn.textContent="👁 보이기";btn.className="toggle-btn";
-      el.classList.add("hidden-text");
-    }
-  }
-
-  function seqToggleText(){seqTextVisible=!seqTextVisible;updateSeqToggleBtn();}
-
-  function seqToggleMemorized(){
-    const v=VERSES[seqIndex];
-    seqMemorized[v.ref]=!seqMemorized[v.ref];
-    saveSeqState();
-    const wasMem=seqMemorized[v.ref];
+function enterMode(mode) {
+  if (!isDataLoaded) { alert("성경 데이터를 불러오는 중입니다. 잠시 후 다시 시도해주세요."); return; }
+  if (mode === "sequential") {
+    loadSeqState();
+    seqIndex = Math.min(seqIndex, VERSES.length - 1);
+    seqTextVisible = false;
     renderSeqScreen();
-    if(wasMem&&seqIndex<VERSES.length-1)setTimeout(()=>seqGo(1),400);
-  }
-
-  function seqGo(dir){
-    const next=seqIndex+dir;
-    if(next<0||next>=VERSES.length)return;
-    seqIndex=next;saveSeqState();renderSeqScreen();
-  }
-
-  function seqJumpTo(i){
-    seqIndex=i;saveSeqState();renderSeqScreen();
-    document.getElementById("seqVerseCard").scrollIntoView({behavior:"smooth",block:"start"});
-  }
-
-  function seqGoFirst(){seqJumpTo(0);}
-
-  function seqGoFirstUnmemorized(){
-    const idx=VERSES.findIndex(v=>!seqMemorized[v.ref]);
-    if(idx===-1)return alert("모든 성구를 암기 완료했습니다! 🎉");
-    seqJumpTo(idx);
-  }
-
-  // ── 모드2 ──
-  function renderChMemGrid(){
-    document.getElementById("chMemGrid").innerHTML=
-      Array.from({length:22},(_,i)=>i+1).map(ch=>
-        `<button class="chapter-btn" onclick="chMemSelect(${ch})">${ch}장</button>`
-      ).join("");
-  }
-
-  function chMemSelect(ch){
-    document.querySelectorAll("#chMemGrid .chapter-btn").forEach((b,i)=>b.classList.toggle("selected",i+1===ch));
-    const verses=VERSES.filter(v=>v.chapter===ch);
-    const area=document.getElementById("chMemVerses");
-    if(!verses.length){area.innerHTML=`<div class="muted">${ch}장 데이터가 없습니다.</div>`;return;}
-    verses.forEach(v=>{if(chMemVisibility[v.ref]===undefined)chMemVisibility[v.ref]=false;});
-    area.innerHTML=`
-      <div style="margin-bottom:6px;margin-top:4px;">
-        <strong style="font-size:16px;">요한계시록 ${ch}장</strong>
-        <span class="muted" style="margin-left:8px;">${verses.length}절</span>
-      </div>
-      ${verses.map(v=>buildVerseBlock(v)).join("")}`;
-    area.scrollIntoView({behavior:"smooth",block:"start"});
-  }
-
-  function buildVerseBlock(v){
-    const visible=!!chMemVisibility[v.ref];
-    const safeRef=v.ref.replace(/'/g,"\\'");
-    return`<div class="verse-block">
-      <div class="verse-block-header">
-        <span class="ref" style="margin-bottom:0;">${v.ref}</span>
-        <button class="toggle-btn${visible?" showing":""}" onclick="chMemToggleVerse('${safeRef}','${CSS.escape(v.ref)}')">
-          ${visible?"🙈 가리기":"👁 보이기"}
-        </button>
-      </div>
-      <div class="verse-text-area${visible?"":" hidden-text"}" id="vtext-${CSS.escape(v.ref)}">
-        ${escapeHtml(v.text)}
-      </div>
-    </div>`;
-  }
-
-  function chMemToggleVerse(ref,escapedRef){
-    chMemVisibility[ref]=!chMemVisibility[ref];
-    const textEl=document.getElementById("vtext-"+escapedRef);
-    const btnEl=textEl?.previousElementSibling?.querySelector(".toggle-btn");
-    if(!textEl||!btnEl)return;
-    if(chMemVisibility[ref]){
-      textEl.classList.remove("hidden-text");btnEl.textContent="🙈 가리기";btnEl.classList.add("showing");
-    }else{
-      textEl.classList.add("hidden-text");btnEl.textContent="👁 보이기";btnEl.classList.remove("showing");
-    }
-  }
-
-  function chMemToggleAll(show){
-    document.querySelectorAll("#chMemVerses .verse-text-area").forEach(el=>{
-      if(show)el.classList.remove("hidden-text");else el.classList.add("hidden-text");
-    });
-    document.querySelectorAll("#chMemVerses .toggle-btn").forEach(btn=>{
-      btn.textContent=show?"🙈 가리기":"👁 보이기";
-      btn.classList.toggle("showing",show);
-    });
-    // sync visibility map
-    document.querySelectorAll("#chMemVerses .verse-text-area").forEach(el=>{
-      const ref=el.id.replace("vtext-","");chMemVisibility[ref]=show;
-    });
-  }
-
-  // ── 모드3 ──
-  function renderChQuizGrid(){
-    document.getElementById("chQuizGrid").innerHTML=
-      Array.from({length:22},(_,i)=>i+1).map(ch=>{
-        const sel=chQuizSelectedChapters.has(ch);
-        return`<button class="chapter-btn${sel?" selected":""}" onclick="chQuizToggle(${ch})">${ch}장</button>`;
-      }).join("");
-  }
-
-  function chQuizToggle(ch){
-    if(chQuizSelectedChapters.has(ch))chQuizSelectedChapters.delete(ch);else chQuizSelectedChapters.add(ch);
+    showScreen("screenSequential");
+  } else if (mode === "chapterMemory") {
+    renderChMemGrid();
+    document.getElementById("chMemVerses").innerHTML = "";
+    chMemCurrentCh = 0;
+    showScreen("screenChapterMemory");
+  } else if (mode === "chapterQuiz") {
+    chQuizSelectedChapters = [];
+    chQuizCurrentQ = null;
+    chQuizExamStatuses = {};
+    chQuizRetryMode = false;
+    chQuizRetryRefs = [];
+    document.getElementById("chQuizArea").style.display = "none";
+    document.getElementById("chQuizQuestionArea").style.display = "none";
+    document.getElementById("chQuizTestInput").value = "";
+    document.getElementById("chQuizResult").innerHTML = "";
     renderChQuizGrid();
+    showScreen("screenChapterQuiz");
   }
-  function chQuizSelectAll(){Array.from({length:22},(_,i)=>i+1).forEach(ch=>chQuizSelectedChapters.add(ch));renderChQuizGrid();}
-  function chQuizClearAll(){chQuizSelectedChapters.clear();renderChQuizGrid();}
+}
 
-  function chQuizStart(){
-    if(chQuizSelectedChapters.size===0)return alert("장을 1개 이상 선택해주세요.");
-    if(!VERSES.filter(v=>chQuizSelectedChapters.has(v.chapter)).length)return alert("선택한 장에 데이터가 없습니다.");
-    chQuizCurrentQ=null;chQuizExamStatuses={};chQuizRetryMode=false;chQuizRetryRefs=[];
-    document.getElementById("chQuizQuestionArea").style.display="none";
-    document.getElementById("chQuizTestInput").value="";
-    document.getElementById("chQuizResult").innerHTML="";
-    document.getElementById("chQuizArea").style.display="block";
+// ── 모드1 ──
+function renderSeqScreen() {
+  var total = VERSES.length;
+  var memorizedCount = Object.keys(seqMemorized).filter(function(k) { return seqMemorized[k]; }).length;
+  document.getElementById("seqProgressPill").textContent = "진행률: " + memorizedCount + " / " + total;
+  document.getElementById("seqProgressBar").style.width = (Math.round(memorizedCount / total * 100)) + "%";
+
+  var v = VERSES[seqIndex];
+  if (!v) return;
+  document.getElementById("seqChapterPill").textContent = "현재: 계 " + v.chapter + "장";
+  document.getElementById("seqCurrentRef").textContent = v.ref;
+  document.getElementById("seqCurrentIndex").textContent = (seqIndex + 1) + " / " + total;
+  document.getElementById("seqVerseText").textContent = v.text;
+
+  seqTextVisible = false;
+  var textEl = document.getElementById("seqVerseText");
+  textEl.classList.add("hidden-text");
+  document.getElementById("seqToggleBtn").textContent = "👁 보이기";
+
+  var isMemorized = !!seqMemorized[v.ref];
+  document.getElementById("seqMemBadge").textContent = isMemorized ? "완료" : "미완료";
+  document.getElementById("seqMemBadge").className = isMemorized ? "memorized-badge" : "not-memorized-badge";
+  document.getElementById("seqCheckBtn").textContent = isMemorized ? "✓ 완료 취소" : "✓ 암기 완료 체크";
+  document.getElementById("seqCheckBtn").className = isMemorized ? "ghost" : "success";
+  document.getElementById("seqCheckBtn").style.margin = "0";
+
+  document.getElementById("seqPrevBtn").disabled = seqIndex === 0;
+  document.getElementById("seqNextBtn").disabled = seqIndex === total - 1;
+
+  // 점 목록
+  var row = document.getElementById("seqListRow");
+  var html = "";
+  for (var i = 0; i < VERSES.length; i++) {
+    var cls = "seq-dot";
+    if (i === seqIndex) cls += " current";
+    else if (seqMemorized[VERSES[i].ref]) cls += " memorized";
+    html += '<span class="' + cls + '" onclick="seqJump(' + i + ')" title="' + VERSES[i].ref + '">' + (i + 1) + '</span>';
+  }
+  row.innerHTML = html;
+}
+
+function seqToggleText() {
+  seqTextVisible = !seqTextVisible;
+  var textEl = document.getElementById("seqVerseText");
+  if (seqTextVisible) {
+    textEl.classList.remove("hidden-text");
+    document.getElementById("seqToggleBtn").textContent = "🙈 가리기";
+  } else {
+    textEl.classList.add("hidden-text");
+    document.getElementById("seqToggleBtn").textContent = "👁 보이기";
+  }
+}
+
+function seqToggleMemorized() {
+  var v = VERSES[seqIndex];
+  if (!v) return;
+  seqMemorized[v.ref] = !seqMemorized[v.ref];
+  saveSeqState();
+  renderSeqScreen();
+  if (seqMemorized[v.ref] && seqIndex < VERSES.length - 1) {
+    setTimeout(function() { seqGo(1); }, 400);
+  }
+}
+
+function seqGo(dir) {
+  seqIndex = Math.max(0, Math.min(VERSES.length - 1, seqIndex + dir));
+  saveSeqState();
+  renderSeqScreen();
+}
+
+function seqJump(idx) {
+  seqIndex = idx;
+  saveSeqState();
+  renderSeqScreen();
+  document.getElementById("seqVerseCard").scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function seqGoFirst() {
+  seqIndex = 0;
+  saveSeqState();
+  renderSeqScreen();
+}
+
+function seqGoFirstUnmemorized() {
+  for (var i = 0; i < VERSES.length; i++) {
+    if (!seqMemorized[VERSES[i].ref]) { seqJump(i); return; }
+  }
+  alert("모든 성구를 완료했습니다!");
+}
+
+// ── 모드2 ──
+function renderChMemGrid() {
+  var html = "";
+  for (var i = 1; i <= 22; i++) {
+    html += '<button class="chapter-btn" onclick="chMemSelect(' + i + ')">' + i + '장</button>';
+  }
+  document.getElementById("chMemGrid").innerHTML = html;
+}
+
+function chMemSelect(ch) {
+  chMemCurrentCh = ch;
+  var btns = document.querySelectorAll("#chMemGrid .chapter-btn");
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].classList.toggle("selected", i + 1 === ch);
+  }
+  var verses = VERSES.filter(function(v) { return v.chapter === ch; });
+  var area = document.getElementById("chMemVerses");
+  if (!verses.length) { area.innerHTML = '<div class="muted">' + ch + '장 데이터가 없습니다.</div>'; return; }
+  var html = '<div style="margin-bottom:12px;"><strong style="font-size:16px;">요한계시록 ' + ch + '장</strong>'
+    + '<span class="muted" style="margin-left:8px;">' + verses.length + '절</span></div>';
+  for (var j = 0; j < verses.length; j++) {
+    var v = verses[j];
+    var sid = "chtext-" + v.ref.replace(/[: ]/g, "-");
+    html += '<div class="ch-verse-card">'
+      + '<div class="ch-verse-header">'
+      + '<span class="ref">' + v.ref + '</span>'
+      + '<button class="toggle-btn" onclick="chMemToggleOne(\'' + sid + '\')">👁 보이기/가리기</button>'
+      + '</div>'
+      + '<div class="verse-text-area hidden-text" id="' + sid + '">' + escapeHtml(v.text) + '</div>'
+      + '</div>';
+  }
+  area.innerHTML = html;
+  area.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function chMemToggleOne(sid) {
+  var el = document.getElementById(sid);
+  if (el) el.classList.toggle("hidden-text");
+}
+
+function chMemToggleAll(show) {
+  if (!chMemCurrentCh) return;
+  var verses = VERSES.filter(function(v) { return v.chapter === chMemCurrentCh; });
+  for (var i = 0; i < verses.length; i++) {
+    var sid = "chtext-" + verses[i].ref.replace(/[: ]/g, "-");
+    var el = document.getElementById(sid);
+    if (!el) continue;
+    if (show) el.classList.remove("hidden-text");
+    else el.classList.add("hidden-text");
+  }
+}
+
+// ── 모드3 ──
+function renderChQuizGrid() {
+  var html = "";
+  for (var i = 1; i <= 22; i++) {
+    var sel = chQuizSelectedChapters.indexOf(i) !== -1;
+    html += '<button class="chapter-btn' + (sel ? " selected" : "") + '" onclick="chQuizToggle(' + i + ')">' + i + '장</button>';
+  }
+  document.getElementById("chQuizGrid").innerHTML = html;
+}
+
+function chQuizToggle(ch) {
+  var idx = chQuizSelectedChapters.indexOf(ch);
+  if (idx !== -1) chQuizSelectedChapters.splice(idx, 1);
+  else chQuizSelectedChapters.push(ch);
+  renderChQuizGrid();
+}
+
+function chQuizSelectAll() {
+  chQuizSelectedChapters = [];
+  for (var i = 1; i <= 22; i++) chQuizSelectedChapters.push(i);
+  renderChQuizGrid();
+}
+
+function chQuizClearAll() {
+  chQuizSelectedChapters = [];
+  renderChQuizGrid();
+}
+
+function chQuizGetPool() {
+  return VERSES.filter(function(v) { return chQuizSelectedChapters.indexOf(v.chapter) !== -1; });
+}
+
+function chQuizStart() {
+  if (!chQuizSelectedChapters.length) { alert("장을 1개 이상 선택해주세요."); return; }
+  var pool = chQuizGetPool();
+  if (!pool.length) { alert("선택한 장에 데이터가 없습니다."); return; }
+  chQuizCurrentQ = null;
+  chQuizExamStatuses = {};
+  chQuizRetryMode = false;
+  chQuizRetryRefs = [];
+  document.getElementById("chQuizQuestionArea").style.display = "none";
+  document.getElementById("chQuizTestInput").value = "";
+  document.getElementById("chQuizResult").innerHTML = "";
+  document.getElementById("chQuizArea").style.display = "block";
+  chQuizRenderRange();
+  document.getElementById("chQuizArea").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function chQuizRenderRange() {
+  var base = chQuizGetPool();
+  var source = chQuizRetryMode ? base.filter(function(v) { return chQuizRetryRefs.indexOf(v.ref) !== -1; }) : base;
+  var chList = chQuizSelectedChapters.slice().sort(function(a,b){return a-b;}).map(function(c){return c+"장";}).join(", ");
+  var badge = '<span class="mode-badge" style="background:#f0fdf4;color:#166534;border-color:#86efac;">📖 ' + chList + '</span>';
+  if (chQuizRetryMode) badge += '<span class="mode-badge">재시험 모드</span>';
+  document.getElementById("chQuizModeBadge").innerHTML = badge;
+  if (!source.length) {
+    document.getElementById("chQuizRangeList").innerHTML = '<span class="muted">성구가 없습니다.</span>';
+    document.getElementById("chQuizRangeSummary").textContent = "";
+    return;
+  }
+  var listHtml = "";
+  for (var i = 0; i < source.length; i++) {
+    var st = chQuizExamStatuses[source[i].ref] || { state: "idle" };
+    var cls = "range-item";
+    if (st.state === "active") cls += " active";
+    else if (st.state === "done") cls += st.score === 100 ? " done-perfect" : " done-imperfect";
+    listHtml += '<span class="' + cls + '">' + source[i].ref + '</span>';
+  }
+  document.getElementById("chQuizRangeList").innerHTML = listHtml;
+  var completed = source.filter(function(v) { return chQuizExamStatuses[v.ref] && chQuizExamStatuses[v.ref].state === "done"; }).length;
+  var remaining = source.filter(function(v) {
+    var st = chQuizExamStatuses[v.ref];
+    return chQuizRetryMode ? (!st || st.score < 100) : (!st || st.state !== "done");
+  }).length;
+  document.getElementById("chQuizRangeSummary").textContent =
+    chQuizRetryMode
+      ? "재시험 범위 " + source.length + "절 · 완료 " + completed + "절 · 남은 문제 " + remaining + "절"
+      : "선택 범위 " + source.length + "절 · 출제 완료 " + completed + "절 · 남은 문제 " + remaining + "절";
+}
+
+function chQuizPick() {
+  if (!isDataLoaded) { alert("데이터를 불러오는 중입니다."); return; }
+  if (speechRecognition && isListening) speechRecognition.stop();
+  var base = chQuizGetPool();
+  var pool = chQuizRetryMode ? base.filter(function(v) { return chQuizRetryRefs.indexOf(v.ref) !== -1; }) : base;
+  if (!pool.length) { alert("선택한 장에 성구가 없습니다."); return; }
+  var refs = Object.keys(chQuizExamStatuses);
+  for (var r = 0; r < refs.length; r++) {
+    if (chQuizExamStatuses[refs[r]].state === "active") chQuizExamStatuses[refs[r]].state = "idle";
+  }
+  var available = pool.filter(function(v) {
+    var st = chQuizExamStatuses[v.ref];
+    return chQuizRetryMode ? (!st || st.score < 100) : (!st || st.state !== "done");
+  });
+  if (!available.length) {
+    chQuizCurrentQ = null;
+    document.getElementById("chQuizQuestionArea").style.display = "none";
+    document.getElementById("chQuizTestInput").value = "";
+    if (chQuizRetryMode) { chQuizRetryMode = false; chQuizRetryRefs = []; }
     chQuizRenderRange();
-    document.getElementById("chQuizArea").scrollIntoView({behavior:"smooth",block:"start"});
-  }
-
-  function chQuizGetPool(){return VERSES.filter(v=>chQuizSelectedChapters.has(v.chapter));}
-
-  function chQuizRenderRange(){
-    const base=chQuizGetPool();
-    const source=chQuizRetryMode?base.filter(v=>chQuizRetryRefs.includes(v.ref)):base;
-    const chList=[...chQuizSelectedChapters].sort((a,b)=>a-b).map(c=>`${c}장`).join(", ");
-    let badge=`<span class="mode-badge" style="background:#f0fdf4;color:#166534;border-color:#86efac;">📖 ${chList}</span>`;
-    if(chQuizRetryMode)badge+=`<span class="mode-badge">재시험 모드</span>`;
-    document.getElementById("chQuizModeBadge").innerHTML=badge;
-    if(!source.length){
-      document.getElementById("chQuizRangeList").innerHTML=`<span class="muted">성구가 없습니다.</span>`;
-      document.getElementById("chQuizRangeSummary").textContent="";return;
-    }
-    document.getElementById("chQuizRangeList").innerHTML=source.map(v=>{
-      const st=chQuizExamStatuses[v.ref]||{state:"idle"};
-      let cls="range-item";
-      if(st.state==="active")cls+=" active";
-      else if(st.state==="done")cls+=st.score===100?" done-perfect":" done-imperfect";
-      return`<span class="${cls}">${v.ref}</span>`;
-    }).join("");
-    const completed=source.filter(v=>chQuizExamStatuses[v.ref]?.state==="done").length;
-    const remaining=source.filter(v=>{const st=chQuizExamStatuses[v.ref];return chQuizRetryMode?(!st||st.score<100):(!st||st.state!=="done");}).length;
-    document.getElementById("chQuizRangeSummary").textContent=
-      chQuizRetryMode?`재시험 범위 ${source.length}절 · 완료 ${completed}절 · 남은 문제 ${remaining}절`
-                     :`선택 범위 ${source.length}절 · 출제 완료 ${completed}절 · 남은 문제 ${remaining}절`;
-  }
-
-  function chQuizPick(){
-    if(!isDataLoaded)return alert("데이터를 불러오는 중입니다.");
-    if(speechRecognition&&isListening)speechRecognition.stop();
-    const base=chQuizGetPool();
-    const pool=chQuizRetryMode?base.filter(v=>chQuizRetryRefs.includes(v.ref)):base;
-    if(!pool.length)return alert("선택한 장에 성구가 없습니다.");
-    Object.keys(chQuizExamStatuses).forEach(r=>{if(chQuizExamStatuses[r].state==="active")chQuizExamStatuses[r].state="idle";});
-    const available=pool.filter(v=>{const st=chQuizExamStatuses[v.ref];return chQuizRetryMode?(!st||st.score<100):(!st||st.state!=="done");});
-    if(!available.length){
-      chQuizCurrentQ=null;
-      document.getElementById("chQuizQuestionArea").style.display="none";
-      document.getElementById("chQuizTestInput").value="";
-      if(chQuizRetryMode){chQuizRetryMode=false;chQuizRetryRefs=[];}
-      chQuizRenderRange();
-      const hasRetry=chQuizGetPool().some(v=>{const st=chQuizExamStatuses[v.ref];return st&&st.state==="done"&&st.score<100;});
-      document.getElementById("chQuizResult").innerHTML=`
-        <div style="margin-top:16px;padding:20px;background:#f0fdf4;border:2px solid #059669;border-radius:14px;text-align:center;">
-          <div style="font-size:32px;">🎉</div>
-          <div style="font-weight:800;font-size:16px;color:#065f46;margin:8px 0 4px;">모든 성구 출제 완료!</div>
-          ${hasRetry
-            ? `<div class="muted" style="margin-bottom:12px;">100점 미만인 성구가 있습니다. 재시험을 볼 수 있어요.</div><button class="retry" style="margin:0;" onclick="chQuizStartRetry()">🔄 재시험 시작</button>`
-            : `<div class="muted">모든 성구를 완벽하게 암송했습니다!</div>`}
-        </div>`;
-      return;
-    }
-    chQuizCurrentQ=available[Math.floor(Math.random()*available.length)];
-    chQuizExamStatuses[chQuizCurrentQ.ref]={state:"active",score:chQuizExamStatuses[chQuizCurrentQ.ref]?.score??null};
-    chQuizRenderRange();
-    document.getElementById("chQuizQuestionArea").style.display="block";
-    document.getElementById("chQuizQuestionArea").innerHTML=`
-      <div class="ref">${chQuizCurrentQ.ref}</div>
-      <div class="muted">${chQuizRetryMode?"재시험 성구입니다.":"이 성구를 암송한 뒤 아래에 입력하세요."}</div>`;
-    document.getElementById("chQuizTestInput").value="";
-    document.getElementById("chQuizResult").innerHTML="";
-  }
-
-  function chQuizStartRetry(){
-    if(!isDataLoaded)return alert("데이터를 불러오는 중입니다.");
-    const retry=chQuizGetPool().filter(v=>{const st=chQuizExamStatuses[v.ref];return st&&st.state==="done"&&st.score<100;});
-    if(!retry.length)return alert("재시험 대상이 없습니다.");
-    chQuizRetryMode=true;chQuizRetryRefs=retry.map(v=>v.ref);chQuizCurrentQ=null;
-    document.getElementById("chQuizQuestionArea").style.display="none";
-    document.getElementById("chQuizTestInput").value="";document.getElementById("chQuizResult").innerHTML="";
-    chQuizRenderRange();alert("재시험 모드가 시작되었습니다.");
-  }
-
-  function clearTest(){
-    document.getElementById("chQuizTestInput").value="";
-    document.getElementById("chQuizResult").innerHTML="";
-    if(speechRecognition&&isListening)speechRecognition.stop();
-  }
-
-  function gradeTest(){
-    if(!isDataLoaded)return alert("데이터를 불러오는 중입니다.");
-    if(!chQuizCurrentQ)return alert("먼저 문제를 뽑아주세요.");
-    const user=document.getElementById("chQuizTestInput").value;
-    const comp=compareAligned(user,chQuizCurrentQ.text);
-    chQuizExamStatuses[chQuizCurrentQ.ref]={state:"done",score:comp.score};
-    chQuizRenderRange();
-    document.getElementById("chQuizResult").innerHTML=`
-      <div class="score" style="color:${getScoreColor(comp.score)};">정확도: ${comp.score}%</div>
-      <strong style="display:block;margin-top:12px;">정답</strong>
-      <div class="answer-box"><div class="verse-line">
-        <div class="verse-label">${chQuizCurrentQ.ref}</div>
-        <div>${renderMarkedVerse(chQuizCurrentQ.text,user,comp)}</div>
-      </div></div>`;
-  }
-
-  // ── Levenshtein ──
-  function buildSpacedUnits(text){
-    const units=[];let sb="";
-    for(const ch of text||""){if(/\s/.test(ch))sb+=ch;else{units.push({spacesBefore:sb,char:ch});sb="";}}
-    return{units,trailingSpaces:sb};
-  }
-  function compareAligned(userText,correctText){
-    const user=normalize(userText),correct=normalize(correctText);
-    const m=user.length,n=correct.length;
-    const dp=Array.from({length:m+1},()=>Array(n+1).fill(0));
-    const back=Array.from({length:m+1},()=>Array(n+1).fill(null));
-    for(let i=1;i<=m;i++){dp[i][0]=i;back[i][0]="delete";}
-    for(let j=1;j<=n;j++){dp[0][j]=j;back[0][j]="insert";}
-    for(let i=1;i<=m;i++)for(let j=1;j<=n;j++){
-      const same=user[i-1]===correct[j-1];
-      const diag=dp[i-1][j-1]+(same?0:1),del=dp[i-1][j]+1,ins=dp[i][j-1]+1;
-      const min=Math.min(diag,del,ins);dp[i][j]=min;
-      if(min===diag)back[i][j]=same?"match":"replace";
-      else if(min===del)back[i][j]="delete";else back[i][j]="insert";
-    }
-    let i=m,j=n;const result=[];
-    while(i>0||j>0){const a=back[i][j];
-      if(a==="match"){result.push({type:"correct",u:user[i-1],c:correct[j-1]});i--;j--;}
-      else if(a==="replace"){result.push({type:"wrong",u:user[i-1],c:correct[j-1]});i--;j--;}
-      else if(a==="delete"){result.push({type:"extra",u:user[i-1],c:""});i--;}
-      else{result.push({type:"wrong",u:"",c:correct[j-1]});j--;}
-    }
-    result.reverse();
-    const ec=result.filter(x=>x.type!=="correct").length;
-    const score=correct.length===0?0:Math.max(0,Math.round(((correct.length-ec)/correct.length)*100));
-    return{score,result};
-  }
-  function renderMarkedVerse(correctText,userText,comp){
-    const{units:cU,trailingSpaces}=buildSpacedUnits(correctText);
-    const{units:uU}=buildSpacedUnits(userText);
-    let html="",ci=0,ui=0;
-    for(const item of comp.result){
-      if(item.type==="extra"){
-        const u=uU[ui];
-        html+=u?u.spacesBefore+`<span class="char-extra">${escapeHtml(u.char)}</span>`:`<span class="char-extra">${escapeHtml(item.u)}</span>`;
-        ui++;continue;
-      }
-      const cu=cU[ci];if(!cu)continue;
-      html+=cu.spacesBefore;
-      if(item.type==="correct"){html+=`<span class="char-correct">${escapeHtml(cu.char)}</span>`;ui++;}
-      else{html+=`<span class="char-wrong">${escapeHtml(cu.char)}</span>`;if(item.u)ui++;}
-      ci++;
-    }
-    while(ci<cU.length){html+=cU[ci].spacesBefore+`<span class="char-correct">${escapeHtml(cU[ci].char)}</span>`;ci++;}
-    html+=trailingSpaces;
-    while(ui<uU.length){html+=uU[ui].spacesBefore+`<span class="char-extra">${escapeHtml(uU[ui].char)}</span>`;ui++;}
-    return html;
-  }
-
-  // ── 음성 인식 ──
-  function initSpeechRecognition(){
-    const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-    if(!SR){speechSupported=false;return;}
-    speechSupported=true;
-    speechRecognition=new SR();
-    speechRecognition.lang="ko-KR";speechRecognition.interimResults=true;speechRecognition.continuous=false;
-    speechRecognition.onstart=()=>{isListening=true;updateSpeechBtn();};
-    speechRecognition.onend=()=>{isListening=false;updateSpeechBtn();};
-    speechRecognition.onerror=()=>{isListening=false;updateSpeechBtn();};
-    speechRecognition.onresult=(e)=>{
-      let t="";for(let i=0;i<e.results.length;i++)t+=e.results[i][0].transcript;
-      const el=document.getElementById("chQuizTestInput");if(el)el.value=t;
-    };
-    updateSpeechBtn();
-  }
-  function updateSpeechBtn(){
-    const btn=document.getElementById("chQuizSpeechBtn");if(!btn)return;
-    btn.style.display=speechSupported?"inline-block":"none";
-    btn.textContent=isListening?"🎤 음성 입력 중지":"🎤 음성 입력 시작";
-  }
-  function toggleSpeechInput(){
-    if(!speechSupported||!speechRecognition)return alert("이 기기에서는 음성 입력을 지원하지 않습니다.");
-    if(!chQuizCurrentQ)return alert("먼저 문제를 뽑아주세요.");
-    if(isListening)speechRecognition.stop();else speechRecognition.start();
-  }
-
-  // ── 초기화 ──
-  initSpeechRecognition();
-  fetch("revelation.json")
-    .then(res=>{if(!res.ok)throw new Error("HTTP "+res.status);return res.json();})
-    .then(data=>{
-      VERSES=data;isDataLoaded=true;
-      document.getElementById("loadingNotice").textContent="암기 방식을 선택하세요.";
-    })
-    .catch(()=>{
-      document.getElementById("loadingNotice").textContent="⚠️ 성경 데이터를 불러오지 못했습니다. revelation.json 파일 경로를 확인해주세요.";
+    var hasRetry = chQuizGetPool().some(function(v) {
+      var st = chQuizExamStatuses[v.ref];
+      return st && st.state === "done" && st.score < 100;
     });
+    var retryHtml = hasRetry
+      ? '<div class="muted" style="margin-bottom:12px;">100점 미만인 성구가 있습니다. 재시험을 볼 수 있어요.</div><button class="retry" style="margin:0;" onclick="chQuizStartRetry()">🔄 재시험 시작</button>'
+      : '<div class="muted">모든 성구를 완벽하게 암송했습니다!</div>';
+    document.getElementById("chQuizResult").innerHTML =
+      '<div style="margin-top:16px;padding:20px;background:#f0fdf4;border:2px solid #059669;border-radius:14px;text-align:center;">'
+      + '<div style="font-size:32px;">🎉</div>'
+      + '<div style="font-weight:800;font-size:16px;color:#065f46;margin:8px 0 4px;">모든 성구 출제 완료!</div>'
+      + retryHtml + '</div>';
+    return;
+  }
+  chQuizCurrentQ = available[Math.floor(Math.random() * available.length)];
+  chQuizExamStatuses[chQuizCurrentQ.ref] = { state: "active", score: chQuizExamStatuses[chQuizCurrentQ.ref] ? chQuizExamStatuses[chQuizCurrentQ.ref].score : null };
+  chQuizRenderRange();
+  document.getElementById("chQuizQuestionArea").style.display = "block";
+  document.getElementById("chQuizQuestionArea").innerHTML =
+    '<div class="ref">' + chQuizCurrentQ.ref + '</div>'
+    + '<div class="muted">' + (chQuizRetryMode ? "재시험 성구입니다." : "이 성구를 암송한 뒤 아래에 입력하세요.") + '</div>';
+  document.getElementById("chQuizTestInput").value = "";
+  document.getElementById("chQuizResult").innerHTML = "";
+}
+
+function chQuizStartRetry() {
+  if (!isDataLoaded) { alert("데이터를 불러오는 중입니다."); return; }
+  var retry = chQuizGetPool().filter(function(v) {
+    var st = chQuizExamStatuses[v.ref];
+    return st && st.state === "done" && st.score < 100;
+  });
+  if (!retry.length) { alert("재시험 대상이 없습니다."); return; }
+  chQuizRetryMode = true;
+  chQuizRetryRefs = retry.map(function(v) { return v.ref; });
+  chQuizCurrentQ = null;
+  document.getElementById("chQuizQuestionArea").style.display = "none";
+  document.getElementById("chQuizTestInput").value = "";
+  document.getElementById("chQuizResult").innerHTML = "";
+  chQuizRenderRange();
+  alert("재시험 모드가 시작되었습니다.");
+}
+
+function clearQuizTest() {
+  document.getElementById("chQuizTestInput").value = "";
+  document.getElementById("chQuizResult").innerHTML = "";
+  if (speechRecognition && isListening) speechRecognition.stop();
+}
+
+function chQuizGrade() {
+  if (!isDataLoaded) { alert("데이터를 불러오는 중입니다."); return; }
+  if (!chQuizCurrentQ) { alert("먼저 문제를 뽑아주세요."); return; }
+  var user = document.getElementById("chQuizTestInput").value;
+  var comp = compareAligned(user, chQuizCurrentQ.text);
+  chQuizExamStatuses[chQuizCurrentQ.ref] = { state: "done", score: comp.score };
+  chQuizRenderRange();
+  document.getElementById("chQuizResult").innerHTML =
+    '<div class="score" style="color:' + getScoreColor(comp.score) + ';">정확도: ' + comp.score + '%</div>'
+    + '<strong style="display:block;margin-top:12px;">정답</strong>'
+    + '<div class="answer-box"><div class="verse-line">'
+    + '<div class="verse-label">' + chQuizCurrentQ.ref + '</div>'
+    + '<div>' + renderMarkedVerse(chQuizCurrentQ.text, user, comp) + '</div>'
+    + '</div></div>';
+}
+
+// ── 채점 알고리즘 ──
+function buildSpacedUnits(text) {
+  var units = [], spacesBefore = "";
+  var chars = (text || "").split("");
+  for (var i = 0; i < chars.length; i++) {
+    if (/\s/.test(chars[i])) spacesBefore += chars[i];
+    else { units.push({ spacesBefore: spacesBefore, char: chars[i] }); spacesBefore = ""; }
+  }
+  return { units: units, trailingSpaces: spacesBefore };
+}
+
+function compareAligned(userText, correctText) {
+  var user = normalize(userText), correct = normalize(correctText);
+  var m = user.length, n = correct.length;
+  var dp = [], back = [];
+  for (var i = 0; i <= m; i++) { dp[i] = []; back[i] = []; for (var j = 0; j <= n; j++) { dp[i][j] = 0; back[i][j] = null; } }
+  for (var i = 1; i <= m; i++) { dp[i][0] = i; back[i][0] = "delete"; }
+  for (var j = 1; j <= n; j++) { dp[0][j] = j; back[0][j] = "insert"; }
+  for (var i = 1; i <= m; i++) {
+    for (var j = 1; j <= n; j++) {
+      var same = user[i-1] === correct[j-1];
+      var diag = dp[i-1][j-1] + (same ? 0 : 1), del = dp[i-1][j] + 1, ins = dp[i][j-1] + 1;
+      var min = Math.min(diag, del, ins);
+      dp[i][j] = min;
+      if (min === diag) back[i][j] = same ? "match" : "replace";
+      else if (min === del) back[i][j] = "delete";
+      else back[i][j] = "insert";
+    }
+  }
+  var i = m, j = n, result = [];
+  while (i > 0 || j > 0) {
+    var a = back[i][j];
+    if (a === "match")   { result.push({ type: "correct", u: user[i-1], c: correct[j-1] }); i--; j--; }
+    else if (a === "replace") { result.push({ type: "wrong",   u: user[i-1], c: correct[j-1] }); i--; j--; }
+    else if (a === "delete")  { result.push({ type: "extra",   u: user[i-1], c: "" }); i--; }
+    else                      { result.push({ type: "wrong",   u: "",        c: correct[j-1] }); j--; }
+  }
+  result.reverse();
+  var errorCount = result.filter(function(x) { return x.type !== "correct"; }).length;
+  var score = correct.length === 0 ? 0 : Math.max(0, Math.round((correct.length - errorCount) / correct.length * 100));
+  return { score: score, result: result };
+}
+
+function renderMarkedVerse(correctText, userText, comp) {
+  var cu = buildSpacedUnits(correctText), uu = buildSpacedUnits(userText);
+  var cU = cu.units, uU = uu.units;
+  var html = "", ci = 0, ui = 0;
+  for (var k = 0; k < comp.result.length; k++) {
+    var item = comp.result[k];
+    if (item.type === "extra") {
+      var u = uU[ui];
+      html += u ? u.spacesBefore + '<span class="char-extra">' + escapeHtml(u.char) + '</span>'
+               : '<span class="char-extra">' + escapeHtml(item.u) + '</span>';
+      ui++; continue;
+    }
+    var c = cU[ci]; if (!c) continue;
+    html += c.spacesBefore;
+    if (item.type === "correct") { html += '<span class="char-correct">' + escapeHtml(c.char) + '</span>'; ui++; }
+    else { html += '<span class="char-wrong">' + escapeHtml(c.char) + '</span>'; if (item.u) ui++; }
+    ci++;
+  }
+  while (ci < cU.length) { html += cU[ci].spacesBefore + '<span class="char-correct">' + escapeHtml(cU[ci].char) + '</span>'; ci++; }
+  html += cu.trailingSpaces;
+  while (ui < uU.length) { html += uU[ui].spacesBefore + '<span class="char-extra">' + escapeHtml(uU[ui].char) + '</span>'; ui++; }
+  return html;
+}
+
+// ── 음성 인식 ──
+function initSpeechRecognition() {
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { speechSupported = false; return; }
+  speechSupported = true;
+  speechRecognition = new SR();
+  speechRecognition.lang = "ko-KR";
+  speechRecognition.interimResults = true;
+  speechRecognition.continuous = false;
+  speechRecognition.onstart = function() { isListening = true; updateSpeechBtn(); };
+  speechRecognition.onend   = function() { isListening = false; updateSpeechBtn(); };
+  speechRecognition.onerror = function() { isListening = false; updateSpeechBtn(); };
+  speechRecognition.onresult = function(e) {
+    var t = "";
+    for (var i = 0; i < e.results.length; i++) t += e.results[i][0].transcript;
+    var el = document.getElementById("chQuizTestInput");
+    if (el) el.value = t;
+  };
+  updateSpeechBtn();
+}
+function updateSpeechBtn() {
+  var btn = document.getElementById("chQuizSpeechBtn");
+  if (!btn) return;
+  btn.style.display = speechSupported ? "inline-block" : "none";
+  btn.textContent = isListening ? "🎤 음성 입력 중지" : "🎤 음성 입력 시작";
+}
+function toggleSpeechInput() {
+  if (!speechSupported || !speechRecognition) { alert("이 기기에서는 음성 입력을 지원하지 않습니다."); return; }
+  if (!chQuizCurrentQ) { alert("먼저 문제를 뽑아주세요."); return; }
+  if (isListening) speechRecognition.stop(); else speechRecognition.start();
+}
+
+// ── 초기화 ──
+initSpeechRecognition();
+fetch("revelation.json")
+  .then(function(res) { if (!res.ok) throw new Error("HTTP " + res.status); return res.json(); })
+  .then(function(data) {
+    VERSES = data;
+    isDataLoaded = true;
+    document.getElementById("loadingNotice").textContent = "암기 방식을 선택하세요.";
+  })
+  .catch(function(err) {
+    console.error("JSON 로드 실패:", err);
+    document.getElementById("loadingNotice").textContent = "⚠️ 성경 데이터를 불러오지 못했습니다. revelation.json 파일 경로를 확인해주세요.";
+  });
 </script>
 </body>
 </html>
