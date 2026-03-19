@@ -6,356 +6,89 @@
   <title>Revelation Memory</title>
   <style>
     * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
-      background: #f4f6fb;
-      color: #222;
-      padding: 20px;
-    }
-
-    .container {
-      max-width: 980px;
-      margin: 0 auto;
-      background: #fff;
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-    }
-
-    h1, h2, h3 { margin-top: 0; }
-
-    .section {
-      margin-top: 28px;
-      padding-top: 20px;
-      border-top: 1px solid #e5e7eb;
-    }
-
-    label { display: block; font-weight: 700; margin-bottom: 8px; }
-
-    textarea {
-      width: 100%;
-      border: 1px solid #cfd6e4;
-      border-radius: 10px;
-      padding: 12px;
-      font-size: 15px;
-      background: #fff;
-      min-height: 120px;
-      resize: vertical;
-      line-height: 1.7;
-    }
-
-    button {
-      border: none;
-      background: #2563eb;
-      color: white;
-      padding: 11px 16px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 700;
-      margin-top: 10px;
-      margin-right: 8px;
-    }
-
-    button.secondary { background: #64748b; }
-    button.ghost     { background: #e5e7eb; color: #374151; }
-    button.retry     { background: #dc2626; color: #fff; }
-    button.success   { background: #059669; color: #fff; }
-    button:disabled  { opacity: 0.55; cursor: not-allowed; }
-
-    .ref {
-      display: inline-block;
-      background: #e8eefc;
-      color: #1d4ed8;
-      font-weight: 700;
-      font-size: 13px;
-      padding: 5px 10px;
-      border-radius: 999px;
-      margin-bottom: 8px;
-    }
-
-    .score { font-size: 24px; font-weight: 800; margin: 14px 0 10px; }
-    .muted { color: #6b7280; font-size: 14px; }
-
-    .answer-box {
-      width: 100%;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 14px;
-      background: #f8fafc;
-      margin-top: 10px;
-      line-height: 1.8;
-      white-space: normal;
-      word-break: keep-all;
-    }
-
-    .verse-line { margin-bottom: 6px; white-space: normal; word-break: keep-all; }
-    .verse-line:last-child { margin-bottom: 0; }
-    .verse-label { display: block; font-weight: 700; color: #1d4ed8; margin-bottom: 6px; }
-
-    .char-correct { color: #111111; }
-    .char-wrong   { color: #dc2626; font-weight: 700; }
-    .char-extra   { color: #6b7280; text-decoration: line-through; text-decoration-thickness: 2px; }
-
-    .btns { display: flex; flex-wrap: wrap; gap: 8px; }
-    .btns button { margin: 0; }
-
-    .daily-question-box {
-      border: 1px solid #e5e7eb;
-      border-radius: 14px;
-      padding: 16px;
-      background: #fff;
-      margin-top: 14px;
-    }
-
-    .pill {
-      display: inline-block;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: #eef2ff;
-      color: #4338ca;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .top-info { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
-
-    .range-box {
-      width: 100%;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      background: #f8fafc;
-      padding: 14px;
-      margin-top: 12px;
-    }
-
-    .range-list { display: flex; flex-wrap: wrap; gap: 8px; line-height: 1.8; }
-
-    .range-item {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: #fff;
-      border: 1px solid #dbe2ea;
-      color: #111111;
-      font-size: 14px;
-    }
-
-    .range-item.active         { font-weight: 800; border-color: #111111; }
-    .range-item.done-perfect   { color: #059669; border-color: #059669; background: #ecfdf5; font-weight: 700; }
-    .range-item.done-imperfect { color: #dc2626; border-color: #dc2626; background: #fef2f2; font-weight: 700; }
-    .range-summary { margin-top: 10px; font-size: 14px; color: #6b7280; }
-
-    .mode-badge {
-      display: inline-block;
-      margin-left: 8px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      background: #fff7ed;
-      color: #c2410c;
-      border: 1px solid #fdba74;
-    }
-
-    /* ── 홈 카드 ── */
-    .mode-cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-top: 24px;
-    }
-
-    .mode-card {
-      background: #f8fafc;
-      border: 2px solid #e2e8f0;
-      border-radius: 16px;
-      padding: 28px 16px 24px;
-      cursor: pointer;
-      transition: all 0.18s;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .mode-card:hover {
-      border-color: #2563eb;
-      background: #eff6ff;
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(37,99,235,0.12);
-    }
-
-    .mode-icon  { font-size: 42px; line-height: 1; }
-    .mode-title { font-size: 16px; font-weight: 800; color: #1e293b; }
-    .mode-desc  { font-size: 13px; color: #6b7280; line-height: 1.6; }
-
-    /* ── 장 선택 버튼 ── */
-    .chapter-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-
-    .chapter-btn {
-      background: #f1f5f9;
-      color: #374151;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 10px;
-      padding: 8px 14px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      margin: 0;
-      transition: all 0.15s;
-    }
-
-    .chapter-btn:hover:not(:disabled) { background: #e0e7ff; border-color: #818cf8; color: #3730a3; }
-    .chapter-btn.selected { background: #2563eb; border-color: #2563eb; color: #fff; }
-
-    /* ── 화면 전환 ── */
-    .screen { display: none; }
-    .screen.active { display: block; }
-
-    .back-btn {
-      background: none;
-      color: #6b7280;
-      border: 1px solid #e5e7eb;
-      font-size: 13px;
-      padding: 7px 14px;
-      margin: 0 0 8px 0;
-      border-radius: 8px;
-    }
-
-    .back-btn:hover { background: #f1f5f9; }
-
-    /* ══════════════════════════════════
-       모드1: 순서 암기 카드
-    ══════════════════════════════════ */
-    .seq-verse-card {
-      border: 2px solid #e2e8f0;
-      border-radius: 14px;
-      padding: 18px;
-      margin-bottom: 14px;
-      background: #fff;
-      transition: border-color 0.15s;
-    }
-
-    .seq-verse-card.checked {
-      border-color: #059669;
-      background: #f0fdf4;
-    }
-
-    .seq-verse-card.current {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
-    }
-
-    .seq-card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    .seq-card-header .ref { margin-bottom: 0; }
-
-    .seq-card-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-
-    /* 가리기 버튼 */
-    .toggle-btn {
-      background: #f1f5f9;
-      color: #374151;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      padding: 6px 12px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      margin: 0;
-    }
-
-    .toggle-btn:hover { background: #e0e7ff; border-color: #818cf8; color: #3730a3; }
-
-    /* 체크 버튼 */
-    .check-btn {
-      background: #f1f5f9;
-      color: #374151;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 8px;
-      padding: 6px 14px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      margin: 0;
-      transition: all 0.15s;
-    }
-
-    .check-btn.checked {
-      background: #059669;
-      border-color: #059669;
-      color: #fff;
-    }
-
-    /* 가려진 텍스트 */
-    .verse-text-hidden {
-      filter: blur(6px);
-      user-select: none;
-      cursor: pointer;
-      transition: filter 0.2s;
-    }
-
-    .verse-text-hidden:hover { filter: blur(3px); }
-
-    .verse-text { line-height: 1.8; word-break: keep-all; }
-
-    /* 진행 바 */
-    .progress-bar-wrap {
-      background: #e5e7eb;
-      border-radius: 999px;
-      height: 10px;
-      margin-top: 12px;
-      overflow: hidden;
-    }
-
-    .progress-bar-fill {
-      height: 100%;
-      background: #2563eb;
-      border-radius: 999px;
-      transition: width 0.3s;
-    }
-
-    /* 현재 성구 포커스 영역 */
-    .current-verse-area {
-      background: #eff6ff;
-      border: 2px solid #2563eb;
-      border-radius: 14px;
-      padding: 20px;
-      margin-bottom: 20px;
-    }
-
-    .current-verse-area .ref { background: #dbeafe; }
-
-    /* 완료 메시지 */
-    .all-done-box {
-      text-align: center;
-      padding: 32px 20px;
-      background: #f0fdf4;
-      border: 2px solid #059669;
-      border-radius: 16px;
-      margin-top: 16px;
-    }
-
-    .all-done-box .done-icon { font-size: 48px; }
-    .all-done-box h3 { color: #065f46; margin: 12px 0 6px; }
-
-    @media (max-width: 720px) {
-      body { padding: 12px; }
-      .container { padding: 18px; }
-      .mode-cards { grid-template-columns: 1fr; gap: 12px; }
-      .mode-card { flex-direction: row; text-align: left; padding: 18px 16px; gap: 14px; }
-      .mode-icon { font-size: 32px; flex-shrink: 0; }
-      .seq-card-header { flex-direction: column; align-items: flex-start; }
+    body { margin:0; font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif; background:#f4f6fb; color:#222; padding:20px; }
+    .container { max-width:980px; margin:0 auto; background:#fff; border-radius:16px; padding:24px; box-shadow:0 8px 24px rgba(0,0,0,0.08); }
+    h1,h2,h3{margin-top:0;}
+    .section{margin-top:28px;padding-top:20px;border-top:1px solid #e5e7eb;}
+    label{display:block;font-weight:700;margin-bottom:8px;}
+    textarea{width:100%;border:1px solid #cfd6e4;border-radius:10px;padding:12px;font-size:15px;background:#fff;min-height:120px;resize:vertical;line-height:1.7;}
+    button{border:none;background:#2563eb;color:white;padding:11px 16px;border-radius:10px;cursor:pointer;font-weight:700;margin-top:10px;margin-right:8px;}
+    button.secondary{background:#64748b;}
+    button.ghost{background:#e5e7eb;color:#374151;}
+    button.retry{background:#dc2626;color:#fff;}
+    button.success{background:#059669;color:#fff;}
+    button.warn{background:#d97706;color:#fff;}
+    button:disabled{opacity:0.55;cursor:not-allowed;}
+    .muted{color:#6b7280;font-size:14px;}
+    .ref{display:inline-block;background:#e8eefc;color:#1d4ed8;font-weight:700;font-size:13px;padding:5px 10px;border-radius:999px;margin-bottom:8px;}
+    .score{font-size:24px;font-weight:800;margin:14px 0 10px;}
+    .answer-box{width:100%;border:1px solid #e5e7eb;border-radius:12px;padding:14px;background:#f8fafc;margin-top:10px;line-height:1.8;white-space:normal;word-break:keep-all;}
+    .verse-line{margin-bottom:6px;white-space:normal;word-break:keep-all;}
+    .verse-line:last-child{margin-bottom:0;}
+    .verse-label{display:block;font-weight:700;color:#1d4ed8;margin-bottom:6px;}
+    .char-correct{color:#111;}
+    .char-wrong{color:#dc2626;font-weight:700;}
+    .char-extra{color:#6b7280;text-decoration:line-through;text-decoration-thickness:2px;}
+    .btns{display:flex;flex-wrap:wrap;gap:8px;}
+    .btns button{margin:0;}
+    .daily-question-box{border:1px solid #e5e7eb;border-radius:14px;padding:16px;background:#fff;margin-top:14px;}
+    .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:#eef2ff;color:#4338ca;font-size:13px;font-weight:700;}
+    .range-box{width:100%;border:1px solid #e5e7eb;border-radius:12px;background:#f8fafc;padding:14px;margin-top:12px;}
+    .range-list{display:flex;flex-wrap:wrap;gap:8px;line-height:1.8;}
+    .range-item{display:inline-block;padding:4px 10px;border-radius:999px;background:#fff;border:1px solid #dbe2ea;color:#111;font-size:14px;}
+    .range-item.active{font-weight:800;border-color:#111;}
+    .range-item.done-perfect{color:#059669;border-color:#059669;background:#ecfdf5;font-weight:700;}
+    .range-item.done-imperfect{color:#dc2626;border-color:#dc2626;background:#fef2f2;font-weight:700;}
+    .range-summary{margin-top:10px;font-size:14px;color:#6b7280;}
+    .mode-badge{display:inline-block;margin-left:8px;padding:4px 8px;border-radius:999px;font-size:12px;font-weight:700;background:#fff7ed;color:#c2410c;border:1px solid #fdba74;}
+    /* 홈 */
+    .mode-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px;}
+    .mode-card{background:#f8fafc;border:2px solid #e2e8f0;border-radius:16px;padding:28px 16px 24px;cursor:pointer;transition:all .18s;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;}
+    .mode-card:hover{border-color:#2563eb;background:#eff6ff;transform:translateY(-3px);box-shadow:0 8px 20px rgba(37,99,235,.12);}
+    .mode-icon{font-size:42px;line-height:1;}
+    .mode-title{font-size:16px;font-weight:800;color:#1e293b;}
+    .mode-desc{font-size:13px;color:#6b7280;line-height:1.6;}
+    /* 장 선택 */
+    .chapter-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+    .chapter-btn{background:#f1f5f9;color:#374151;border:1.5px solid #e2e8f0;border-radius:10px;padding:8px 14px;font-size:14px;font-weight:700;cursor:pointer;margin:0;transition:all .15s;}
+    .chapter-btn:hover:not(:disabled){background:#e0e7ff;border-color:#818cf8;color:#3730a3;}
+    .chapter-btn.selected{background:#2563eb;border-color:#2563eb;color:#fff;}
+    /* 화면 전환 */
+    .screen{display:none;}
+    .screen.active{display:block;}
+    .back-btn{background:none;color:#6b7280;border:1px solid #e5e7eb;font-size:13px;padding:7px 14px;margin:0 0 8px 0;border-radius:8px;}
+    .back-btn:hover{background:#f1f5f9;}
+    /* 모드1 */
+    .seq-verse-card{border:2px solid #e2e8f0;border-radius:16px;padding:20px;margin-top:16px;background:#fff;}
+    .seq-verse-card .card-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+    .seq-verse-card .card-meta{font-size:13px;color:#6b7280;}
+    .seq-progress-bar-wrap{background:#e5e7eb;border-radius:999px;height:8px;margin-top:12px;}
+    .seq-progress-bar{background:#2563eb;border-radius:999px;height:8px;transition:width .3s;}
+    /* 가리기/보이기 공통 */
+    .verse-block{border:1px solid #e5e7eb;border-radius:12px;padding:14px;margin:10px 0;background:#f8fafc;line-height:1.8;}
+    .verse-block-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;}
+    .verse-text-area{margin-top:10px;word-break:keep-all;line-height:1.8;}
+    .verse-text-area.hidden-text{filter:blur(6px);user-select:none;pointer-events:none;}
+    .toggle-btn{background:#f1f5f9;color:#374151;border:1px solid #e2e8f0;border-radius:8px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;margin:0;transition:all .15s;}
+    .toggle-btn:hover{background:#e0e7ff;border-color:#818cf8;color:#3730a3;}
+    .toggle-btn.showing{background:#ecfdf5;border-color:#059669;color:#059669;}
+    /* 모드1 완료 체크 */
+    .seq-check-row{display:flex;align-items:center;gap:10px;margin-top:16px;flex-wrap:wrap;}
+    .seq-check-label{font-size:14px;color:#374151;font-weight:600;}
+    .seq-nav-btns{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
+    .seq-nav-btns button{margin:0;}
+    .memorized-badge{display:inline-block;background:#ecfdf5;color:#059669;border:1px solid #059669;border-radius:999px;font-size:12px;font-weight:700;padding:4px 12px;}
+    .not-memorized-badge{display:inline-block;background:#f8fafc;color:#6b7280;border:1px solid #e5e7eb;border-radius:999px;font-size:12px;font-weight:700;padding:4px 12px;}
+    .seq-list-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
+    .seq-list-item{padding:4px 10px;border-radius:999px;border:1px solid #dbe2ea;font-size:13px;cursor:pointer;background:#fff;color:#111;transition:all .12s;}
+    .seq-list-item:hover{border-color:#2563eb;color:#2563eb;}
+    .seq-list-item.current{border-color:#2563eb;background:#2563eb;color:#fff;font-weight:700;}
+    .seq-list-item.memorized{border-color:#059669;background:#ecfdf5;color:#059669;font-weight:700;}
+    @media(max-width:720px){
+      body{padding:12px;}.container{padding:18px;}
+      .mode-cards{grid-template-columns:1fr;gap:12px;}
+      .mode-card{flex-direction:row;text-align:left;padding:18px 16px;gap:14px;}
+      .mode-icon{font-size:32px;flex-shrink:0;}
     }
   </style>
 </head>
@@ -364,7 +97,7 @@
   <h1>Revelation Memory</h1>
   <div class="muted">요한계시록 암송 프로토타입</div>
 
-  <!-- ══════════ 홈 화면 ══════════ -->
+  <!-- 홈 -->
   <div id="screenHome" class="screen active">
     <div class="section">
       <h2 style="margin-bottom:6px;">암기 방식을 선택하세요</h2>
@@ -374,7 +107,7 @@
           <div class="mode-icon">📖</div>
           <div>
             <div class="mode-title">순서대로 암기</div>
-            <div class="mode-desc">1:1절부터 한 절씩<br>외우면 체크하고 다음으로</div>
+            <div class="mode-desc">1:1절부터 한 성구씩<br>외우면 체크하고 다음으로</div>
           </div>
         </div>
         <div class="mode-card" onclick="enterMode('chapterMemory')">
@@ -395,51 +128,68 @@
     </div>
   </div>
 
-  <!-- ══════════ 모드 1: 순서대로 암기 ══════════ -->
+  <!-- 모드1 -->
   <div id="screenSequential" class="screen">
     <button class="back-btn" onclick="goHome()">← 처음으로</button>
-
-    <div class="top-info">
+    <h2 style="margin-top:8px;">📖 순서대로 암기</h2>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;">
       <div class="pill" id="seqProgressPill">진행률</div>
-      <div class="pill" id="seqChapterPill">현재 장</div>
+      <div class="pill" id="seqMemorizedPill">암기 완료</div>
     </div>
-
-    <div class="section">
-      <h2>순서대로 암기</h2>
-      <div class="muted">한 절씩 암기하세요. 외웠으면 ✅ 체크하면 다음 성구가 열립니다.</div>
-
-      <div class="progress-bar-wrap">
-        <div class="progress-bar-fill" id="seqProgressBar" style="width:0%"></div>
+    <div class="seq-progress-bar-wrap" style="margin-top:12px;">
+      <div class="seq-progress-bar" id="seqProgressBar" style="width:0%;"></div>
+    </div>
+    <div class="range-box" style="margin-top:16px;">
+      <strong>전체 성구</strong>
+      <div class="seq-list-row" id="seqListRow"></div>
+    </div>
+    <div class="seq-verse-card" id="seqVerseCard">
+      <div class="card-header">
+        <span class="ref" id="seqCurrentRef">-</span>
+        <span class="card-meta" id="seqCurrentIndex">0 / 0</span>
       </div>
-
-      <div style="margin-top:16px;" id="seqVerseList"></div>
-
-      <div class="btns" style="margin-top:16px;">
-        <button class="ghost" onclick="seqResetProgress()">⚠️ 진행 초기화</button>
+      <div class="verse-block">
+        <div class="verse-block-header">
+          <span style="font-size:13px;color:#6b7280;">본문</span>
+          <button class="toggle-btn" id="seqToggleBtn" onclick="seqToggleText()">👁 보이기</button>
+        </div>
+        <div class="verse-text-area hidden-text" id="seqVerseText"></div>
+      </div>
+      <div class="seq-check-row">
+        <span class="seq-check-label">이 성구를 외웠나요?</span>
+        <span id="seqMemBadge" class="not-memorized-badge">미완료</span>
+        <button class="success" id="seqCheckBtn" onclick="seqToggleMemorized()" style="margin:0;">✓ 암기 완료 체크</button>
+      </div>
+      <div class="seq-nav-btns">
+        <button class="ghost" id="seqPrevBtn" onclick="seqGo(-1)">← 이전</button>
+        <button id="seqNextBtn" onclick="seqGo(1)">다음 →</button>
+        <button class="secondary" onclick="seqGoFirst()">처음으로</button>
+        <button class="warn" onclick="seqGoFirstUnmemorized()">⚡ 미완료로 이동</button>
       </div>
     </div>
   </div>
 
-  <!-- ══════════ 모드 2: 장별 전체 암기 ══════════ -->
+  <!-- 모드2 -->
   <div id="screenChapterMemory" class="screen">
     <button class="back-btn" onclick="goHome()">← 처음으로</button>
     <h2 style="margin-top:12px;">📝 장별 전체 암기</h2>
-    <div class="muted">암기할 장을 선택하면 해당 장의 모든 구절을 순서대로 보여줍니다.</div>
-
+    <div class="muted">장을 선택하면 해당 장의 모든 구절을 보여줍니다. 각 구절마다 가리기/보이기가 가능합니다.</div>
     <div style="margin-top:16px;">
       <label>장 선택</label>
       <div class="chapter-grid" id="chMemGrid"></div>
     </div>
-
+    <div class="btns" style="margin-top:10px;">
+      <button class="ghost" onclick="chMemToggleAll(true)">전체 보이기</button>
+      <button class="ghost" onclick="chMemToggleAll(false)">전체 가리기</button>
+    </div>
     <div id="chMemVerses" style="margin-top:16px;"></div>
   </div>
 
-  <!-- ══════════ 모드 3: 장별 랜덤 시험 ══════════ -->
+  <!-- 모드3 -->
   <div id="screenChapterQuiz" class="screen">
     <button class="back-btn" onclick="goHome()">← 처음으로</button>
     <h2 style="margin-top:12px;">🎯 장별 랜덤 시험</h2>
     <div class="muted">시험 볼 장을 선택하면 해당 장에서 랜덤으로 한 절씩 출제합니다.</div>
-
     <div style="margin-top:16px;">
       <label>장 선택 <span class="muted">(복수 선택 가능)</span></label>
       <div class="chapter-grid" id="chQuizGrid"></div>
@@ -449,611 +199,466 @@
         <button onclick="chQuizStart()">시험 시작</button>
       </div>
     </div>
-
-    <div id="chQuizArea" style="display:none; margin-top:16px;">
+    <div id="chQuizArea" style="display:none;margin-top:16px;">
       <div class="range-box">
         <strong>출제 범위</strong><span id="chQuizModeBadge"></span>
         <div id="chQuizRangeList" class="range-list" style="margin-top:10px;"></div>
         <div id="chQuizRangeSummary" class="range-summary"></div>
       </div>
-
       <div class="btns" style="margin-top:12px;">
         <button id="chQuizPickBtn" onclick="chQuizPick()">문제 뽑기</button>
-        <button id="chQuizRetryBtn" class="retry" onclick="chQuizStartRetry()">재시험</button>
         <button id="chQuizSpeechBtn" class="secondary" onclick="toggleSpeechInput()" style="display:none;">🎤 음성 입력 시작</button>
-        <button class="secondary" onclick="clearQuizTest()">입력 지우기</button>
+        <button class="secondary" onclick="clearTest()">입력 지우기</button>
       </div>
-
       <div id="chQuizQuestionArea" class="daily-question-box" style="display:none;"></div>
       <textarea id="chQuizTestInput" placeholder="출제된 성구를 입력하세요" style="margin-top:12px;"></textarea>
       <div class="btns" style="margin-top:10px;">
-        <button id="chQuizGradeBtn" onclick="chQuizGrade()">채점하기</button>
+        <button id="chQuizGradeBtn" onclick="gradeTest()">채점하기</button>
         <button class="secondary" onclick="chQuizPick()">다음 문제</button>
       </div>
       <div id="chQuizResult"></div>
     </div>
   </div>
-
-</div><!-- /.container -->
+</div>
 
 <script>
-  const SEQ_PROGRESS_KEY  = "rev-seq-progress-v1";   // { checkedRefs: [...] }
-
+  const SEQ_STATE_KEY = "rev-seq-state-v1";
   let VERSES = [];
   let isDataLoaded = false;
 
-  // ── 모드1 상태 ──
-  let seqChecked = new Set(); // 체크된 ref 목록
+  // 모드1
+  let seqIndex = 0;
+  let seqTextVisible = false;
+  let seqMemorized = {};
 
-  // ── 모드3 상태 ──
+  // 모드2
+  let chMemVisibility = {};
+
+  // 모드3
   let chQuizSelectedChapters = new Set();
   let chQuizCurrentQ = null;
   let chQuizExamStatuses = {};
   let chQuizRetryMode = false;
   let chQuizRetryRefs = [];
 
-  // ── 음성 인식 ──
+  // 음성
   let speechRecognition = null;
   let isListening = false;
   let speechSupported = false;
 
-  // ───────────────────────────────────────
-  // 유틸
-  // ───────────────────────────────────────
-  function escapeHtml(t) {
-    return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  // ── 유틸 ──
+  function escapeHtml(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+  function normalize(t){return(t||"").replace(/\s+/g,"");}
+  function getScoreColor(s){return s>=90?"#059669":s>=70?"#d97706":"#dc2626";}
+
+  // ── 저장/불러오기 ──
+  function saveSeqState(){localStorage.setItem(SEQ_STATE_KEY,JSON.stringify({seqIndex,seqMemorized}));}
+  function loadSeqState(){
+    const s=JSON.parse(localStorage.getItem(SEQ_STATE_KEY)||"null");
+    if(s){seqIndex=s.seqIndex||0;seqMemorized=s.seqMemorized||{};}
   }
 
-  function normalize(t) { return (t||"").replace(/\s+/g,""); }
-
-  function getScoreColor(s) {
-    if (s >= 90) return "#059669";
-    if (s >= 70) return "#d97706";
-    return "#dc2626";
-  }
-
-  // ───────────────────────────────────────
-  // 화면 전환
-  // ───────────────────────────────────────
-  function showScreen(id) {
-    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  // ── 화면 전환 ──
+  function showScreen(id){
+    document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
     document.getElementById(id).classList.add("active");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({top:0,behavior:"smooth"});
   }
-
-  function goHome() {
-    if (speechRecognition && isListening) speechRecognition.stop();
+  function goHome(){
+    if(speechRecognition&&isListening)speechRecognition.stop();
     showScreen("screenHome");
   }
-
-  function enterMode(mode) {
-    if (!isDataLoaded) return alert("성경 데이터를 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
-    if (mode === "sequential") {
-      seqLoadProgress();
-      seqRender();
+  function enterMode(mode){
+    if(!isDataLoaded)return alert("성경 데이터를 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
+    if(mode==="sequential"){
+      loadSeqState();
+      seqIndex=Math.min(seqIndex,VERSES.length-1);
+      seqTextVisible=false;
+      renderSeqScreen();
       showScreen("screenSequential");
-    } else if (mode === "chapterMemory") {
+    }else if(mode==="chapterMemory"){
+      chMemVisibility={};
       renderChMemGrid();
-      document.getElementById("chMemVerses").innerHTML = "";
+      document.getElementById("chMemVerses").innerHTML="";
       showScreen("screenChapterMemory");
-    } else if (mode === "chapterQuiz") {
+    }else if(mode==="chapterQuiz"){
       chQuizSelectedChapters.clear();
-      chQuizCurrentQ = null;
-      chQuizExamStatuses = {};
-      chQuizRetryMode = false;
-      chQuizRetryRefs = [];
-      document.getElementById("chQuizArea").style.display = "none";
-      document.getElementById("chQuizQuestionArea").style.display = "none";
-      document.getElementById("chQuizTestInput").value = "";
-      document.getElementById("chQuizResult").innerHTML = "";
+      chQuizCurrentQ=null;chQuizExamStatuses={};chQuizRetryMode=false;chQuizRetryRefs=[];
+      document.getElementById("chQuizArea").style.display="none";
+      document.getElementById("chQuizQuestionArea").style.display="none";
+      document.getElementById("chQuizTestInput").value="";
+      document.getElementById("chQuizResult").innerHTML="";
       renderChQuizGrid();
       showScreen("screenChapterQuiz");
     }
   }
 
-  // ───────────────────────────────────────
-  // 모드1: 순서대로 암기
-  // ───────────────────────────────────────
-  function seqLoadProgress() {
-    const saved = JSON.parse(localStorage.getItem(SEQ_PROGRESS_KEY) || "null");
-    seqChecked = new Set(saved?.checkedRefs || []);
-  }
+  // ── 모드1 ──
+  function renderSeqScreen(){
+    if(!VERSES.length)return;
+    const total=VERSES.length;
+    const memCount=Object.values(seqMemorized).filter(v=>v).length;
+    const pct=Math.round((memCount/total)*100);
+    document.getElementById("seqProgressPill").textContent=`${seqIndex+1} / ${total}절`;
+    document.getElementById("seqMemorizedPill").textContent=`암기 완료: ${memCount}절 (${pct}%)`;
+    document.getElementById("seqProgressBar").style.width=pct+"%";
 
-  function seqSaveProgress() {
-    localStorage.setItem(SEQ_PROGRESS_KEY, JSON.stringify({ checkedRefs: [...seqChecked] }));
-  }
+    const listRow=document.getElementById("seqListRow");
+    listRow.innerHTML=VERSES.map((v,i)=>{
+      let cls="seq-list-item";
+      if(i===seqIndex)cls+=" current";
+      else if(seqMemorized[v.ref])cls+=" memorized";
+      return`<span class="${cls}" onclick="seqJumpTo(${i})">${v.ref}</span>`;
+    }).join("");
 
-  function seqResetProgress() {
-    if (!confirm("진행 상황을 초기화하시겠습니까?")) return;
-    seqChecked.clear();
-    seqSaveProgress();
-    seqRender();
-  }
+    const v=VERSES[seqIndex];
+    document.getElementById("seqCurrentRef").textContent=v.ref;
+    document.getElementById("seqCurrentIndex").textContent=`${seqIndex+1} / ${total}`;
+    document.getElementById("seqVerseText").textContent=v.text;
 
-  // 현재 진행 중인 성구 인덱스 (체크 안 된 첫 번째)
-  function seqCurrentIndex() {
-    for (let i = 0; i < VERSES.length; i++) {
-      if (!seqChecked.has(VERSES[i].ref)) return i;
+    seqTextVisible=false;
+    updateSeqToggleBtn();
+
+    const isMem=!!seqMemorized[v.ref];
+    const badge=document.getElementById("seqMemBadge");
+    const checkBtn=document.getElementById("seqCheckBtn");
+    if(isMem){
+      badge.className="memorized-badge";badge.textContent="✓ 암기 완료";
+      checkBtn.textContent="✓ 완료 해제";checkBtn.className="secondary";
+    }else{
+      badge.className="not-memorized-badge";badge.textContent="미완료";
+      checkBtn.textContent="✓ 암기 완료 체크";checkBtn.className="success";
     }
-    return VERSES.length; // 전체 완료
+    checkBtn.style.margin="0";
+    document.getElementById("seqPrevBtn").disabled=seqIndex===0;
+    document.getElementById("seqNextBtn").disabled=seqIndex===VERSES.length-1;
+
+    const cur=listRow.querySelector(".current");
+    if(cur)cur.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});
   }
 
-  function seqRender() {
-    const currentIdx = seqCurrentIndex();
-    const total = VERSES.length;
-    const checkedCount = seqChecked.size;
-
-    // 진행률 바 & 필
-    document.getElementById("seqProgressPill").textContent = `진행률: ${checkedCount} / ${total}절`;
-    document.getElementById("seqProgressBar").style.width = `${Math.round(checkedCount/total*100)}%`;
-
-    if (currentIdx < total) {
-      const cur = VERSES[currentIdx];
-      document.getElementById("seqChapterPill").textContent = `현재: 계 ${cur.chapter}장`;
-    } else {
-      document.getElementById("seqChapterPill").textContent = "🎉 전체 완료!";
+  function updateSeqToggleBtn(){
+    const btn=document.getElementById("seqToggleBtn");
+    const el=document.getElementById("seqVerseText");
+    if(seqTextVisible){
+      btn.textContent="🙈 가리기";btn.className="toggle-btn showing";
+      el.classList.remove("hidden-text");
+    }else{
+      btn.textContent="👁 보이기";btn.className="toggle-btn";
+      el.classList.add("hidden-text");
     }
-
-    const listEl = document.getElementById("seqVerseList");
-
-    // 전체 완료
-    if (currentIdx >= total) {
-      listEl.innerHTML = `
-        <div class="all-done-box">
-          <div class="done-icon">🎉</div>
-          <h3>요한계시록 전체 암기 완료!</h3>
-          <p class="muted">총 ${total}절을 모두 외웠습니다.</p>
-          <button class="ghost" style="margin-top:8px;" onclick="seqResetProgress()">처음부터 다시 시작</button>
-        </div>`;
-      return;
-    }
-
-    // 현재 성구 (큰 카드로 강조)
-    const curVerse = VERSES[currentIdx];
-    const curHidden = false; // 현재 성구는 기본 보이기
-
-    // 이전 성구들 (최근 3개만 보여줌, 나머지는 접힘)
-    const prevStart = Math.max(0, currentIdx - 3);
-    const prevVerses = VERSES.slice(prevStart, currentIdx);
-
-    let html = "";
-
-    // 이전 성구들
-    if (prevVerses.length > 0) {
-      html += `<div style="margin-bottom:6px;"><span class="muted" style="font-size:13px;">이전 성구 (최근 ${prevVerses.length}개)</span></div>`;
-      html += prevVerses.map(v => {
-        const isChecked = seqChecked.has(v.ref);
-        return `
-        <div class="seq-verse-card checked" id="card-${v.ref.replace(/[: ]/g,'-')}">
-          <div class="seq-card-header">
-            <div class="ref">✅ ${v.ref}</div>
-            <div class="seq-card-actions">
-              <button class="toggle-btn" onclick="seqToggleText('${v.ref.replace(/[: ]/g,'-')}')">👁 보이기/가리기</button>
-            </div>
-          </div>
-          <div class="verse-text verse-text-hidden" id="text-${v.ref.replace(/[: ]/g,'-')}"
-               onclick="seqToggleText('${v.ref.replace(/[: ]/g,'-')}')">${escapeHtml(v.text)}</div>
-        </div>`;
-      }).join("");
-    }
-
-    // 현재 성구 (강조)
-    html += `
-      <div class="current-verse-area" id="card-${curVerse.ref.replace(/[: ]/g,'-')}">
-        <div class="seq-card-header">
-          <div>
-            <div class="ref">📍 ${curVerse.ref}</div>
-            <div class="muted" style="margin-top:4px;">지금 외울 성구입니다</div>
-          </div>
-          <div class="seq-card-actions">
-            <button class="toggle-btn" onclick="seqToggleText('${curVerse.ref.replace(/[: ]/g,'-')}')">👁 보이기/가리기</button>
-            <button class="check-btn" id="checkbtn-${curVerse.ref.replace(/[: ]/g,'-')}"
-                    onclick="seqCheck('${curVerse.ref}')">✅ 외웠어요!</button>
-          </div>
-        </div>
-        <div class="verse-text" id="text-${curVerse.ref.replace(/[: ]/g,'-')}">${escapeHtml(curVerse.text)}</div>
-      </div>`;
-
-    // 다음 성구들 (미리보기 3개, 가려진 상태)
-    const nextVerses = VERSES.slice(currentIdx + 1, currentIdx + 4);
-    if (nextVerses.length > 0) {
-      html += `<div style="margin:6px 0;"><span class="muted" style="font-size:13px;">다음 성구</span></div>`;
-      html += nextVerses.map(v => `
-        <div class="seq-verse-card" id="card-${v.ref.replace(/[: ]/g,'-')}">
-          <div class="seq-card-header">
-            <div class="ref">${v.ref}</div>
-            <div class="seq-card-actions">
-              <button class="toggle-btn" onclick="seqToggleText('${v.ref.replace(/[: ]/g,'-')}')">👁 보이기/가리기</button>
-            </div>
-          </div>
-          <div class="verse-text verse-text-hidden" id="text-${v.ref.replace(/[: ]/g,'-')}"
-               onclick="seqToggleText('${v.ref.replace(/[: ]/g,'-')}')">${escapeHtml(v.text)}</div>
-        </div>`).join("");
-    }
-
-    listEl.innerHTML = html;
   }
 
-  function seqToggleText(safeRef) {
-    const el = document.getElementById("text-" + safeRef);
-    if (!el) return;
-    el.classList.toggle("verse-text-hidden");
+  function seqToggleText(){seqTextVisible=!seqTextVisible;updateSeqToggleBtn();}
+
+  function seqToggleMemorized(){
+    const v=VERSES[seqIndex];
+    seqMemorized[v.ref]=!seqMemorized[v.ref];
+    saveSeqState();
+    const wasMem=seqMemorized[v.ref];
+    renderSeqScreen();
+    if(wasMem&&seqIndex<VERSES.length-1)setTimeout(()=>seqGo(1),400);
   }
 
-  function seqCheck(ref) {
-    seqChecked.add(ref);
-    seqSaveProgress();
-    seqRender();
-    // 부드럽게 새 현재 성구로 스크롤
-    setTimeout(() => {
-      const currentIdx = seqCurrentIndex();
-      if (currentIdx < VERSES.length) {
-        const nextRef = VERSES[currentIdx].ref.replace(/[: ]/g, '-');
-        const el = document.getElementById("card-" + nextRef);
-        if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-    }, 100);
+  function seqGo(dir){
+    const next=seqIndex+dir;
+    if(next<0||next>=VERSES.length)return;
+    seqIndex=next;saveSeqState();renderSeqScreen();
   }
 
-  // ───────────────────────────────────────
-  // 모드2: 장별 전체 암기
-  // ───────────────────────────────────────
-  function renderChMemGrid() {
-    document.getElementById("chMemGrid").innerHTML =
-      Array.from({length:22},(_,i)=>i+1).map(ch =>
+  function seqJumpTo(i){
+    seqIndex=i;saveSeqState();renderSeqScreen();
+    document.getElementById("seqVerseCard").scrollIntoView({behavior:"smooth",block:"start"});
+  }
+
+  function seqGoFirst(){seqJumpTo(0);}
+
+  function seqGoFirstUnmemorized(){
+    const idx=VERSES.findIndex(v=>!seqMemorized[v.ref]);
+    if(idx===-1)return alert("모든 성구를 암기 완료했습니다! 🎉");
+    seqJumpTo(idx);
+  }
+
+  // ── 모드2 ──
+  function renderChMemGrid(){
+    document.getElementById("chMemGrid").innerHTML=
+      Array.from({length:22},(_,i)=>i+1).map(ch=>
         `<button class="chapter-btn" onclick="chMemSelect(${ch})">${ch}장</button>`
       ).join("");
   }
 
-  function chMemSelect(ch) {
-    document.querySelectorAll("#chMemGrid .chapter-btn").forEach((btn, i) => {
-      btn.classList.toggle("selected", i+1===ch);
-    });
-
-    const verses = VERSES.filter(v => v.chapter === ch);
-    const area = document.getElementById("chMemVerses");
-
-    if (!verses.length) {
-      area.innerHTML = `<div class="muted">${ch}장 데이터가 없습니다.</div>`;
-      return;
-    }
-
-    area.innerHTML = `
-      <div style="margin-bottom:12px; margin-top:4px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
-        <div>
-          <strong style="font-size:16px;">요한계시록 ${ch}장</strong>
-          <span class="muted" style="margin-left:8px;">${verses.length}절</span>
-        </div>
-        <div class="btns">
-          <button class="ghost" style="font-size:13px;padding:7px 12px;" onclick="chMemShowAll(${ch})">전체 보이기</button>
-          <button class="ghost" style="font-size:13px;padding:7px 12px;" onclick="chMemHideAll(${ch})">전체 가리기</button>
-        </div>
+  function chMemSelect(ch){
+    document.querySelectorAll("#chMemGrid .chapter-btn").forEach((b,i)=>b.classList.toggle("selected",i+1===ch));
+    const verses=VERSES.filter(v=>v.chapter===ch);
+    const area=document.getElementById("chMemVerses");
+    if(!verses.length){area.innerHTML=`<div class="muted">${ch}장 데이터가 없습니다.</div>`;return;}
+    verses.forEach(v=>{if(chMemVisibility[v.ref]===undefined)chMemVisibility[v.ref]=false;});
+    area.innerHTML=`
+      <div style="margin-bottom:6px;margin-top:4px;">
+        <strong style="font-size:16px;">요한계시록 ${ch}장</strong>
+        <span class="muted" style="margin-left:8px;">${verses.length}절</span>
       </div>
-      ${verses.map(v => {
-        const safeRef = v.ref.replace(/[: ]/g,'-');
-        return `
-        <div class="seq-verse-card" id="chcard-${safeRef}">
-          <div class="seq-card-header">
-            <div class="ref">${v.ref}</div>
-            <button class="toggle-btn" onclick="chMemToggle('${safeRef}')">👁 보이기/가리기</button>
-          </div>
-          <div class="verse-text verse-text-hidden" id="chtext-${safeRef}"
-               onclick="chMemToggle('${safeRef}')">${escapeHtml(v.text)}</div>
-        </div>`;
-      }).join("")}`;
-    area.scrollIntoView({ behavior:"smooth", block:"start" });
+      ${verses.map(v=>buildVerseBlock(v)).join("")}`;
+    area.scrollIntoView({behavior:"smooth",block:"start"});
   }
 
-  function chMemToggle(safeRef) {
-    const el = document.getElementById("chtext-" + safeRef);
-    if (el) el.classList.toggle("verse-text-hidden");
+  function buildVerseBlock(v){
+    const visible=!!chMemVisibility[v.ref];
+    const safeRef=v.ref.replace(/'/g,"\\'");
+    return`<div class="verse-block">
+      <div class="verse-block-header">
+        <span class="ref" style="margin-bottom:0;">${v.ref}</span>
+        <button class="toggle-btn${visible?" showing":""}" onclick="chMemToggleVerse('${safeRef}','${CSS.escape(v.ref)}')">
+          ${visible?"🙈 가리기":"👁 보이기"}
+        </button>
+      </div>
+      <div class="verse-text-area${visible?"":" hidden-text"}" id="vtext-${CSS.escape(v.ref)}">
+        ${escapeHtml(v.text)}
+      </div>
+    </div>`;
   }
 
-  function chMemShowAll(ch) {
-    VERSES.filter(v=>v.chapter===ch).forEach(v => {
-      const el = document.getElementById("chtext-" + v.ref.replace(/[: ]/g,'-'));
-      if (el) el.classList.remove("verse-text-hidden");
+  function chMemToggleVerse(ref,escapedRef){
+    chMemVisibility[ref]=!chMemVisibility[ref];
+    const textEl=document.getElementById("vtext-"+escapedRef);
+    const btnEl=textEl?.previousElementSibling?.querySelector(".toggle-btn");
+    if(!textEl||!btnEl)return;
+    if(chMemVisibility[ref]){
+      textEl.classList.remove("hidden-text");btnEl.textContent="🙈 가리기";btnEl.classList.add("showing");
+    }else{
+      textEl.classList.add("hidden-text");btnEl.textContent="👁 보이기";btnEl.classList.remove("showing");
+    }
+  }
+
+  function chMemToggleAll(show){
+    document.querySelectorAll("#chMemVerses .verse-text-area").forEach(el=>{
+      if(show)el.classList.remove("hidden-text");else el.classList.add("hidden-text");
+    });
+    document.querySelectorAll("#chMemVerses .toggle-btn").forEach(btn=>{
+      btn.textContent=show?"🙈 가리기":"👁 보이기";
+      btn.classList.toggle("showing",show);
+    });
+    // sync visibility map
+    document.querySelectorAll("#chMemVerses .verse-text-area").forEach(el=>{
+      const ref=el.id.replace("vtext-","");chMemVisibility[ref]=show;
     });
   }
 
-  function chMemHideAll(ch) {
-    VERSES.filter(v=>v.chapter===ch).forEach(v => {
-      const el = document.getElementById("chtext-" + v.ref.replace(/[: ]/g,'-'));
-      if (el) el.classList.add("verse-text-hidden");
-    });
-  }
-
-  // ───────────────────────────────────────
-  // 모드3: 장별 랜덤 시험
-  // ───────────────────────────────────────
-  function renderChQuizGrid() {
-    document.getElementById("chQuizGrid").innerHTML =
-      Array.from({length:22},(_,i)=>i+1).map(ch => {
-        const sel = chQuizSelectedChapters.has(ch);
-        return `<button class="chapter-btn${sel?" selected":""}" onclick="chQuizToggle(${ch})">${ch}장</button>`;
+  // ── 모드3 ──
+  function renderChQuizGrid(){
+    document.getElementById("chQuizGrid").innerHTML=
+      Array.from({length:22},(_,i)=>i+1).map(ch=>{
+        const sel=chQuizSelectedChapters.has(ch);
+        return`<button class="chapter-btn${sel?" selected":""}" onclick="chQuizToggle(${ch})">${ch}장</button>`;
       }).join("");
   }
 
-  function chQuizToggle(ch) {
-    if (chQuizSelectedChapters.has(ch)) chQuizSelectedChapters.delete(ch);
-    else chQuizSelectedChapters.add(ch);
+  function chQuizToggle(ch){
+    if(chQuizSelectedChapters.has(ch))chQuizSelectedChapters.delete(ch);else chQuizSelectedChapters.add(ch);
     renderChQuizGrid();
   }
+  function chQuizSelectAll(){Array.from({length:22},(_,i)=>i+1).forEach(ch=>chQuizSelectedChapters.add(ch));renderChQuizGrid();}
+  function chQuizClearAll(){chQuizSelectedChapters.clear();renderChQuizGrid();}
 
-  function chQuizSelectAll() {
-    Array.from({length:22},(_,i)=>i+1).forEach(ch=>chQuizSelectedChapters.add(ch));
-    renderChQuizGrid();
-  }
-
-  function chQuizClearAll() {
-    chQuizSelectedChapters.clear();
-    renderChQuizGrid();
-  }
-
-  function chQuizStart() {
-    if (chQuizSelectedChapters.size === 0) return alert("장을 1개 이상 선택해주세요.");
-    const pool = VERSES.filter(v => chQuizSelectedChapters.has(v.chapter));
-    if (!pool.length) return alert("선택한 장에 데이터가 없습니다.");
-
-    chQuizCurrentQ = null;
-    chQuizExamStatuses = {};
-    chQuizRetryMode = false;
-    chQuizRetryRefs = [];
-
-    document.getElementById("chQuizQuestionArea").style.display = "none";
-    document.getElementById("chQuizTestInput").value = "";
-    document.getElementById("chQuizResult").innerHTML = "";
-    document.getElementById("chQuizArea").style.display = "block";
-
+  function chQuizStart(){
+    if(chQuizSelectedChapters.size===0)return alert("장을 1개 이상 선택해주세요.");
+    if(!VERSES.filter(v=>chQuizSelectedChapters.has(v.chapter)).length)return alert("선택한 장에 데이터가 없습니다.");
+    chQuizCurrentQ=null;chQuizExamStatuses={};chQuizRetryMode=false;chQuizRetryRefs=[];
+    document.getElementById("chQuizQuestionArea").style.display="none";
+    document.getElementById("chQuizTestInput").value="";
+    document.getElementById("chQuizResult").innerHTML="";
+    document.getElementById("chQuizArea").style.display="block";
     chQuizRenderRange();
-    document.getElementById("chQuizArea").scrollIntoView({ behavior:"smooth", block:"start" });
+    document.getElementById("chQuizArea").scrollIntoView({behavior:"smooth",block:"start"});
   }
 
-  function chQuizGetPool() {
-    return VERSES.filter(v => chQuizSelectedChapters.has(v.chapter));
+  function chQuizGetPool(){return VERSES.filter(v=>chQuizSelectedChapters.has(v.chapter));}
+
+  function chQuizRenderRange(){
+    const base=chQuizGetPool();
+    const source=chQuizRetryMode?base.filter(v=>chQuizRetryRefs.includes(v.ref)):base;
+    const chList=[...chQuizSelectedChapters].sort((a,b)=>a-b).map(c=>`${c}장`).join(", ");
+    let badge=`<span class="mode-badge" style="background:#f0fdf4;color:#166534;border-color:#86efac;">📖 ${chList}</span>`;
+    if(chQuizRetryMode)badge+=`<span class="mode-badge">재시험 모드</span>`;
+    document.getElementById("chQuizModeBadge").innerHTML=badge;
+    if(!source.length){
+      document.getElementById("chQuizRangeList").innerHTML=`<span class="muted">성구가 없습니다.</span>`;
+      document.getElementById("chQuizRangeSummary").textContent="";return;
+    }
+    document.getElementById("chQuizRangeList").innerHTML=source.map(v=>{
+      const st=chQuizExamStatuses[v.ref]||{state:"idle"};
+      let cls="range-item";
+      if(st.state==="active")cls+=" active";
+      else if(st.state==="done")cls+=st.score===100?" done-perfect":" done-imperfect";
+      return`<span class="${cls}">${v.ref}</span>`;
+    }).join("");
+    const completed=source.filter(v=>chQuizExamStatuses[v.ref]?.state==="done").length;
+    const remaining=source.filter(v=>{const st=chQuizExamStatuses[v.ref];return chQuizRetryMode?(!st||st.score<100):(!st||st.state!=="done");}).length;
+    document.getElementById("chQuizRangeSummary").textContent=
+      chQuizRetryMode?`재시험 범위 ${source.length}절 · 완료 ${completed}절 · 남은 문제 ${remaining}절`
+                     :`선택 범위 ${source.length}절 · 출제 완료 ${completed}절 · 남은 문제 ${remaining}절`;
   }
 
-  function chQuizRenderRange() {
-    const base = chQuizGetPool();
-    const source = chQuizRetryMode ? base.filter(v=>chQuizRetryRefs.includes(v.ref)) : base;
-
-    const chList = [...chQuizSelectedChapters].sort((a,b)=>a-b).map(c=>`${c}장`).join(", ");
-    let badgeHtml = `<span class="mode-badge" style="background:#f0fdf4;color:#166534;border-color:#86efac;">📖 ${chList}</span>`;
-    if (chQuizRetryMode) badgeHtml += `<span class="mode-badge">재시험 모드</span>`;
-    document.getElementById("chQuizModeBadge").innerHTML = badgeHtml;
-
-    if (!source.length) {
-      document.getElementById("chQuizRangeList").innerHTML = `<span class="muted">성구가 없습니다.</span>`;
-      document.getElementById("chQuizRangeSummary").textContent = "";
+  function chQuizPick(){
+    if(!isDataLoaded)return alert("데이터를 불러오는 중입니다.");
+    if(speechRecognition&&isListening)speechRecognition.stop();
+    const base=chQuizGetPool();
+    const pool=chQuizRetryMode?base.filter(v=>chQuizRetryRefs.includes(v.ref)):base;
+    if(!pool.length)return alert("선택한 장에 성구가 없습니다.");
+    Object.keys(chQuizExamStatuses).forEach(r=>{if(chQuizExamStatuses[r].state==="active")chQuizExamStatuses[r].state="idle";});
+    const available=pool.filter(v=>{const st=chQuizExamStatuses[v.ref];return chQuizRetryMode?(!st||st.score<100):(!st||st.state!=="done");});
+    if(!available.length){
+      chQuizCurrentQ=null;
+      document.getElementById("chQuizQuestionArea").style.display="none";
+      document.getElementById("chQuizTestInput").value="";
+      if(chQuizRetryMode){chQuizRetryMode=false;chQuizRetryRefs=[];}
+      chQuizRenderRange();
+      const hasRetry=chQuizGetPool().some(v=>{const st=chQuizExamStatuses[v.ref];return st&&st.state==="done"&&st.score<100;});
+      document.getElementById("chQuizResult").innerHTML=`
+        <div style="margin-top:16px;padding:20px;background:#f0fdf4;border:2px solid #059669;border-radius:14px;text-align:center;">
+          <div style="font-size:32px;">🎉</div>
+          <div style="font-weight:800;font-size:16px;color:#065f46;margin:8px 0 4px;">모든 성구 출제 완료!</div>
+          ${hasRetry
+            ? `<div class="muted" style="margin-bottom:12px;">100점 미만인 성구가 있습니다. 재시험을 볼 수 있어요.</div><button class="retry" style="margin:0;" onclick="chQuizStartRetry()">🔄 재시험 시작</button>`
+            : `<div class="muted">모든 성구를 완벽하게 암송했습니다!</div>`}
+        </div>`;
       return;
     }
-
-    document.getElementById("chQuizRangeList").innerHTML = source.map(v => {
-      const st = chQuizExamStatuses[v.ref] || { state:"idle" };
-      let cls = "range-item";
-      if (st.state === "active") cls += " active";
-      else if (st.state === "done") cls += st.score===100 ? " done-perfect" : " done-imperfect";
-      return `<span class="${cls}">${v.ref}</span>`;
-    }).join("");
-
-    const completed = source.filter(v => chQuizExamStatuses[v.ref]?.state==="done").length;
-    const remaining = source.filter(v => {
-      const st = chQuizExamStatuses[v.ref];
-      return chQuizRetryMode ? (!st||st.score<100) : (!st||st.state!=="done");
-    }).length;
-
-    document.getElementById("chQuizRangeSummary").textContent =
-      chQuizRetryMode
-        ? `재시험 범위 ${source.length}절 · 완료 ${completed}절 · 남은 문제 ${remaining}절`
-        : `선택 범위 ${source.length}절 · 출제 완료 ${completed}절 · 남은 문제 ${remaining}절`;
-  }
-
-  function chQuizPick() {
-    if (!isDataLoaded) return alert("데이터를 불러오는 중입니다.");
-    if (speechRecognition && isListening) speechRecognition.stop();
-
-    const base = chQuizGetPool();
-    const pool = chQuizRetryMode ? base.filter(v=>chQuizRetryRefs.includes(v.ref)) : base;
-    if (!pool.length) return alert("선택한 장에 성구가 없습니다.");
-
-    Object.keys(chQuizExamStatuses).forEach(r => {
-      if (chQuizExamStatuses[r].state === "active") chQuizExamStatuses[r].state = "idle";
-    });
-
-    const available = pool.filter(v => {
-      const st = chQuizExamStatuses[v.ref];
-      return chQuizRetryMode ? (!st||st.score<100) : (!st||st.state!=="done");
-    });
-
-    if (!available.length) {
-      chQuizCurrentQ = null;
-      document.getElementById("chQuizQuestionArea").style.display = "none";
-      document.getElementById("chQuizTestInput").value = "";
-      document.getElementById("chQuizResult").innerHTML = "";
-      if (chQuizRetryMode) { chQuizRetryMode=false; chQuizRetryRefs=[]; }
-      chQuizRenderRange();
-      return alert("출제 가능한 성구를 모두 완료했습니다.");
     }
-
-    chQuizCurrentQ = available[Math.floor(Math.random()*available.length)];
-    chQuizExamStatuses[chQuizCurrentQ.ref] = { state:"active", score: chQuizExamStatuses[chQuizCurrentQ.ref]?.score??null };
+    chQuizCurrentQ=available[Math.floor(Math.random()*available.length)];
+    chQuizExamStatuses[chQuizCurrentQ.ref]={state:"active",score:chQuizExamStatuses[chQuizCurrentQ.ref]?.score??null};
     chQuizRenderRange();
-
-    document.getElementById("chQuizQuestionArea").style.display = "block";
-    document.getElementById("chQuizQuestionArea").innerHTML = `
+    document.getElementById("chQuizQuestionArea").style.display="block";
+    document.getElementById("chQuizQuestionArea").innerHTML=`
       <div class="ref">${chQuizCurrentQ.ref}</div>
-      <div class="muted">${chQuizRetryMode ? "재시험 성구입니다." : "이 성구를 암송한 뒤 아래에 입력하세요."}</div>`;
-    document.getElementById("chQuizTestInput").value = "";
-    document.getElementById("chQuizResult").innerHTML = "";
+      <div class="muted">${chQuizRetryMode?"재시험 성구입니다.":"이 성구를 암송한 뒤 아래에 입력하세요."}</div>`;
+    document.getElementById("chQuizTestInput").value="";
+    document.getElementById("chQuizResult").innerHTML="";
   }
 
-  function chQuizStartRetry() {
-    if (!isDataLoaded) return alert("데이터를 불러오는 중입니다.");
-    const retry = chQuizGetPool().filter(v => {
-      const st = chQuizExamStatuses[v.ref];
-      return st && st.state==="done" && st.score<100;
-    });
-    if (!retry.length) return alert("재시험 대상이 없습니다.");
-    chQuizRetryMode = true;
-    chQuizRetryRefs = retry.map(v=>v.ref);
-    chQuizCurrentQ = null;
-    document.getElementById("chQuizQuestionArea").style.display = "none";
-    document.getElementById("chQuizTestInput").value = "";
-    document.getElementById("chQuizResult").innerHTML = "";
+  function chQuizStartRetry(){
+    if(!isDataLoaded)return alert("데이터를 불러오는 중입니다.");
+    const retry=chQuizGetPool().filter(v=>{const st=chQuizExamStatuses[v.ref];return st&&st.state==="done"&&st.score<100;});
+    if(!retry.length)return alert("재시험 대상이 없습니다.");
+    chQuizRetryMode=true;chQuizRetryRefs=retry.map(v=>v.ref);chQuizCurrentQ=null;
+    document.getElementById("chQuizQuestionArea").style.display="none";
+    document.getElementById("chQuizTestInput").value="";document.getElementById("chQuizResult").innerHTML="";
+    chQuizRenderRange();alert("재시험 모드가 시작되었습니다.");
+  }
+
+  function clearTest(){
+    document.getElementById("chQuizTestInput").value="";
+    document.getElementById("chQuizResult").innerHTML="";
+    if(speechRecognition&&isListening)speechRecognition.stop();
+  }
+
+  function gradeTest(){
+    if(!isDataLoaded)return alert("데이터를 불러오는 중입니다.");
+    if(!chQuizCurrentQ)return alert("먼저 문제를 뽑아주세요.");
+    const user=document.getElementById("chQuizTestInput").value;
+    const comp=compareAligned(user,chQuizCurrentQ.text);
+    chQuizExamStatuses[chQuizCurrentQ.ref]={state:"done",score:comp.score};
     chQuizRenderRange();
-    alert("재시험 모드가 시작되었습니다.");
-  }
-
-  function clearQuizTest() {
-    document.getElementById("chQuizTestInput").value = "";
-    document.getElementById("chQuizResult").innerHTML = "";
-    if (speechRecognition && isListening) speechRecognition.stop();
-  }
-
-  function chQuizGrade() {
-    if (!isDataLoaded) return alert("데이터를 불러오는 중입니다.");
-    if (!chQuizCurrentQ) return alert("먼저 문제를 뽑아주세요.");
-
-    const user = document.getElementById("chQuizTestInput").value;
-    const comp = compareAligned(user, chQuizCurrentQ.text);
-
-    chQuizExamStatuses[chQuizCurrentQ.ref] = { state:"done", score: comp.score };
-    chQuizRenderRange();
-
-    document.getElementById("chQuizResult").innerHTML = `
+    document.getElementById("chQuizResult").innerHTML=`
       <div class="score" style="color:${getScoreColor(comp.score)};">정확도: ${comp.score}%</div>
       <strong style="display:block;margin-top:12px;">정답</strong>
-      <div class="answer-box">
-        <div class="verse-line">
-          <div class="verse-label">${chQuizCurrentQ.ref}</div>
-          <div>${renderMarkedVerse(chQuizCurrentQ.text, user, comp)}</div>
-        </div>
-      </div>`;
+      <div class="answer-box"><div class="verse-line">
+        <div class="verse-label">${chQuizCurrentQ.ref}</div>
+        <div>${renderMarkedVerse(chQuizCurrentQ.text,user,comp)}</div>
+      </div></div>`;
   }
 
-  // ───────────────────────────────────────
-  // 채점 알고리즘
-  // ───────────────────────────────────────
-  function buildSpacedUnits(text) {
-    const units = []; let spacesBefore = "";
-    for (const ch of text||"") {
-      if (/\s/.test(ch)) spacesBefore += ch;
-      else { units.push({ spacesBefore, char: ch }); spacesBefore = ""; }
-    }
-    return { units, trailingSpaces: spacesBefore };
+  // ── Levenshtein ──
+  function buildSpacedUnits(text){
+    const units=[];let sb="";
+    for(const ch of text||""){if(/\s/.test(ch))sb+=ch;else{units.push({spacesBefore:sb,char:ch});sb="";}}
+    return{units,trailingSpaces:sb};
   }
-
-  function compareAligned(userText, correctText) {
-    const user = normalize(userText), correct = normalize(correctText);
-    const m = user.length, n = correct.length;
-    const dp   = Array.from({length:m+1},()=>Array(n+1).fill(0));
-    const back = Array.from({length:m+1},()=>Array(n+1).fill(null));
-
-    for (let i=1;i<=m;i++) { dp[i][0]=i; back[i][0]="delete"; }
-    for (let j=1;j<=n;j++) { dp[0][j]=j; back[0][j]="insert"; }
-
-    for (let i=1;i<=m;i++) for (let j=1;j<=n;j++) {
-      const same = user[i-1]===correct[j-1];
-      const diag=dp[i-1][j-1]+(same?0:1), del=dp[i-1][j]+1, ins=dp[i][j-1]+1;
-      const min=Math.min(diag,del,ins);
-      dp[i][j]=min;
-      if (min===diag) back[i][j]=same?"match":"replace";
-      else if (min===del) back[i][j]="delete";
-      else back[i][j]="insert";
+  function compareAligned(userText,correctText){
+    const user=normalize(userText),correct=normalize(correctText);
+    const m=user.length,n=correct.length;
+    const dp=Array.from({length:m+1},()=>Array(n+1).fill(0));
+    const back=Array.from({length:m+1},()=>Array(n+1).fill(null));
+    for(let i=1;i<=m;i++){dp[i][0]=i;back[i][0]="delete";}
+    for(let j=1;j<=n;j++){dp[0][j]=j;back[0][j]="insert";}
+    for(let i=1;i<=m;i++)for(let j=1;j<=n;j++){
+      const same=user[i-1]===correct[j-1];
+      const diag=dp[i-1][j-1]+(same?0:1),del=dp[i-1][j]+1,ins=dp[i][j-1]+1;
+      const min=Math.min(diag,del,ins);dp[i][j]=min;
+      if(min===diag)back[i][j]=same?"match":"replace";
+      else if(min===del)back[i][j]="delete";else back[i][j]="insert";
     }
-
-    let i=m, j=n; const result=[];
-    while (i>0||j>0) {
-      const a=back[i][j];
-      if (a==="match")        { result.push({type:"correct",u:user[i-1],c:correct[j-1]}); i--;j--; }
-      else if (a==="replace") { result.push({type:"wrong",u:user[i-1],c:correct[j-1]}); i--;j--; }
-      else if (a==="delete")  { result.push({type:"extra",u:user[i-1],c:""}); i--; }
-      else                    { result.push({type:"wrong",u:"",c:correct[j-1]}); j--; }
+    let i=m,j=n;const result=[];
+    while(i>0||j>0){const a=back[i][j];
+      if(a==="match"){result.push({type:"correct",u:user[i-1],c:correct[j-1]});i--;j--;}
+      else if(a==="replace"){result.push({type:"wrong",u:user[i-1],c:correct[j-1]});i--;j--;}
+      else if(a==="delete"){result.push({type:"extra",u:user[i-1],c:""});i--;}
+      else{result.push({type:"wrong",u:"",c:correct[j-1]});j--;}
     }
     result.reverse();
-
-    const errorCount = result.filter(x=>x.type!=="correct").length;
-    const score = correct.length===0 ? 0 : Math.max(0,Math.round(((correct.length-errorCount)/correct.length)*100));
-    return { score, result };
+    const ec=result.filter(x=>x.type!=="correct").length;
+    const score=correct.length===0?0:Math.max(0,Math.round(((correct.length-ec)/correct.length)*100));
+    return{score,result};
   }
-
-  function renderMarkedVerse(correctText, userText, comp) {
-    const {units:cU,trailingSpaces}=buildSpacedUnits(correctText);
-    const {units:uU}=buildSpacedUnits(userText);
-    let html="", ci=0, ui=0;
-
-    for (const item of comp.result) {
-      if (item.type==="extra") {
+  function renderMarkedVerse(correctText,userText,comp){
+    const{units:cU,trailingSpaces}=buildSpacedUnits(correctText);
+    const{units:uU}=buildSpacedUnits(userText);
+    let html="",ci=0,ui=0;
+    for(const item of comp.result){
+      if(item.type==="extra"){
         const u=uU[ui];
-        html += u ? u.spacesBefore+`<span class="char-extra">${escapeHtml(u.char)}</span>`
-                  : `<span class="char-extra">${escapeHtml(item.u)}</span>`;
-        ui++; continue;
+        html+=u?u.spacesBefore+`<span class="char-extra">${escapeHtml(u.char)}</span>`:`<span class="char-extra">${escapeHtml(item.u)}</span>`;
+        ui++;continue;
       }
-      const cu=cU[ci]; if (!cu) continue;
-      html += cu.spacesBefore;
-      if (item.type==="correct") { html+=`<span class="char-correct">${escapeHtml(cu.char)}</span>`; ui++; }
-      else { html+=`<span class="char-wrong">${escapeHtml(cu.char)}</span>`; if (item.u) ui++; }
+      const cu=cU[ci];if(!cu)continue;
+      html+=cu.spacesBefore;
+      if(item.type==="correct"){html+=`<span class="char-correct">${escapeHtml(cu.char)}</span>`;ui++;}
+      else{html+=`<span class="char-wrong">${escapeHtml(cu.char)}</span>`;if(item.u)ui++;}
       ci++;
     }
-    while (ci<cU.length) { html+=cU[ci].spacesBefore+`<span class="char-correct">${escapeHtml(cU[ci].char)}</span>`; ci++; }
+    while(ci<cU.length){html+=cU[ci].spacesBefore+`<span class="char-correct">${escapeHtml(cU[ci].char)}</span>`;ci++;}
     html+=trailingSpaces;
-    while (ui<uU.length) { html+=uU[ui].spacesBefore+`<span class="char-extra">${escapeHtml(uU[ui].char)}</span>`; ui++; }
+    while(ui<uU.length){html+=uU[ui].spacesBefore+`<span class="char-extra">${escapeHtml(uU[ui].char)}</span>`;ui++;}
     return html;
   }
 
-  // ───────────────────────────────────────
-  // 음성 인식 (모드3 전용)
-  // ───────────────────────────────────────
-  function initSpeechRecognition() {
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR) { speechSupported=false; return; }
-    speechSupported = true;
-    speechRecognition = new SR();
-    speechRecognition.lang = "ko-KR";
-    speechRecognition.interimResults = true;
-    speechRecognition.continuous = false;
-
-    speechRecognition.onstart  = () => { isListening=true;  updateSpeechBtn(); };
-    speechRecognition.onend    = () => { isListening=false; updateSpeechBtn(); };
-    speechRecognition.onerror  = () => { isListening=false; updateSpeechBtn(); };
-    speechRecognition.onresult = (e) => {
-      let t="";
-      for (let i=0;i<e.results.length;i++) t+=e.results[i][0].transcript;
-      const el = document.getElementById("chQuizTestInput");
-      if (el) el.value = t;
+  // ── 음성 인식 ──
+  function initSpeechRecognition(){
+    const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+    if(!SR){speechSupported=false;return;}
+    speechSupported=true;
+    speechRecognition=new SR();
+    speechRecognition.lang="ko-KR";speechRecognition.interimResults=true;speechRecognition.continuous=false;
+    speechRecognition.onstart=()=>{isListening=true;updateSpeechBtn();};
+    speechRecognition.onend=()=>{isListening=false;updateSpeechBtn();};
+    speechRecognition.onerror=()=>{isListening=false;updateSpeechBtn();};
+    speechRecognition.onresult=(e)=>{
+      let t="";for(let i=0;i<e.results.length;i++)t+=e.results[i][0].transcript;
+      const el=document.getElementById("chQuizTestInput");if(el)el.value=t;
     };
     updateSpeechBtn();
   }
-
-  function updateSpeechBtn() {
-    const btn = document.getElementById("chQuizSpeechBtn");
-    if (!btn) return;
-    btn.style.display = speechSupported ? "inline-block" : "none";
-    btn.textContent = isListening ? "🎤 음성 입력 중지" : "🎤 음성 입력 시작";
+  function updateSpeechBtn(){
+    const btn=document.getElementById("chQuizSpeechBtn");if(!btn)return;
+    btn.style.display=speechSupported?"inline-block":"none";
+    btn.textContent=isListening?"🎤 음성 입력 중지":"🎤 음성 입력 시작";
+  }
+  function toggleSpeechInput(){
+    if(!speechSupported||!speechRecognition)return alert("이 기기에서는 음성 입력을 지원하지 않습니다.");
+    if(!chQuizCurrentQ)return alert("먼저 문제를 뽑아주세요.");
+    if(isListening)speechRecognition.stop();else speechRecognition.start();
   }
 
-  function toggleSpeechInput() {
-    if (!speechSupported||!speechRecognition) return alert("이 기기에서는 음성 입력을 지원하지 않습니다.");
-    if (!chQuizCurrentQ) return alert("먼저 문제를 뽑아주세요.");
-    if (isListening) speechRecognition.stop(); else speechRecognition.start();
-  }
-
-  // ───────────────────────────────────────
-  // 초기화
-  // ───────────────────────────────────────
+  // ── 초기화 ──
   initSpeechRecognition();
-
   fetch("revelation.json")
-    .then(res => { if (!res.ok) throw new Error("HTTP "+res.status); return res.json(); })
-    .then(data => {
-      VERSES = data;
-      isDataLoaded = true;
-      document.getElementById("loadingNotice").textContent = "암기 방식을 선택하세요.";
+    .then(res=>{if(!res.ok)throw new Error("HTTP "+res.status);return res.json();})
+    .then(data=>{
+      VERSES=data;isDataLoaded=true;
+      document.getElementById("loadingNotice").textContent="암기 방식을 선택하세요.";
     })
-    .catch(err => {
-      console.error("JSON 로드 실패:", err);
-      document.getElementById("loadingNotice").textContent =
-        "⚠️ 성경 데이터를 불러오지 못했습니다. revelation.json 파일 경로를 확인해주세요.";
+    .catch(()=>{
+      document.getElementById("loadingNotice").textContent="⚠️ 성경 데이터를 불러오지 못했습니다. revelation.json 파일 경로를 확인해주세요.";
     });
 </script>
 </body>
