@@ -330,9 +330,9 @@ function renderSeqScreen() {
     return;
   }
 
-  // 이전 2개 + 현재 1개 + 다음 2개 = 5개
-  var windowStart = Math.max(0, curIdx - 2);
-  var windowEnd = Math.min(total, curIdx + 3);
+  // 이전 1개 + 현재 1개 + 다음 3개 = 5개
+  var windowStart = Math.max(0, curIdx - 1);
+  var windowEnd = Math.min(total, curIdx + 4);
   var frag = document.createDocumentFragment();
   for (var i = windowStart; i < windowEnd; i++) {
     frag.appendChild(makeSeqCard(VERSES[i], i, i === curIdx));
