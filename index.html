@@ -32,14 +32,8 @@
       border-top: 1px solid #e5e7eb;
     }
 
-    label {
-      display: block;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
+    label { display: block; font-weight: 700; margin-bottom: 8px; }
 
-    input[type="number"],
-    input[type="date"],
     textarea {
       width: 100%;
       border: 1px solid #cfd6e4;
@@ -47,9 +41,6 @@
       padding: 12px;
       font-size: 15px;
       background: #fff;
-    }
-
-    textarea {
       min-height: 120px;
       resize: vertical;
       line-height: 1.7;
@@ -68,19 +59,10 @@
     }
 
     button.secondary { background: #64748b; }
-    button.ghost { background: #e5e7eb; color: #374151; }
-    button.retry { background: #dc2626; color: #fff; }
-
-    button:disabled { opacity: 0.55; cursor: not-allowed; }
-
-    .verse {
-      background: #f8fafc;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 14px;
-      margin: 10px 0;
-      line-height: 1.8;
-    }
+    button.ghost     { background: #e5e7eb; color: #374151; }
+    button.retry     { background: #dc2626; color: #fff; }
+    button.success   { background: #059669; color: #fff; }
+    button:disabled  { opacity: 0.55; cursor: not-allowed; }
 
     .ref {
       display: inline-block;
@@ -113,8 +95,8 @@
     .verse-label { display: block; font-weight: 700; color: #1d4ed8; margin-bottom: 6px; }
 
     .char-correct { color: #111111; }
-    .char-wrong { color: #dc2626; font-weight: 700; }
-    .char-extra { color: #6b7280; text-decoration: line-through; text-decoration-thickness: 2px; }
+    .char-wrong   { color: #dc2626; font-weight: 700; }
+    .char-extra   { color: #6b7280; text-decoration: line-through; text-decoration-thickness: 2px; }
 
     .btns { display: flex; flex-wrap: wrap; gap: 8px; }
     .btns button { margin: 0; }
@@ -126,8 +108,6 @@
       background: #fff;
       margin-top: 14px;
     }
-
-    .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
     .pill {
       display: inline-block;
@@ -162,8 +142,8 @@
       font-size: 14px;
     }
 
-    .range-item.active { font-weight: 800; border-color: #111111; }
-    .range-item.done-perfect { color: #059669; border-color: #059669; background: #ecfdf5; font-weight: 700; }
+    .range-item.active         { font-weight: 800; border-color: #111111; }
+    .range-item.done-perfect   { color: #059669; border-color: #059669; background: #ecfdf5; font-weight: 700; }
     .range-item.done-imperfect { color: #dc2626; border-color: #dc2626; background: #fef2f2; font-weight: 700; }
     .range-summary { margin-top: 10px; font-size: 14px; color: #6b7280; }
 
@@ -179,7 +159,7 @@
       border: 1px solid #fdba74;
     }
 
-    /* ── 홈 화면 ── */
+    /* ── 홈 카드 ── */
     .mode-cards {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -208,17 +188,12 @@
       box-shadow: 0 8px 20px rgba(37,99,235,0.12);
     }
 
-    .mode-icon { font-size: 42px; line-height: 1; }
+    .mode-icon  { font-size: 42px; line-height: 1; }
     .mode-title { font-size: 16px; font-weight: 800; color: #1e293b; }
-    .mode-desc { font-size: 13px; color: #6b7280; line-height: 1.6; }
+    .mode-desc  { font-size: 13px; color: #6b7280; line-height: 1.6; }
 
-    /* ── 장 선택 ── */
-    .chapter-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
-    }
+    /* ── 장 선택 버튼 ── */
+    .chapter-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 
     .chapter-btn {
       background: #f1f5f9;
@@ -233,17 +208,8 @@
       transition: all 0.15s;
     }
 
-    .chapter-btn:hover:not(:disabled) {
-      background: #e0e7ff;
-      border-color: #818cf8;
-      color: #3730a3;
-    }
-
-    .chapter-btn.selected {
-      background: #2563eb;
-      border-color: #2563eb;
-      color: #fff;
-    }
+    .chapter-btn:hover:not(:disabled) { background: #e0e7ff; border-color: #818cf8; color: #3730a3; }
+    .chapter-btn.selected { background: #2563eb; border-color: #2563eb; color: #fff; }
 
     /* ── 화면 전환 ── */
     .screen { display: none; }
@@ -261,13 +227,135 @@
 
     .back-btn:hover { background: #f1f5f9; }
 
+    /* ══════════════════════════════════
+       모드1: 순서 암기 카드
+    ══════════════════════════════════ */
+    .seq-verse-card {
+      border: 2px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 14px;
+      background: #fff;
+      transition: border-color 0.15s;
+    }
+
+    .seq-verse-card.checked {
+      border-color: #059669;
+      background: #f0fdf4;
+    }
+
+    .seq-verse-card.current {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+    }
+
+    .seq-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .seq-card-header .ref { margin-bottom: 0; }
+
+    .seq-card-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+    /* 가리기 버튼 */
+    .toggle-btn {
+      background: #f1f5f9;
+      color: #374151;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      margin: 0;
+    }
+
+    .toggle-btn:hover { background: #e0e7ff; border-color: #818cf8; color: #3730a3; }
+
+    /* 체크 버튼 */
+    .check-btn {
+      background: #f1f5f9;
+      color: #374151;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      margin: 0;
+      transition: all 0.15s;
+    }
+
+    .check-btn.checked {
+      background: #059669;
+      border-color: #059669;
+      color: #fff;
+    }
+
+    /* 가려진 텍스트 */
+    .verse-text-hidden {
+      filter: blur(6px);
+      user-select: none;
+      cursor: pointer;
+      transition: filter 0.2s;
+    }
+
+    .verse-text-hidden:hover { filter: blur(3px); }
+
+    .verse-text { line-height: 1.8; word-break: keep-all; }
+
+    /* 진행 바 */
+    .progress-bar-wrap {
+      background: #e5e7eb;
+      border-radius: 999px;
+      height: 10px;
+      margin-top: 12px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: #2563eb;
+      border-radius: 999px;
+      transition: width 0.3s;
+    }
+
+    /* 현재 성구 포커스 영역 */
+    .current-verse-area {
+      background: #eff6ff;
+      border: 2px solid #2563eb;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .current-verse-area .ref { background: #dbeafe; }
+
+    /* 완료 메시지 */
+    .all-done-box {
+      text-align: center;
+      padding: 32px 20px;
+      background: #f0fdf4;
+      border: 2px solid #059669;
+      border-radius: 16px;
+      margin-top: 16px;
+    }
+
+    .all-done-box .done-icon { font-size: 48px; }
+    .all-done-box h3 { color: #065f46; margin: 12px 0 6px; }
+
     @media (max-width: 720px) {
       body { padding: 12px; }
       .container { padding: 18px; }
-      .settings-grid { grid-template-columns: 1fr; }
       .mode-cards { grid-template-columns: 1fr; gap: 12px; }
       .mode-card { flex-direction: row; text-align: left; padding: 18px 16px; gap: 14px; }
       .mode-icon { font-size: 32px; flex-shrink: 0; }
+      .seq-card-header { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
@@ -276,20 +364,17 @@
   <h1>Revelation Memory</h1>
   <div class="muted">요한계시록 암송 프로토타입</div>
 
-  <!-- ══════════════════════════════
-       홈 화면
-  ══════════════════════════════ -->
+  <!-- ══════════ 홈 화면 ══════════ -->
   <div id="screenHome" class="screen active">
     <div class="section">
       <h2 style="margin-bottom:6px;">암기 방식을 선택하세요</h2>
       <div class="muted" id="loadingNotice">성경 데이터를 불러오는 중...</div>
-
       <div class="mode-cards">
         <div class="mode-card" onclick="enterMode('sequential')">
           <div class="mode-icon">📖</div>
           <div>
             <div class="mode-title">순서대로 암기</div>
-            <div class="mode-desc">1:1절부터 순서대로<br>매일 정해진 절 수씩 학습</div>
+            <div class="mode-desc">1:1절부터 한 절씩<br>외우면 체크하고 다음으로</div>
           </div>
         </div>
         <div class="mode-card" onclick="enterMode('chapterMemory')">
@@ -310,72 +395,32 @@
     </div>
   </div>
 
-  <!-- ══════════════════════════════
-       모드 1: 순서대로 암기
-  ══════════════════════════════ -->
+  <!-- ══════════ 모드 1: 순서대로 암기 ══════════ -->
   <div id="screenSequential" class="screen">
     <button class="back-btn" onclick="goHome()">← 처음으로</button>
 
     <div class="top-info">
-      <div class="pill" id="todayRangePill">오늘 범위</div>
-      <div class="pill" id="progressPill">진행률</div>
+      <div class="pill" id="seqProgressPill">진행률</div>
+      <div class="pill" id="seqChapterPill">현재 장</div>
     </div>
 
     <div class="section">
-      <h2>학습 설정</h2>
-      <div class="settings-grid">
-        <div>
-          <label for="startDate">시작일</label>
-          <input id="startDate" type="date" />
-        </div>
-        <div>
-          <label for="dailyCount">하루 암송 절 수</label>
-          <input id="dailyCount" type="number" min="1" max="20" value="3" />
-        </div>
-      </div>
-      <div class="btns" style="margin-top:12px;">
-        <button onclick="saveSettings()">설정 저장</button>
-        <button class="ghost" onclick="resetPrototype()">전체 초기화</button>
-        <button class="secondary" onclick="resetExamStatuses()">출제 완료 초기화</button>
-      </div>
-    </div>
+      <h2>순서대로 암기</h2>
+      <div class="muted">한 절씩 암기하세요. 외웠으면 ✅ 체크하면 다음 성구가 열립니다.</div>
 
-    <div class="section">
-      <h2>오늘의 암송</h2>
-      <div class="muted">시작일과 하루 암송 절 수를 기준으로 오늘 외울 범위를 계산합니다.</div>
-      <div id="todayVerses" class="muted" style="margin-top:12px;">로딩 중...</div>
-    </div>
-
-    <div class="section">
-      <h2>일일 시험</h2>
-      <div class="muted">시작일부터 오늘까지 누적 학습한 성구 중에서 랜덤으로 한 절씩 출제합니다.</div>
-
-      <div class="range-box">
-        <strong>출제 범위</strong><span id="seqExamModeBadge"></span>
-        <div id="seqExamRangeList" class="range-list" style="margin-top:10px;"></div>
-        <div id="seqExamRangeSummary" class="range-summary"></div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="seqProgressBar" style="width:0%"></div>
       </div>
 
-      <div class="btns" style="margin-top:12px;">
-        <button id="seqPickBtn" onclick="seqPickQuestion()">문제 뽑기</button>
-        <button id="seqRetryBtn" class="retry" onclick="seqStartRetry()">재시험</button>
-        <button id="seqSpeechBtn" class="secondary" onclick="toggleSpeechInput('seq')" style="display:none;">🎤 음성 입력 시작</button>
-        <button class="secondary" onclick="clearTest('seq')">입력 지우기</button>
-      </div>
+      <div style="margin-top:16px;" id="seqVerseList"></div>
 
-      <div id="seqQuestionArea" class="daily-question-box" style="display:none;"></div>
-      <textarea id="seqTestInput" placeholder="출제된 성구를 입력하세요" style="margin-top:12px;"></textarea>
-      <div class="btns" style="margin-top:10px;">
-        <button id="seqGradeBtn" onclick="gradeTest('seq')">채점하기</button>
-        <button class="secondary" onclick="seqPickQuestion()">다음 문제</button>
+      <div class="btns" style="margin-top:16px;">
+        <button class="ghost" onclick="seqResetProgress()">⚠️ 진행 초기화</button>
       </div>
-      <div id="seqResult"></div>
     </div>
   </div>
 
-  <!-- ══════════════════════════════
-       모드 2: 장별 전체 암기
-  ══════════════════════════════ -->
+  <!-- ══════════ 모드 2: 장별 전체 암기 ══════════ -->
   <div id="screenChapterMemory" class="screen">
     <button class="back-btn" onclick="goHome()">← 처음으로</button>
     <h2 style="margin-top:12px;">📝 장별 전체 암기</h2>
@@ -389,9 +434,7 @@
     <div id="chMemVerses" style="margin-top:16px;"></div>
   </div>
 
-  <!-- ══════════════════════════════
-       모드 3: 장별 랜덤 시험
-  ══════════════════════════════ -->
+  <!-- ══════════ 모드 3: 장별 랜덤 시험 ══════════ -->
   <div id="screenChapterQuiz" class="screen">
     <button class="back-btn" onclick="goHome()">← 처음으로</button>
     <h2 style="margin-top:12px;">🎯 장별 랜덤 시험</h2>
@@ -417,14 +460,14 @@
       <div class="btns" style="margin-top:12px;">
         <button id="chQuizPickBtn" onclick="chQuizPick()">문제 뽑기</button>
         <button id="chQuizRetryBtn" class="retry" onclick="chQuizStartRetry()">재시험</button>
-        <button id="chQuizSpeechBtn" class="secondary" onclick="toggleSpeechInput('chQuiz')" style="display:none;">🎤 음성 입력 시작</button>
-        <button class="secondary" onclick="clearTest('chQuiz')">입력 지우기</button>
+        <button id="chQuizSpeechBtn" class="secondary" onclick="toggleSpeechInput()" style="display:none;">🎤 음성 입력 시작</button>
+        <button class="secondary" onclick="clearQuizTest()">입력 지우기</button>
       </div>
 
       <div id="chQuizQuestionArea" class="daily-question-box" style="display:none;"></div>
       <textarea id="chQuizTestInput" placeholder="출제된 성구를 입력하세요" style="margin-top:12px;"></textarea>
       <div class="btns" style="margin-top:10px;">
-        <button id="chQuizGradeBtn" onclick="gradeTest('chQuiz')">채점하기</button>
+        <button id="chQuizGradeBtn" onclick="chQuizGrade()">채점하기</button>
         <button class="secondary" onclick="chQuizPick()">다음 문제</button>
       </div>
       <div id="chQuizResult"></div>
@@ -434,38 +477,29 @@
 </div><!-- /.container -->
 
 <script>
-  const SETTINGS_KEY = "rev-memory-html-prototype-settings-v1";
+  const SEQ_PROGRESS_KEY  = "rev-seq-progress-v1";   // { checkedRefs: [...] }
 
   let VERSES = [];
   let isDataLoaded = false;
 
-  // 모드1 상태
-  let seqCurrentQ = null;
-  let seqExamStatuses = {};
-  let seqRetryMode = false;
-  let seqRetryRefs = [];
+  // ── 모드1 상태 ──
+  let seqChecked = new Set(); // 체크된 ref 목록
 
-  // 모드3 상태
+  // ── 모드3 상태 ──
   let chQuizSelectedChapters = new Set();
   let chQuizCurrentQ = null;
   let chQuizExamStatuses = {};
   let chQuizRetryMode = false;
   let chQuizRetryRefs = [];
 
-  // 음성 인식
+  // ── 음성 인식 ──
   let speechRecognition = null;
   let isListening = false;
   let speechSupported = false;
-  let currentSpeechMode = null;
 
-  // ─────────────────────────────────
+  // ───────────────────────────────────────
   // 유틸
-  // ─────────────────────────────────
-  function todayString() {
-    const d = new Date();
-    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
-  }
-
+  // ───────────────────────────────────────
   function escapeHtml(t) {
     return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
   }
@@ -478,52 +512,9 @@
     return "#dc2626";
   }
 
-  function daysBetween(start, end) {
-    const s = new Date(start+"T00:00:00"), e = new Date(end+"T00:00:00");
-    return Math.max(0, Math.floor((e-s)/(1000*60*60*24)));
-  }
-
-  // ─────────────────────────────────
-  // 설정
-  // ─────────────────────────────────
-  function loadSettings() {
-    return JSON.parse(localStorage.getItem(SETTINGS_KEY)||"null") || { startDate: todayString(), dailyCount: 3 };
-  }
-
-  function applySettingsToInputs() {
-    const s = loadSettings();
-    document.getElementById("startDate").value = s.startDate;
-    document.getElementById("dailyCount").value = s.dailyCount;
-  }
-
-  function saveSettings() {
-    if (!isDataLoaded) return alert("데이터를 불러오는 중입니다.");
-    const startDate = document.getElementById("startDate").value || todayString();
-    const dailyCount = Math.max(1, parseInt(document.getElementById("dailyCount").value)||1);
-    localStorage.setItem(SETTINGS_KEY, JSON.stringify({ startDate, dailyCount }));
-    seqExamStatuses = {}; seqRetryMode = false; seqRetryRefs = []; seqCurrentQ = null;
-    renderSequentialScreen();
-    alert("설정이 저장되었습니다.");
-  }
-
-  function resetPrototype() {
-    localStorage.removeItem(SETTINGS_KEY);
-    location.reload();
-  }
-
-  function resetExamStatuses() {
-    if (!isDataLoaded) return alert("데이터를 불러오는 중입니다.");
-    seqExamStatuses = {}; seqRetryMode = false; seqRetryRefs = []; seqCurrentQ = null;
-    document.getElementById("seqQuestionArea").style.display = "none";
-    document.getElementById("seqTestInput").value = "";
-    document.getElementById("seqResult").innerHTML = "";
-    seqRenderRange();
-    alert("출제 완료 상태가 초기화되었습니다.");
-  }
-
-  // ─────────────────────────────────
+  // ───────────────────────────────────────
   // 화면 전환
-  // ─────────────────────────────────
+  // ───────────────────────────────────────
   function showScreen(id) {
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
     document.getElementById(id).classList.add("active");
@@ -538,7 +529,8 @@
   function enterMode(mode) {
     if (!isDataLoaded) return alert("성경 데이터를 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
     if (mode === "sequential") {
-      renderSequentialScreen();
+      seqLoadProgress();
+      seqRender();
       showScreen("screenSequential");
     } else if (mode === "chapterMemory") {
       renderChMemGrid();
@@ -559,134 +551,153 @@
     }
   }
 
-  // ─────────────────────────────────
+  // ───────────────────────────────────────
   // 모드1: 순서대로 암기
-  // ─────────────────────────────────
-  function getTodayVerses() {
-    const s = loadSettings();
-    const offset = daysBetween(s.startDate, todayString());
-    const start = offset * s.dailyCount;
-    return VERSES.slice(start, Math.min(start + s.dailyCount, VERSES.length));
+  // ───────────────────────────────────────
+  function seqLoadProgress() {
+    const saved = JSON.parse(localStorage.getItem(SEQ_PROGRESS_KEY) || "null");
+    seqChecked = new Set(saved?.checkedRefs || []);
   }
 
-  function getLearnedVerses() {
-    const s = loadSettings();
-    const offset = daysBetween(s.startDate, todayString());
-    return VERSES.slice(0, Math.min((offset+1)*s.dailyCount, VERSES.length));
+  function seqSaveProgress() {
+    localStorage.setItem(SEQ_PROGRESS_KEY, JSON.stringify({ checkedRefs: [...seqChecked] }));
   }
 
-  function renderSequentialScreen() {
-    applySettingsToInputs();
-    const todayV = getTodayVerses();
-    const learnedV = getLearnedVerses();
-
-    document.getElementById("todayRangePill").textContent = todayV.length
-      ? `오늘 범위: 계 ${todayV[0].chapter}:${todayV[0].verse}–${todayV[todayV.length-1].verse}`
-      : "오늘 범위 없음";
-    document.getElementById("progressPill").textContent = `진행률: ${learnedV.length}/${VERSES.length}절`;
-
-    document.getElementById("todayVerses").innerHTML = todayV.length
-      ? todayV.map(v => `<div class="verse"><div class="ref">${v.ref}</div><div>${escapeHtml(v.text)}</div></div>`).join("")
-      : `<div class="muted">오늘 배정된 절이 없습니다.</div>`;
-
-    seqRenderRange();
+  function seqResetProgress() {
+    if (!confirm("진행 상황을 초기화하시겠습니까?")) return;
+    seqChecked.clear();
+    seqSaveProgress();
+    seqRender();
   }
 
-  function seqRenderRange() {
-    const source = seqRetryMode
-      ? getLearnedVerses().filter(v => seqRetryRefs.includes(v.ref))
-      : getLearnedVerses();
+  // 현재 진행 중인 성구 인덱스 (체크 안 된 첫 번째)
+  function seqCurrentIndex() {
+    for (let i = 0; i < VERSES.length; i++) {
+      if (!seqChecked.has(VERSES[i].ref)) return i;
+    }
+    return VERSES.length; // 전체 완료
+  }
 
-    document.getElementById("seqExamModeBadge").innerHTML = seqRetryMode
-      ? `<span class="mode-badge">재시험 모드</span>` : "";
+  function seqRender() {
+    const currentIdx = seqCurrentIndex();
+    const total = VERSES.length;
+    const checkedCount = seqChecked.size;
 
-    if (!source.length) {
-      document.getElementById("seqExamRangeList").innerHTML = `<span class="muted">누적 학습 성구가 없습니다.</span>`;
-      document.getElementById("seqExamRangeSummary").textContent = "";
+    // 진행률 바 & 필
+    document.getElementById("seqProgressPill").textContent = `진행률: ${checkedCount} / ${total}절`;
+    document.getElementById("seqProgressBar").style.width = `${Math.round(checkedCount/total*100)}%`;
+
+    if (currentIdx < total) {
+      const cur = VERSES[currentIdx];
+      document.getElementById("seqChapterPill").textContent = `현재: 계 ${cur.chapter}장`;
+    } else {
+      document.getElementById("seqChapterPill").textContent = "🎉 전체 완료!";
+    }
+
+    const listEl = document.getElementById("seqVerseList");
+
+    // 전체 완료
+    if (currentIdx >= total) {
+      listEl.innerHTML = `
+        <div class="all-done-box">
+          <div class="done-icon">🎉</div>
+          <h3>요한계시록 전체 암기 완료!</h3>
+          <p class="muted">총 ${total}절을 모두 외웠습니다.</p>
+          <button class="ghost" style="margin-top:8px;" onclick="seqResetProgress()">처음부터 다시 시작</button>
+        </div>`;
       return;
     }
 
-    document.getElementById("seqExamRangeList").innerHTML = source.map(v => {
-      const st = seqExamStatuses[v.ref] || { state:"idle" };
-      let cls = "range-item";
-      if (st.state === "active") cls += " active";
-      else if (st.state === "done") cls += st.score===100 ? " done-perfect" : " done-imperfect";
-      return `<span class="${cls}">${v.ref}</span>`;
-    }).join("");
+    // 현재 성구 (큰 카드로 강조)
+    const curVerse = VERSES[currentIdx];
+    const curHidden = false; // 현재 성구는 기본 보이기
 
-    const completed = source.filter(v => seqExamStatuses[v.ref]?.state === "done").length;
-    const remaining = source.filter(v => {
-      const st = seqExamStatuses[v.ref];
-      return seqRetryMode ? (!st||st.score<100) : (!st||st.state!=="done");
-    }).length;
+    // 이전 성구들 (최근 3개만 보여줌, 나머지는 접힘)
+    const prevStart = Math.max(0, currentIdx - 3);
+    const prevVerses = VERSES.slice(prevStart, currentIdx);
 
-    document.getElementById("seqExamRangeSummary").textContent =
-      seqRetryMode
-        ? `재시험 범위 ${source.length}절 · 완료 ${completed}절 · 남은 문제 ${remaining}절`
-        : `누적 범위 ${source.length}절 · 출제 완료 ${completed}절 · 남은 문제 ${remaining}절`;
-  }
+    let html = "";
 
-  function seqPickQuestion() {
-    if (!isDataLoaded) return alert("데이터를 불러오는 중입니다.");
-    if (speechRecognition && isListening) speechRecognition.stop();
-
-    const pool = seqRetryMode
-      ? getLearnedVerses().filter(v => seqRetryRefs.includes(v.ref))
-      : getLearnedVerses();
-
-    if (!pool.length) return alert(seqRetryMode ? "재시험 대상이 없습니다." : "누적 학습 성구가 없습니다.");
-
-    Object.keys(seqExamStatuses).forEach(r => {
-      if (seqExamStatuses[r].state === "active") seqExamStatuses[r].state = "idle";
-    });
-
-    const available = pool.filter(v => {
-      const st = seqExamStatuses[v.ref];
-      return seqRetryMode ? (!st||st.score<100) : (!st||st.state!=="done");
-    });
-
-    if (!available.length) {
-      seqCurrentQ = null;
-      document.getElementById("seqQuestionArea").style.display = "none";
-      document.getElementById("seqTestInput").value = "";
-      document.getElementById("seqResult").innerHTML = "";
-      if (seqRetryMode) { seqRetryMode=false; seqRetryRefs=[]; }
-      seqRenderRange();
-      return alert("출제 가능한 성구를 모두 완료했습니다.");
+    // 이전 성구들
+    if (prevVerses.length > 0) {
+      html += `<div style="margin-bottom:6px;"><span class="muted" style="font-size:13px;">이전 성구 (최근 ${prevVerses.length}개)</span></div>`;
+      html += prevVerses.map(v => {
+        const isChecked = seqChecked.has(v.ref);
+        return `
+        <div class="seq-verse-card checked" id="card-${v.ref.replace(/[: ]/g,'-')}">
+          <div class="seq-card-header">
+            <div class="ref">✅ ${v.ref}</div>
+            <div class="seq-card-actions">
+              <button class="toggle-btn" onclick="seqToggleText('${v.ref.replace(/[: ]/g,'-')}')">👁 보이기/가리기</button>
+            </div>
+          </div>
+          <div class="verse-text verse-text-hidden" id="text-${v.ref.replace(/[: ]/g,'-')}"
+               onclick="seqToggleText('${v.ref.replace(/[: ]/g,'-')}')">${escapeHtml(v.text)}</div>
+        </div>`;
+      }).join("");
     }
 
-    seqCurrentQ = available[Math.floor(Math.random()*available.length)];
-    seqExamStatuses[seqCurrentQ.ref] = { state:"active", score: seqExamStatuses[seqCurrentQ.ref]?.score??null };
-    seqRenderRange();
+    // 현재 성구 (강조)
+    html += `
+      <div class="current-verse-area" id="card-${curVerse.ref.replace(/[: ]/g,'-')}">
+        <div class="seq-card-header">
+          <div>
+            <div class="ref">📍 ${curVerse.ref}</div>
+            <div class="muted" style="margin-top:4px;">지금 외울 성구입니다</div>
+          </div>
+          <div class="seq-card-actions">
+            <button class="toggle-btn" onclick="seqToggleText('${curVerse.ref.replace(/[: ]/g,'-')}')">👁 보이기/가리기</button>
+            <button class="check-btn" id="checkbtn-${curVerse.ref.replace(/[: ]/g,'-')}"
+                    onclick="seqCheck('${curVerse.ref}')">✅ 외웠어요!</button>
+          </div>
+        </div>
+        <div class="verse-text" id="text-${curVerse.ref.replace(/[: ]/g,'-')}">${escapeHtml(curVerse.text)}</div>
+      </div>`;
 
-    document.getElementById("seqQuestionArea").style.display = "block";
-    document.getElementById("seqQuestionArea").innerHTML = `
-      <div class="ref">${seqCurrentQ.ref}</div>
-      <div class="muted">${seqRetryMode ? "재시험 성구입니다. 다시 암송한 뒤 입력하세요." : "이 성구를 암송한 뒤 아래에 입력하세요."}</div>`;
-    document.getElementById("seqTestInput").value = "";
-    document.getElementById("seqResult").innerHTML = "";
+    // 다음 성구들 (미리보기 3개, 가려진 상태)
+    const nextVerses = VERSES.slice(currentIdx + 1, currentIdx + 4);
+    if (nextVerses.length > 0) {
+      html += `<div style="margin:6px 0;"><span class="muted" style="font-size:13px;">다음 성구</span></div>`;
+      html += nextVerses.map(v => `
+        <div class="seq-verse-card" id="card-${v.ref.replace(/[: ]/g,'-')}">
+          <div class="seq-card-header">
+            <div class="ref">${v.ref}</div>
+            <div class="seq-card-actions">
+              <button class="toggle-btn" onclick="seqToggleText('${v.ref.replace(/[: ]/g,'-')}')">👁 보이기/가리기</button>
+            </div>
+          </div>
+          <div class="verse-text verse-text-hidden" id="text-${v.ref.replace(/[: ]/g,'-')}"
+               onclick="seqToggleText('${v.ref.replace(/[: ]/g,'-')}')">${escapeHtml(v.text)}</div>
+        </div>`).join("");
+    }
+
+    listEl.innerHTML = html;
   }
 
-  function seqStartRetry() {
-    if (!isDataLoaded) return alert("데이터를 불러오는 중입니다.");
-    const retry = getLearnedVerses().filter(v => {
-      const st = seqExamStatuses[v.ref];
-      return st && st.state==="done" && st.score<100;
-    });
-    if (!retry.length) return alert("재시험 대상이 없습니다.");
-    seqRetryMode = true;
-    seqRetryRefs = retry.map(v=>v.ref);
-    seqCurrentQ = null;
-    document.getElementById("seqQuestionArea").style.display = "none";
-    document.getElementById("seqTestInput").value = "";
-    document.getElementById("seqResult").innerHTML = "";
-    seqRenderRange();
-    alert("재시험 모드가 시작되었습니다.");
+  function seqToggleText(safeRef) {
+    const el = document.getElementById("text-" + safeRef);
+    if (!el) return;
+    el.classList.toggle("verse-text-hidden");
   }
 
-  // ─────────────────────────────────
+  function seqCheck(ref) {
+    seqChecked.add(ref);
+    seqSaveProgress();
+    seqRender();
+    // 부드럽게 새 현재 성구로 스크롤
+    setTimeout(() => {
+      const currentIdx = seqCurrentIndex();
+      if (currentIdx < VERSES.length) {
+        const nextRef = VERSES[currentIdx].ref.replace(/[: ]/g, '-');
+        const el = document.getElementById("card-" + nextRef);
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }, 100);
+  }
+
+  // ───────────────────────────────────────
   // 모드2: 장별 전체 암기
-  // ─────────────────────────────────
+  // ───────────────────────────────────────
   function renderChMemGrid() {
     document.getElementById("chMemGrid").innerHTML =
       Array.from({length:22},(_,i)=>i+1).map(ch =>
@@ -708,21 +719,53 @@
     }
 
     area.innerHTML = `
-      <div style="margin-bottom:10px; margin-top:4px;">
-        <strong style="font-size:16px;">요한계시록 ${ch}장</strong>
-        <span class="muted" style="margin-left:8px;">${verses.length}절</span>
+      <div style="margin-bottom:12px; margin-top:4px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+        <div>
+          <strong style="font-size:16px;">요한계시록 ${ch}장</strong>
+          <span class="muted" style="margin-left:8px;">${verses.length}절</span>
+        </div>
+        <div class="btns">
+          <button class="ghost" style="font-size:13px;padding:7px 12px;" onclick="chMemShowAll(${ch})">전체 보이기</button>
+          <button class="ghost" style="font-size:13px;padding:7px 12px;" onclick="chMemHideAll(${ch})">전체 가리기</button>
+        </div>
       </div>
-      ${verses.map(v => `
-        <div class="verse">
-          <div class="ref">${v.ref}</div>
-          <div>${escapeHtml(v.text)}</div>
-        </div>`).join("")}`;
+      ${verses.map(v => {
+        const safeRef = v.ref.replace(/[: ]/g,'-');
+        return `
+        <div class="seq-verse-card" id="chcard-${safeRef}">
+          <div class="seq-card-header">
+            <div class="ref">${v.ref}</div>
+            <button class="toggle-btn" onclick="chMemToggle('${safeRef}')">👁 보이기/가리기</button>
+          </div>
+          <div class="verse-text verse-text-hidden" id="chtext-${safeRef}"
+               onclick="chMemToggle('${safeRef}')">${escapeHtml(v.text)}</div>
+        </div>`;
+      }).join("")}`;
     area.scrollIntoView({ behavior:"smooth", block:"start" });
   }
 
-  // ─────────────────────────────────
+  function chMemToggle(safeRef) {
+    const el = document.getElementById("chtext-" + safeRef);
+    if (el) el.classList.toggle("verse-text-hidden");
+  }
+
+  function chMemShowAll(ch) {
+    VERSES.filter(v=>v.chapter===ch).forEach(v => {
+      const el = document.getElementById("chtext-" + v.ref.replace(/[: ]/g,'-'));
+      if (el) el.classList.remove("verse-text-hidden");
+    });
+  }
+
+  function chMemHideAll(ch) {
+    VERSES.filter(v=>v.chapter===ch).forEach(v => {
+      const el = document.getElementById("chtext-" + v.ref.replace(/[: ]/g,'-'));
+      if (el) el.classList.add("verse-text-hidden");
+    });
+  }
+
+  // ───────────────────────────────────────
   // 모드3: 장별 랜덤 시험
-  // ─────────────────────────────────
+  // ───────────────────────────────────────
   function renderChQuizGrid() {
     document.getElementById("chQuizGrid").innerHTML =
       Array.from({length:22},(_,i)=>i+1).map(ch => {
@@ -861,48 +904,36 @@
     alert("재시험 모드가 시작되었습니다.");
   }
 
-  // ─────────────────────────────────
-  // 공통: 채점 / 입력 지우기
-  // ─────────────────────────────────
-  function clearTest(mode) {
-    const inputId = mode==="seq" ? "seqTestInput" : "chQuizTestInput";
-    const resultId = mode==="seq" ? "seqResult" : "chQuizResult";
-    document.getElementById(inputId).value = "";
-    document.getElementById(resultId).innerHTML = "";
+  function clearQuizTest() {
+    document.getElementById("chQuizTestInput").value = "";
+    document.getElementById("chQuizResult").innerHTML = "";
     if (speechRecognition && isListening) speechRecognition.stop();
   }
 
-  function gradeTest(mode) {
+  function chQuizGrade() {
     if (!isDataLoaded) return alert("데이터를 불러오는 중입니다.");
-    const isSeq = mode === "seq";
-    const currentQ = isSeq ? seqCurrentQ : chQuizCurrentQ;
-    if (!currentQ) return alert("먼저 문제를 뽑아주세요.");
+    if (!chQuizCurrentQ) return alert("먼저 문제를 뽑아주세요.");
 
-    const statuses = isSeq ? seqExamStatuses : chQuizExamStatuses;
-    const inputId  = isSeq ? "seqTestInput"  : "chQuizTestInput";
-    const resultId = isSeq ? "seqResult"     : "chQuizResult";
-    const renderRangeFn = isSeq ? seqRenderRange : chQuizRenderRange;
+    const user = document.getElementById("chQuizTestInput").value;
+    const comp = compareAligned(user, chQuizCurrentQ.text);
 
-    const user = document.getElementById(inputId).value;
-    const comp = compareAligned(user, currentQ.text);
+    chQuizExamStatuses[chQuizCurrentQ.ref] = { state:"done", score: comp.score };
+    chQuizRenderRange();
 
-    statuses[currentQ.ref] = { state:"done", score: comp.score };
-    renderRangeFn();
-
-    document.getElementById(resultId).innerHTML = `
+    document.getElementById("chQuizResult").innerHTML = `
       <div class="score" style="color:${getScoreColor(comp.score)};">정확도: ${comp.score}%</div>
       <strong style="display:block;margin-top:12px;">정답</strong>
       <div class="answer-box">
         <div class="verse-line">
-          <div class="verse-label">${currentQ.ref}</div>
-          <div>${renderMarkedVerse(currentQ.text, user, comp)}</div>
+          <div class="verse-label">${chQuizCurrentQ.ref}</div>
+          <div>${renderMarkedVerse(chQuizCurrentQ.text, user, comp)}</div>
         </div>
       </div>`;
   }
 
-  // ─────────────────────────────────
-  // 채점 알고리즘 (Levenshtein)
-  // ─────────────────────────────────
+  // ───────────────────────────────────────
+  // 채점 알고리즘
+  // ───────────────────────────────────────
   function buildSpacedUnits(text) {
     const units = []; let spacesBefore = "";
     for (const ch of text||"") {
@@ -934,7 +965,7 @@
     let i=m, j=n; const result=[];
     while (i>0||j>0) {
       const a=back[i][j];
-      if (a==="match")   { result.push({type:"correct",u:user[i-1],c:correct[j-1]}); i--;j--; }
+      if (a==="match")        { result.push({type:"correct",u:user[i-1],c:correct[j-1]}); i--;j--; }
       else if (a==="replace") { result.push({type:"wrong",u:user[i-1],c:correct[j-1]}); i--;j--; }
       else if (a==="delete")  { result.push({type:"extra",u:user[i-1],c:""}); i--; }
       else                    { result.push({type:"wrong",u:"",c:correct[j-1]}); j--; }
@@ -970,9 +1001,9 @@
     return html;
   }
 
-  // ─────────────────────────────────
-  // 음성 인식
-  // ─────────────────────────────────
+  // ───────────────────────────────────────
+  // 음성 인식 (모드3 전용)
+  // ───────────────────────────────────────
   function initSpeechRecognition() {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) { speechSupported=false; return; }
@@ -982,39 +1013,34 @@
     speechRecognition.interimResults = true;
     speechRecognition.continuous = false;
 
-    speechRecognition.onstart  = () => { isListening=true;  updateSpeechBtns(); };
-    speechRecognition.onend    = () => { isListening=false; updateSpeechBtns(); };
-    speechRecognition.onerror  = () => { isListening=false; updateSpeechBtns(); };
+    speechRecognition.onstart  = () => { isListening=true;  updateSpeechBtn(); };
+    speechRecognition.onend    = () => { isListening=false; updateSpeechBtn(); };
+    speechRecognition.onerror  = () => { isListening=false; updateSpeechBtn(); };
     speechRecognition.onresult = (e) => {
       let t="";
       for (let i=0;i<e.results.length;i++) t+=e.results[i][0].transcript;
-      const id = currentSpeechMode==="seq" ? "seqTestInput" : "chQuizTestInput";
-      const el = document.getElementById(id);
+      const el = document.getElementById("chQuizTestInput");
       if (el) el.value = t;
     };
-    updateSpeechBtns();
+    updateSpeechBtn();
   }
 
-  function updateSpeechBtns() {
-    ["seqSpeechBtn","chQuizSpeechBtn"].forEach(id => {
-      const btn = document.getElementById(id);
-      if (!btn) return;
-      btn.style.display = speechSupported ? "inline-block" : "none";
-      btn.textContent = isListening ? "🎤 음성 입력 중지" : "🎤 음성 입력 시작";
-    });
+  function updateSpeechBtn() {
+    const btn = document.getElementById("chQuizSpeechBtn");
+    if (!btn) return;
+    btn.style.display = speechSupported ? "inline-block" : "none";
+    btn.textContent = isListening ? "🎤 음성 입력 중지" : "🎤 음성 입력 시작";
   }
 
-  function toggleSpeechInput(mode) {
+  function toggleSpeechInput() {
     if (!speechSupported||!speechRecognition) return alert("이 기기에서는 음성 입력을 지원하지 않습니다.");
-    const currentQ = mode==="seq" ? seqCurrentQ : chQuizCurrentQ;
-    if (!currentQ) return alert("먼저 문제를 뽑아주세요.");
-    currentSpeechMode = mode;
+    if (!chQuizCurrentQ) return alert("먼저 문제를 뽑아주세요.");
     if (isListening) speechRecognition.stop(); else speechRecognition.start();
   }
 
-  // ─────────────────────────────────
+  // ───────────────────────────────────────
   // 초기화
-  // ─────────────────────────────────
+  // ───────────────────────────────────────
   initSpeechRecognition();
 
   fetch("revelation.json")
