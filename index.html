@@ -146,9 +146,9 @@ button:disabled{opacity:0.55;cursor:not-allowed;}
       <!-- 검색 -->
       <div style="margin-top:24px;border-top:1px solid #e5e7eb;padding-top:20px;">
         <h3 style="margin-bottom:4px;">🔍 성구 검색</h3>
-        <div class="muted" style="margin-bottom:8px;">키워드 또는 절 번호로 검색하세요 (예: 일곱, 1:3)</div>
+        <div class="muted" style="margin-bottom:8px;">키워드 또는 절 번호로 검색하세요 (예: 일곱, 1장 3절)</div>
         <div class="search-wrap">
-          <input class="search-input" id="searchInput" type="text" placeholder="검색어를 입력하세요..." oninput="doSearch()"/>
+          <input class="search-input" id="searchInput" type="text" placeholder="예: 일곱 인, 1장 3절" oninput="doSearch()"/>
         </div>
         <div class="search-results" id="searchResults"></div>
       </div>
@@ -212,14 +212,38 @@ button:disabled{opacity:0.55;cursor:not-allowed;}
       </div>
       <div class="btns" style="margin-top:12px;">
         <button id="chQuizPickBtn" onclick="chQuizPick()">문제 뽑기</button>
-        <button id="chQuizSpeechBtn" class="secondary" onclick="toggleSpeechInput()" style="display:none;">🎤 음성 입력 시작</button>
         <button class="secondary" onclick="clearQuizTest()">입력 지우기</button>
       </div>
       <div id="chQuizQuestionArea" class="daily-question-box" style="display:none;"></div>
-      <textarea id="chQuizTestInput" placeholder="출제된 성구를 입력하세요" style="margin-top:12px;"></textarea>
-      <div class="btns" style="margin-top:10px;">
-        <button id="chQuizGradeBtn" onclick="chQuizGrade()">채점하기</button>
-        <button class="secondary" onclick="chQuizPick()">다음 문제</button>
+      <!-- 입력 방식 탭 -->
+      <div id="chQuizInputArea" style="display:none;margin-top:14px;">
+        <div style="display:flex;gap:8px;margin-bottom:10px;">
+          <button class="ghost sm" id="tabTextBtn" onclick="switchInputTab('text')" style="margin:0;border-bottom:2px solid #2563eb;color:#2563eb;background:#eff6ff;">⌨️ 타이핑</button>
+          <button class="ghost sm" id="tabVoiceBtn" onclick="switchInputTab('voice')" style="margin:0;">🎤 음성 입력</button>
+        </div>
+        <!-- 타이핑 탭 -->
+        <div id="inputTabText">
+          <textarea id="chQuizTestInput" placeholder="암송한 성구를 입력하세요" style="margin-top:0;"></textarea>
+          <div class="btns" style="margin-top:10px;">
+            <button id="chQuizGradeBtn" onclick="chQuizGrade()">채점하기</button>
+            <button class="secondary" onclick="chQuizPick()">다음 문제</button>
+          </div>
+        </div>
+        <!-- 음성 탭 -->
+        <div id="inputTabVoice" style="display:none;">
+          <div style="text-align:center;padding:20px 0;">
+            <button id="voiceRecordBtn" onclick="voiceToggle()"
+              style="width:90px;height:90px;border-radius:50%;border:none;background:#2563eb;color:#fff;font-size:32px;cursor:pointer;box-shadow:0 4px 16px rgba(37,99,235,0.3);transition:all .2s;margin:0;">
+              🎤
+            </button>
+            <div id="voiceStatusText" style="margin-top:12px;font-weight:700;font-size:15px;color:#374151;">버튼을 눌러 암송 시작</div>
+            <div id="voicePreview" style="margin-top:10px;min-height:40px;padding:10px 14px;background:#f8fafc;border:1px solid #e5e7eb;border-radius:10px;font-size:14px;color:#374151;line-height:1.7;text-align:left;display:none;"></div>
+          </div>
+          <div class="btns" style="justify-content:center;margin-top:4px;">
+            <button id="voiceGradeBtn" onclick="chQuizGrade()" style="display:none;">채점하기</button>
+            <button class="secondary" onclick="chQuizPick()" style="display:none;" id="voiceNextBtn">다음 문제</button>
+          </div>
+        </div>
       </div>
       <div id="chQuizResult"></div>
     </div>
@@ -310,14 +334,40 @@ function enterMode(mode) {
 }
 
 // ── 검색 ──
+function parseSearchRef(q) {
+  // "1장 3절" 또는 "1장3절" → { chapter:1, verse:3 }
+  // "1장" → { chapter:1, verse:null }
+  var m = q.match(/^(\d+)\s*장\s*(\d+)\s*절?$/);
+  if (m) return { chapter: parseInt(m[1]), verse: parseInt(m[2]) };
+  m = q.match(/^(\d+)\s*장$/);
+  if (m) return { chapter: parseInt(m[1]), verse: null };
+  return null;
+}
+
 function doSearch() {
   var q = document.getElementById('searchInput').value.trim();
   var area = document.getElementById('searchResults');
   if (!q || !isDataLoaded) { area.innerHTML = ''; return; }
-  var ql = q.toLowerCase();
-  var results = VERSES.filter(function(v) {
-    return v.text.indexOf(q) !== -1 || v.ref.indexOf(q) !== -1 || v.text.toLowerCase().indexOf(ql) !== -1;
-  }).slice(0, 20);
+
+  var results;
+  var refParsed = parseSearchRef(q);
+
+  if (refParsed) {
+    // 절 번호 검색: 정확 일치
+    results = VERSES.filter(function(v) {
+      if (refParsed.verse !== null) {
+        return v.chapter === refParsed.chapter && v.verse === refParsed.verse;
+      }
+      return v.chapter === refParsed.chapter;
+    });
+  } else {
+    // 키워드 검색: 본문에서만
+    var ql = q.toLowerCase();
+    results = VERSES.filter(function(v) {
+      return v.text.indexOf(q) !== -1 || v.text.toLowerCase().indexOf(ql) !== -1;
+    }).slice(0, 20);
+  }
+
   if (!results.length) {
     area.innerHTML = '<div class="muted" style="padding:10px 0;">검색 결과가 없습니다.</div>';
     return;
@@ -334,11 +384,13 @@ function doSearch() {
       refEl.textContent = v.ref;
       var textEl = document.createElement('div');
       textEl.style.cssText = 'font-size:14px;line-height:1.7;color:#374151;';
-      // 하이라이트
       var escaped = esc(v.text);
-      var escapedQ = esc(q);
-      var re = new RegExp('(' + escapedQ.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
-      textEl.innerHTML = escaped.replace(re, '<span class="search-highlight">$1</span>');
+      if (!refParsed && q) {
+        var escapedQ = esc(q);
+        var re = new RegExp('(' + escapedQ.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
+        escaped = escaped.replace(re, '<span class="search-highlight">$1</span>');
+      }
+      textEl.innerHTML = escaped;
       item.appendChild(refEl);
       item.appendChild(textEl);
       frag.appendChild(item);
@@ -639,6 +691,8 @@ function chQuizStart() {
   document.getElementById('chQuizQuestionArea').style.display = 'none';
   document.getElementById('chQuizTestInput').value = '';
   document.getElementById('chQuizResult').innerHTML = '';
+  var ia = document.getElementById('chQuizInputArea');
+  if (ia) ia.style.display = 'none';
   document.getElementById('chQuizArea').style.display = 'block';
   chQuizRenderRange();
   document.getElementById('chQuizArea').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -731,6 +785,17 @@ function chQuizPick() {
   qa.appendChild(refEl); qa.appendChild(hint);
   document.getElementById('chQuizTestInput').value = '';
   document.getElementById('chQuizResult').innerHTML = '';
+  // 입력 영역 표시 및 탭 초기화
+  var inputArea = document.getElementById('chQuizInputArea');
+  if (inputArea) inputArea.style.display = 'block';
+  switchInputTab('text');
+  var preview = document.getElementById('voicePreview');
+  if (preview) { preview.textContent = ''; preview.style.display = 'none'; }
+  var gradeBtn = document.getElementById('voiceGradeBtn');
+  var nextBtn = document.getElementById('voiceNextBtn');
+  if (gradeBtn) gradeBtn.style.display = 'none';
+  if (nextBtn) nextBtn.style.display = 'none';
+  voiceSetStatus('버튼을 눌러 암송 시작', false);
 }
 function chQuizStartRetry() {
   if (!isDataLoaded) { alert('데이터를 불러오는 중입니다.'); return; }
@@ -752,6 +817,13 @@ function clearQuizTest() {
   document.getElementById('chQuizTestInput').value = '';
   document.getElementById('chQuizResult').innerHTML = '';
   if (speechRecognition && isListening) speechRecognition.stop();
+  var preview = document.getElementById('voicePreview');
+  if (preview) { preview.textContent = ''; preview.style.display = 'none'; }
+  var gradeBtn = document.getElementById('voiceGradeBtn');
+  var nextBtn = document.getElementById('voiceNextBtn');
+  if (gradeBtn) gradeBtn.style.display = 'none';
+  if (nextBtn) nextBtn.style.display = 'none';
+  voiceSetStatus('버튼을 눌러 암송 시작', false);
 }
 function chQuizGrade() {
   if (!isDataLoaded) { alert('데이터를 불러오는 중입니다.'); return; }
@@ -845,6 +917,67 @@ function renderMarkedVerse(correctText, userText, comp) {
   return html;
 }
 
+// ── 입력 탭 전환 ──
+var currentInputTab = 'text';
+function switchInputTab(tab) {
+  currentInputTab = tab;
+  var textTab = document.getElementById('inputTabText');
+  var voiceTab = document.getElementById('inputTabVoice');
+  var textBtn = document.getElementById('tabTextBtn');
+  var voiceBtn = document.getElementById('tabVoiceBtn');
+  if (!textTab) return;
+  if (tab === 'text') {
+    textTab.style.display = 'block';
+    voiceTab.style.display = 'none';
+    textBtn.style.cssText = 'margin:0;border-bottom:2px solid #2563eb;color:#2563eb;background:#eff6ff;';
+    voiceBtn.style.cssText = 'margin:0;';
+    if (speechRecognition && isListening) speechRecognition.stop();
+  } else {
+    textTab.style.display = 'none';
+    voiceTab.style.display = 'block';
+    textBtn.style.cssText = 'margin:0;';
+    voiceBtn.style.cssText = 'margin:0;border-bottom:2px solid #2563eb;color:#2563eb;background:#eff6ff;';
+    // 음성 미지원 시 안내
+    if (!speechSupported) {
+      document.getElementById('voiceStatusText').textContent = '이 기기에서는 음성 입력을 지원하지 않습니다.';
+      document.getElementById('voiceRecordBtn').disabled = true;
+    }
+  }
+}
+
+function voiceSetStatus(text, recording) {
+  var btn = document.getElementById('voiceRecordBtn');
+  var status = document.getElementById('voiceStatusText');
+  if (!btn || !status) return;
+  status.textContent = text;
+  if (recording) {
+    btn.style.background = '#dc2626';
+    btn.style.boxShadow = '0 0 0 8px rgba(220,38,38,0.15), 0 4px 16px rgba(220,38,38,0.3)';
+    btn.textContent = '⏹';
+  } else {
+    btn.style.background = '#2563eb';
+    btn.style.boxShadow = '0 4px 16px rgba(37,99,235,0.3)';
+    btn.textContent = '🎤';
+  }
+}
+
+function voiceToggle() {
+  if (!speechSupported || !speechRecognition) {
+    alert('이 기기에서는 음성 입력을 지원하지 않습니다.'); return;
+  }
+  if (isListening) {
+    speechRecognition.stop();
+  } else {
+    var preview = document.getElementById('voicePreview');
+    if (preview) { preview.textContent = ''; preview.style.display = 'none'; }
+    var gradeBtn = document.getElementById('voiceGradeBtn');
+    var nextBtn = document.getElementById('voiceNextBtn');
+    if (gradeBtn) gradeBtn.style.display = 'none';
+    if (nextBtn) nextBtn.style.display = 'none';
+    speechRecognition.start();
+  }
+}
+
 // ── 음성 인식 ──
 function initSpeechRecognition() {
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -854,28 +987,41 @@ function initSpeechRecognition() {
   speechRecognition.lang = 'ko-KR';
   speechRecognition.interimResults = true;
   speechRecognition.continuous = false;
-  speechRecognition.onstart = function() { isListening=true; updateSpeechBtn(); };
-  speechRecognition.onend   = function() { isListening=false; updateSpeechBtn(); };
-  speechRecognition.onerror = function() { isListening=false; updateSpeechBtn(); };
-  speechRecognition.onresult = function(e) {
-    var t='';
-    for (var i=0;i<e.results.length;i++) t+=e.results[i][0].transcript;
-    var el=document.getElementById('chQuizTestInput');
-    if (el) el.value=t;
+  speechRecognition.onstart = function() {
+    isListening = true;
+    voiceSetStatus('암송하세요... (완료 후 버튼 다시 누르기)', true);
   };
-  updateSpeechBtn();
+  speechRecognition.onend = function() {
+    isListening = false;
+    var preview = document.getElementById('voicePreview');
+    var text = preview ? preview.textContent : '';
+    if (text.trim()) {
+      voiceSetStatus('인식 완료! 채점하기를 눌러주세요.', false);
+      // textarea에도 동기화
+      var ta = document.getElementById('chQuizTestInput');
+      if (ta) ta.value = text;
+      var gradeBtn = document.getElementById('voiceGradeBtn');
+      var nextBtn = document.getElementById('voiceNextBtn');
+      if (gradeBtn) gradeBtn.style.display = 'inline-block';
+      if (nextBtn) nextBtn.style.display = 'inline-block';
+    } else {
+      voiceSetStatus('버튼을 눌러 암송 시작', false);
+    }
+  };
+  speechRecognition.onerror = function(e) {
+    isListening = false;
+    voiceSetStatus('오류가 발생했습니다. 다시 시도해주세요.', false);
+  };
+  speechRecognition.onresult = function(e) {
+    var t = '';
+    for (var i = 0; i < e.results.length; i++) t += e.results[i][0].transcript;
+    var preview = document.getElementById('voicePreview');
+    if (preview) { preview.textContent = t; preview.style.display = 'block'; }
+    var ta = document.getElementById('chQuizTestInput');
+    if (ta) ta.value = t;
+  };
 }
-function updateSpeechBtn() {
-  var btn=document.getElementById('chQuizSpeechBtn');
-  if (!btn) return;
-  btn.style.display=speechSupported?'inline-block':'none';
-  btn.textContent=isListening?'🎤 음성 입력 중지':'🎤 음성 입력 시작';
-}
-function toggleSpeechInput() {
-  if (!speechSupported||!speechRecognition){alert('이 기기에서는 음성 입력을 지원하지 않습니다.');return;}
-  if (!chQuizCurrentQ){alert('먼저 문제를 뽑아주세요.');return;}
-  if (isListening) speechRecognition.stop(); else speechRecognition.start();
-}
+function toggleSpeechInput() {}
 
 // ── Service Worker 등록 ──
 if ('serviceWorker' in navigator) {
